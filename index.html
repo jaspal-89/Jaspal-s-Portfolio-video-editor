@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JASPAL - Video Editor Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&family=Unbounded:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#07070a;
+      --bg-soft:#0d0a14;
+      --glass:rgba(255,255,255,.055);
+      --glass-strong:rgba(18,14,28,.74);
+      --line:rgba(255,255,255,.12);
+      --line-purple:rgba(192,132,252,.36);
+      --purple:#a855f7;
+      --purple2:#7c3aed;
+      --purple3:#c084fc;
+      --text:#fff;
+      --muted:rgba(255,255,255,.62);
+      --faint:rgba(255,255,255,.42);
+    }
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Inter,system-ui,sans-serif;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        radial-gradient(1000px 560px at 82% -8%,rgba(168,85,247,.22),transparent 62%),
+        radial-gradient(850px 520px at -8% 42%,rgba(109,40,217,.17),transparent 62%),
+        radial-gradient(700px 520px at 58% 105%,rgba(192,132,252,.12),transparent 62%),
+        #07070a;
+    }
+    body:after{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      opacity:.08;
+      background-image:
+        linear-gradient(rgba(255,255,255,.65) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.65) 1px,transparent 1px);
+      background-size:64px 64px;
+      -webkit-mask-image:radial-gradient(ellipse at 50% 28%,#000 42%,transparent 78%);
+      mask-image:radial-gradient(ellipse at 50% 28%,#000 42%,transparent 78%);
+    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    .noise{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.45'/></svg>")}
+    .container{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+    .glass{
+      background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(168,85,247,.04));
+      border:1px solid var(--line);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 90px rgba(0,0,0,.32);
+      backdrop-filter:blur(18px);
+    }
+    /* Grid cards repeat many times and/or animate continuously — skip the blur sampling on them for performance, their own backgrounds already read fine without it */
+    .work-card.glass,.style-card.glass,.service.glass,.pkg-card.glass,.tool-badge.glass{backdrop-filter:none}
+    .glow{box-shadow:0 0 35px rgba(168,85,247,.32),0 0 90px rgba(109,40,217,.2)}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(192,132,252,.34);background:rgba(168,85,247,.1);color:#e9d5ff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+    .spark{width:8px;height:8px;border-radius:999px;background:var(--purple3);box-shadow:0 0 18px var(--purple3)}
+    .section{padding:104px 0}
+    .eyebrow{color:#d8b4fe;font-size:12px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:14px}
+    .heading{font-family:Anton,sans-serif;font-size:clamp(48px,7vw,88px);font-weight:400;line-height:.92;letter-spacing:.02em}
+    .heading span,.text-glow{color:var(--purple3);text-shadow:0 0 24px rgba(192,132,252,.48)}
+    .muted{color:var(--muted);line-height:1.75}
+
+    header{
+      position:fixed;
+      top:18px;
+      left:0;
+      right:0;
+      z-index:50;
+    }
+    .nav{
+      width:min(1180px,calc(100% - 34px));
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:12px 14px 12px 20px;
+      border-radius:999px;
+      background:rgba(7,7,10,.72);
+      border:1px solid rgba(255,255,255,.1);
+      backdrop-filter:blur(20px);
+      box-shadow:0 20px 70px rgba(0,0,0,.3);
+    }
+    .brand{font-family:Anton,sans-serif;font-size:26px;letter-spacing:.08em}
+    .brand span{color:var(--purple3)}
+    .navlinks{display:flex;align-items:center;gap:6px}
+    .navlinks a{padding:10px 13px;border-radius:999px;color:rgba(255,255,255,.62);font-size:13px;font-weight:700;transition:.25s}
+    .navlinks a:hover{color:#fff;background:rgba(255,255,255,.07)}
+    .hire{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--purple);padding:11px 18px;font-size:14px;font-weight:800;box-shadow:0 0 30px rgba(168,85,247,.36);transition:.25s}
+    .hire:hover{background:var(--purple3);transform:translateY(-1px)}
+
+    .hero{min-height:100vh;padding:150px 0 90px;display:flex;align-items:center}
+    .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:58px;align-items:center}
+    .hero-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(56px,9.5vw,124px);line-height:1;letter-spacing:-.02em;margin:10px 0 18px;background:linear-gradient(135deg,#ffffff 0%,#e9d5ff 35%,#c084fc 65%,#8b5cf6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 44px rgba(168,85,247,.4);animation:letterIn .8s both}
+    @supports not (background-clip: text){.hero-name{background:none;color:#c084fc}}
+    .letter{position:relative;display:inline-block;animation:letterIn .7s both}
+    .letter:nth-child(2){animation-delay:.05s}.letter:nth-child(3){animation-delay:.1s}.letter:nth-child(4){animation-delay:.15s}.letter:nth-child(5){animation-delay:.2s}.letter:nth-child(6){animation-delay:.25s}
+    .letter:before,.letter:after{content:attr(data-char);position:absolute;inset:0;opacity:.32;pointer-events:none}
+    .letter:before{color:#a855f7;transform:translate(2px,-1px)}
+    .letter:after{color:#38bdf8;transform:translate(-2px,1px);opacity:.16}
+    @keyframes letterIn{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:none}}
+    .underline{width:min(520px,72%);height:5px;border-radius:999px;background:linear-gradient(90deg,transparent,var(--purple),var(--purple3),var(--purple),transparent);box-shadow:0 0 24px rgba(168,85,247,.55)}
+    .role{margin-top:24px;font-size:clamp(20px,3vw,30px);font-weight:800;color:rgba(255,255,255,.88)}
+    .tagline{max-width:650px;margin-top:20px;color:var(--muted);font-size:16px;line-height:1.8}
+    .actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+    .btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:14px 22px;font-weight:800;font-size:14px;transition:.25s}
+    .btn-primary{background:var(--purple);box-shadow:0 0 34px rgba(168,85,247,.38)}
+    .btn-primary:hover{background:var(--purple3);transform:translateY(-2px)}
+    .btn-ghost{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);color:#fff}
+
+    .quiz-mascot{max-width:340px;margin:0 auto 6px;animation:mascotFloat 4.5s ease-in-out infinite}
+    .quiz-heading{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(40px,8.5vw,100px);letter-spacing:-.01em;line-height:1.02}
+    .quiz-mascot svg{width:100%;display:block;filter:drop-shadow(0 0 26px rgba(168,85,247,.45))}
+    @keyframes mascotFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(-2deg)}}
+
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease}
+    .reveal.in-view{opacity:1;transform:translateY(0)}
+    .reveal-card{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
+    .reveal-card.in-view{opacity:1;transform:translateY(0)}
+    #quiz{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+    #quiz.in-view{opacity:1;transform:translateY(0)}
+
+    .quiz-box{position:relative;max-width:720px;margin:44px auto 0;border-radius:28px;padding:44px 40px;isolation:isolate}
+    .quiz-box:before{content:"";position:absolute;inset:-2px;border-radius:30px;padding:2px;z-index:-1;background:conic-gradient(from var(--ang,0deg),var(--purple),var(--purple3),#38bdf8,var(--purple));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spinBorder 5s linear infinite;opacity:.85}
+    @keyframes spinBorder{to{--ang:360deg}}
+    @property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+
+    .quiz-progress{position:relative;height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:34px}
+    .quiz-progress-bar{position:relative;height:100%;width:0%;background:linear-gradient(90deg,var(--purple),var(--purple3));border-radius:999px;transition:width .5s cubic-bezier(.22,1,.36,1);overflow:hidden}
+    .quiz-progress-bar:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);background-size:200% 100%;animation:shimmer 1.8s linear infinite}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-40% 0}}
+
+    .quiz-step-label{color:#d8b4fe;font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+    .quiz-question{font-size:26px;font-weight:800;line-height:1.3;margin-bottom:26px;animation:questionIn .45s ease both}
+    @keyframes questionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .quiz-options{display:grid;gap:12px}
+    .quiz-option{text-align:left;width:100%;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#fff;padding:16px 20px;font-size:15px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(14px);animation:optionIn .45s ease forwards}
+    .quiz-option:nth-child(1){animation-delay:.05s}.quiz-option:nth-child(2){animation-delay:.13s}.quiz-option:nth-child(3){animation-delay:.21s}.quiz-option:nth-child(4){animation-delay:.29s}
+    @keyframes optionIn{to{opacity:1;transform:translateY(0)}}
+    .quiz-option:hover{border-color:var(--line-purple);background:rgba(168,85,247,.14);transform:translateX(6px) scale(1.01);box-shadow:0 8px 30px rgba(168,85,247,.22)}
+    .quiz-option.picked{border-color:var(--purple3);background:rgba(168,85,247,.22);transform:translateX(6px) scale(.99)}
+    .quiz-option .qnum{width:26px;height:26px;flex-shrink:0;border-radius:999px;border:1px solid var(--line-purple);display:grid;place-items:center;font-size:12px;color:#d8b4fe;transition:.2s}
+    .quiz-option:hover .qnum{background:var(--purple);color:#fff;border-color:var(--purple)}
+    .quiz-result{text-align:center;position:relative}
+    .quiz-result.show{animation:resultPop .55s cubic-bezier(.22,1.4,.36,1) both}
+    @keyframes resultPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+    .quiz-result .tag{color:#d8b4fe;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+    .quiz-result h3{font-family:Anton,sans-serif;font-weight:400;font-size:clamp(30px,5vw,44px);margin-bottom:14px;color:var(--purple3);text-shadow:0 0 24px rgba(192,132,252,.4)}
+    .quiz-result p{color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto 26px}
+    .quiz-restart{background:none;border:none;color:var(--faint);font-size:13px;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:18px}
+    .spark-bit{position:absolute;border-radius:999px;background:var(--purple3);pointer-events:none;animation:sparkOut .9s ease-out forwards}
+    @keyframes sparkOut{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}}
+    @media(max-width:640px){
+      .quiz-box{padding:30px 22px}
+      .quiz-question{font-size:20px}
+    }
+    .btn-ghost:hover{border-color:rgba(192,132,252,.55);background:rgba(255,255,255,.08)}
+    .trust{display:flex;align-items:center;gap:18px;margin-top:34px;color:var(--faint);font-size:13px}
+    .dots{display:flex;margin-left:2px}
+    .dots i{width:38px;height:38px;border-radius:999px;border:2px solid #07070a;margin-left:-8px;background:linear-gradient(135deg,var(--c),#1a1224)}
+    .visual{position:relative;animation:floatCard 5s ease-in-out infinite}
+    .phone{position:relative;max-width:460px;margin-left:auto;aspect-ratio:1/1;border-radius:34px;overflow:hidden;border:1px solid var(--line-purple);background:#0c0a14;box-shadow:0 0 70px rgba(168,85,247,.35),0 35px 90px rgba(0,0,0,.55);transform-style:preserve-3d;will-change:transform,border-radius;transition:transform .12s ease-out,border-radius 1.1s cubic-bezier(.22,1,.36,1)}
+    .phone.circle{border-radius:50%}
+    .phone img{width:100%;height:100%;object-fit:cover;opacity:.98}
+    @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+    .play-badge{position:absolute;left:28px;bottom:28px;z-index:2;display:flex;align-items:center;gap:12px;border-radius:999px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);padding:12px 16px;backdrop-filter:blur(12px);font-weight:800}
+    .play-badge span{display:grid;place-items:center;width:42px;height:42px;border-radius:999px;background:var(--purple);box-shadow:0 0 24px rgba(168,85,247,.7)}
+    .mini-card{position:absolute;right:-18px;top:42px;width:180px;border-radius:22px;padding:18px;z-index:3}
+    .mini-card b{font-family:Anton,sans-serif;font-size:42px;font-weight:400}.mini-card p{color:var(--faint);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+
+    .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:62px;align-items:start}
+    .point-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
+    .point{display:flex;align-items:center;gap:12px;border-radius:18px;padding:15px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.78);font-weight:700}
+    .check{display:grid;place-items:center;width:25px;height:25px;border-radius:999px;background:rgba(168,85,247,.18);border:1px solid rgba(192,132,252,.42);color:#e9d5ff}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+    .stat{border-radius:24px;padding:22px}
+    .stat b{font-family:Anton,sans-serif;font-size:48px;font-weight:400}.stat p{margin-top:4px;color:var(--faint);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+
+    .section-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:38px}
+    .section-top .muted{max-width:440px}
+    .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+    .filter{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.66);border-radius:999px;padding:10px 15px;font-weight:800;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:.25s}
+    .filter.active,.filter:hover{background:var(--purple);border-color:var(--purple3);color:#fff;box-shadow:0 0 26px rgba(168,85,247,.32)}
+    .work-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+    .work-float{}
+    .work-card{position:relative;overflow:hidden;border-radius:28px;cursor:pointer;aspect-ratio:9/16;background:#0c0a14;border:1px solid rgba(255,255,255,.06)}
+    .work-card.hide{display:none}
+    .work-card video{width:100%;height:100%;object-fit:contain;position:absolute;inset:0;background:#0c0a14}
+    .work-card:hover{border-color:rgba(192,132,252,.35)}
+    .work-card:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(7,7,10,.9),rgba(7,7,10,0) 32%,rgba(7,7,10,0) 68%,rgba(7,7,10,.55))}
+    .work-info{position:absolute;left:18px;right:18px;bottom:16px;z-index:2}
+    .work-cat{color:#d8b4fe;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px}
+    .work-title{font-size:18px;font-weight:900}.work-desc{color:rgba(255,255,255,.6);font-size:14px;line-height:1.6;margin-top:8px}
+    .mute-btn{position:absolute;top:16px;right:16px;z-index:3;width:40px;height:40px;border-radius:999px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.22);display:grid;place-items:center;font-size:16px;cursor:pointer}
+    .mute-btn:hover{background:var(--purple);border-color:var(--purple3)}
+    .work-card.coming-soon{background:linear-gradient(160deg,#171225,#0c0a14)}
+    .work-card.coming-soon .work-video{opacity:.25}
+    .soon-badge{position:absolute;top:18px;left:18px;z-index:3;background:rgba(30,20,45,.9);border:1px solid var(--line-purple);color:#e9d5ff;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:999px}
+
+    .service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .style-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+    .spotlight{position:relative;overflow:hidden}
+
+    .float-buddy{position:fixed;left:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(-140px) scale(.6);pointer-events:none;transition:opacity .5s ease,transform .7s cubic-bezier(.34,1.56,.64,1)}
+    .float-buddy.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .float-avatar{width:74px;height:74px;border-radius:999px;overflow:hidden;border:2px solid var(--purple3);box-shadow:0 0 20px rgba(168,85,247,.55);display:block;flex-shrink:0;animation:buddyPulse 2.6s ease-in-out infinite}
+    .float-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    @keyframes buddyPulse{0%,100%{box-shadow:0 0 16px rgba(168,85,247,.5)}50%{box-shadow:0 0 28px rgba(168,85,247,.9)}}
+    .float-msg{background:rgba(12,10,20,.94);border:1px solid var(--line-purple);color:#fff;font-size:13px;font-weight:700;line-height:1.4;padding:10px 15px;border-radius:14px 14px 14px 4px;max-width:190px;backdrop-filter:blur(10px);box-shadow:0 10px 26px rgba(0,0,0,.45);transition:opacity .35s ease,transform .35s ease}
+    .float-msg.fade{opacity:0;transform:translateY(6px)}
+    @media(max-width:640px){.float-buddy{left:14px;bottom:14px}.float-avatar{width:60px;height:60px}.float-msg{max-width:135px;font-size:11.5px;padding:8px 12px}}
+    .spotlight:after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(168,85,247,.24),transparent 65%);opacity:0;transition:opacity .35s ease;pointer-events:none;z-index:0}
+    .spotlight:hover:after{opacity:1}
+    .spotlight>*{position:relative;z-index:1}
+    .style-card{border-radius:20px;padding:22px;transition:transform .12s ease-out;transform-style:preserve-3d;will-change:transform}
+    .style-card h3{font-size:15px;font-weight:800;margin-bottom:10px;color:var(--purple3)}
+    .style-card p{color:var(--muted);font-size:13px;line-height:1.65}
+
+    .hp-map-wrap{max-width:640px;margin:44px auto 0;border-radius:28px;padding:16px;overflow:hidden}
+
+    .hp-map-img{width:100%;height:auto;display:block;border-radius:18px}
+
+    .pkg-toggle{margin:36px auto 0;display:inline-flex;align-items:center;gap:10px;border-radius:999px;border:1px solid var(--line-purple);background:rgba(168,85,247,.12);color:#fff;font-weight:800;font-size:15px;padding:16px 26px;cursor:pointer;transition:.25s}
+    .pkg-toggle:hover{background:rgba(168,85,247,.24);border-color:var(--purple3)}
+    .pkg-toggle svg{transition:transform .35s ease}
+    .pkg-toggle.open svg{transform:rotate(180deg)}
+    .pkg-panel{max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.22,1,.36,1);max-width:900px;margin:0 auto}
+    .pkg-panel.open{max-height:1200px}
+    .pkg-panel-inner{padding-top:34px;opacity:0;transform:translateY(-16px);transition:opacity .5s ease .1s,transform .5s ease .1s}
+    .pkg-panel.open .pkg-panel-inner{opacity:1;transform:translateY(0)}
+    .pkg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;text-align:left}
+    .pkg-card{position:relative;border-radius:26px;padding:32px;transition:transform .12s ease-out;transform-style:preserve-3d;will-change:transform}
+    .pkg-card.featured{border:1px solid var(--purple3);box-shadow:0 0 50px rgba(168,85,247,.3)}
+    .pkg-badge{position:absolute;top:-14px;right:28px;background:var(--purple);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 0 20px rgba(168,85,247,.6)}
+    .pkg-tier{font-size:20px;font-weight:800;margin-bottom:6px}
+    .pkg-price{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;color:var(--purple3);margin-bottom:20px}
+    .pkg-price span{font-size:14px;color:var(--faint);font-weight:600}
+    .pkg-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
+    .pkg-list li{color:var(--muted);font-size:14px;padding-left:24px;position:relative}
+    .pkg-list li:before{content:"✓";position:absolute;left:0;color:var(--purple3);font-weight:800}
+    .pkg-cta{width:100%;text-align:center;display:block}
+    .pkg-note{margin-top:26px;color:var(--faint);font-size:13px}
+    .pkg-note a{color:#d8b4fe;font-weight:700}
+
+    .tools-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:38px}
+    .tool-badge{border-radius:18px;padding:22px 12px;display:flex;flex-direction:column;align-items:center;gap:11px;transition:transform .12s ease-out;transform-style:preserve-3d;will-change:transform}
+    .tool-icon{width:46px;height:46px;border-radius:14px;background:rgba(168,85,247,.16);display:grid;place-items:center;font-size:21px}
+    .tool-badge p{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.85)}
+    @media(max-width:860px){.tools-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:480px){.tools-grid{grid-template-columns:repeat(2,1fr)}}
+    .pkg-discount{margin-top:28px;color:#d8b4fe;font-size:13px;font-weight:700;background:rgba(168,85,247,.1);border:1px solid var(--line-purple);display:inline-block;padding:10px 18px;border-radius:999px}
+    @media(max-width:640px){.pkg-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){.hp-map-wrap{padding:10px}}
+    .service{border-radius:26px;padding:26px;min-height:250px;transition:transform .12s ease-out,border-color .3s ease;transform-style:preserve-3d;will-change:transform}
+    .service:hover{border-color:var(--line-purple)}
+    .icon{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:rgba(168,85,247,.17);border:1px solid rgba(192,132,252,.35);margin-bottom:28px}
+    .service h3{font-size:21px;margin-bottom:12px}.service p{color:var(--muted);line-height:1.7;font-size:14px}
+
+    .skills-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:54px;align-items:center}
+    .skill{margin-bottom:22px}
+    .skill-row{display:flex;justify-content:space-between;font-weight:800;margin-bottom:10px}
+    .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+    .bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--purple2),var(--purple3));box-shadow:0 0 22px rgba(192,132,252,.5)}
+
+    .contact-card{position:relative;overflow:hidden;border-radius:34px;padding:58px;text-align:center}
+    .contact-card:before{content:"";position:absolute;inset:0;background:radial-gradient(600px 280px at 50% 0%,rgba(168,85,247,.22),transparent 65%);pointer-events:none}
+    .contact-card>*{position:relative}
+    .contact-card .heading{font-size:clamp(46px,6vw,80px)}
+    .contact-actions{margin-top:28px;display:flex;justify-content:center;flex-wrap:wrap;gap:14px}
+    .icon-actions{gap:22px}
+    .icon-btn{display:grid;place-items:center;width:76px;height:76px;border-radius:999px;color:#fff;border:1px solid var(--line-purple);background:rgba(255,255,255,.04);transition:.25s}
+    .icon-btn:hover{transform:translateY(-4px) scale(1.06)}
+    .icon-btn.whatsapp{background:#25D366;border-color:#25D366;box-shadow:0 0 34px rgba(37,211,102,.4)}
+    .icon-btn.whatsapp:hover{box-shadow:0 0 46px rgba(37,211,102,.6)}
+    .icon-btn.mail{background:var(--purple);border-color:var(--purple);box-shadow:0 0 34px rgba(168,85,247,.4)}
+    .icon-btn.mail:hover{box-shadow:0 0 46px rgba(168,85,247,.6)}
+    .icon-btn.insta{background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4);box-shadow:0 0 34px rgba(221,42,123,.35)}
+    .icon-btn.insta:hover{box-shadow:0 0 46px rgba(221,42,123,.55)}
+    @media(max-width:640px){.icon-btn{width:64px;height:64px}}
+    footer{padding:34px 0 48px;color:var(--faint);font-size:13px}
+    .footer-row{display:flex;justify-content:space-between;gap:20px;align-items:center;border-top:1px solid rgba(255,255,255,.1);padding-top:24px}
+
+    .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.82);backdrop-filter:blur(14px)}
+    .modal.open{display:flex}
+    .modal-box{width:min(980px,100%);border-radius:26px;overflow:hidden;background:#050507;border:1px solid rgba(255,255,255,.14);box-shadow:0 0 80px rgba(168,85,247,.28)}
+    .modal-head{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .modal-title{font-weight:900}.close{border:0;background:rgba(255,255,255,.08);color:#fff;border-radius:999px;width:38px;height:38px;font-size:22px;cursor:pointer}
+    video{width:100%;max-height:72vh;background:#000;display:block}
+
+    @media(max-width:980px){
+      .navlinks{display:none}
+      .hero-grid,.about-grid,.skills-wrap{grid-template-columns:1fr}
+      .visual{order:-1}.phone{margin:auto}
+      .work-grid,.service-grid,.style-grid{grid-template-columns:repeat(2,1fr)}
+      .section-top{display:block}.section-top .muted{margin-top:16px}
+    }
+    @media(max-width:640px){
+      .container{width:min(100% - 28px,1180px)}
+      header{top:10px}.nav{width:calc(100% - 20px)}
+      .hire{padding:10px 14px;font-size:13px}
+      .hero{padding-top:118px}.hero-name{font-size:13vw}
+      .mini-card{display:none}.trust{align-items:flex-start;flex-direction:column}
+      .point-grid,.stats,.service-grid,.style-grid{grid-template-columns:1fr}
+      .work-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+      .contact-card{padding:38px 20px}
+      .footer-row{display:block;text-align:center}.footer-row .brand{margin-bottom:10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+
+  <header>
+    <nav class="nav">
+      <a class="brand" href="#home">JAS<span>PAL</span></a>
+      <div class="navlinks">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="hire" href="https://wa.me/919317621164?text=Hi%20Jaspal!%20I%20found%20your%20portfolio%20and%20I%27d%20like%20to%20talk%20about%20a%20video%20editing%20project." target="_blank" rel="noreferrer">Contact ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="pill"><span class="spark"></span> Video Editor</div>
+          <h1 class="hero-name" aria-label="Jaspal">Jaspal</h1>
+          <div class="underline"></div>
+          <p class="role">Creative Video Editor & Content Specialist</p>
+          <p class="tagline">I turn raw footage into engaging, high-retention videos that help creators and brands grow faster. From viral short-form edits to polished YouTube content, I focus on storytelling, pacing, motion, and results.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://wa.me/919317621164?text=Hi%20Jaspal!%20I%20found%20your%20portfolio%20and%20I%27d%20like%20to%20talk%20about%20a%20video%20editing%20project." target="_blank" rel="noreferrer">Contact ↗</a>
+            <a class="btn btn-ghost" href="#work">▶ View My Work</a>
+          </div>
+          <div class="trust">
+            <div class="dots"><i style="--c:#a855f7"></i><i style="--c:#7c3aed"></i><i style="--c:#c084fc"></i><i style="--c:#6d28d9"></i></div>
+            <div><b style="color:#fcd34d">★★★★★</b> <span>5.0 from creators, founders & brands worldwide</span></div>
+          </div>
+        </div>
+        <div class="visual">
+          <div class="phone" id="phoneShape">
+            <img src="profile-hero.jpg" alt="Jaspal video editor portrait">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div>
+          <p class="eyebrow">— About</p>
+          <h2 class="heading">A creative mind<br>built for <span>the feed.</span></h2>
+        </div>
+        <div>
+          <p class="muted" style="font-size:18px">I'm <b style="color:#fff">Jaspal</b>, a video editor and content specialist obsessed with pacing, hooks, and the tiny details that turn passive scrollers into hooked viewers.</p>
+          <p class="muted" style="margin-top:18px">I edit reels, YouTube videos, product ads, motion edits, explainers and narrative videos with a clean cinematic style. My goal is simple: make every second feel intentional.</p>
+          <div class="point-grid">
+            <div class="point"><span class="check">✓</span> Hook-first editing style</div>
+            <div class="point"><span class="check">✓</span> Retention-optimized pacing</div>
+            <div class="point"><span class="check">✓</span> Fast turnaround</div>
+            <div class="point"><span class="check">✓</span> Professional revisions</div>
+          </div>
+          <div class="stats">
+            <div class="stat glass"><b>120+</b><p>Projects Delivered</p></div>
+            <div class="stat glass"><b>40+</b><p>Happy Clients</p></div>
+            <div class="stat glass"><b>18M+</b><p>Hours Watched</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="container" style="margin-top:70px">
+        <p class="eyebrow">— Video styles</p>
+        <h2 class="heading" style="font-size:clamp(32px,4.5vw,56px)">How each style <span>grows your brand.</span></h2>
+        <p class="muted" style="max-width:640px;margin-top:14px">Different goals need different edits. Here's how each style I work in actually moves the needle for a brand.</p>
+        <div class="style-grid">
+          <div class="style-card glass spotlight"><h3>UGC Product Ad</h3><p>Feels like a friend's recommendation, not an ad. Builds trust fast and drives conversions straight from the feed.</p></div>
+          <div class="style-card glass spotlight"><h3>Talking Head Premium Edit</h3><p>Puts a real face and voice to your brand, building authority and a personal connection with your audience.</p></div>
+          <div class="style-card glass spotlight"><h3>Commercial Tech Reel</h3><p>Polished, confident visuals that position your brand as the premium, trustworthy choice in a crowded market.</p></div>
+          <div class="style-card glass spotlight"><h3>Premium Quality Caption</h3><p>Sharp on-screen text keeps viewers watching even on mute, boosting retention and watch time.</p></div>
+          <div class="style-card glass spotlight"><h3>Focusing On Your Brand</h3><p>Story-driven edits that keep your identity front and center in every single frame.</p></div>
+          <div class="style-card glass spotlight"><h3>Beauty & Skincare Ads</h3><p>Sensory, aesthetic visuals that make products impossible to scroll past.</p></div>
+          <div class="style-card glass spotlight"><h3>Fashion & Apparel Ads</h3><p>Bold, stylish cuts built to turn browsers into buyers.</p></div>
+          <div class="style-card glass spotlight"><h3>Cartoonish Style Story</h3><p>Playful, memorable storytelling that makes your brand stand out from the noise.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="container">
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">— Selected Work</p>
+            <h2 class="heading">Projects that <span>move.</span></h2>
+          </div>
+          <p class="muted">A taste of recent edits across UGC, talking-head, commercial and product storytelling. Every preview plays on loop — tap the speaker to hear it.</p>
+        </div>
+        <div class="filters">
+          <button class="filter active" data-filter="All">ALL</button>
+          <button class="filter" data-filter="Commercial Tech Reel">COMMERCIAL TECH REEL</button>
+          <button class="filter" data-filter="UGC Product Ad">UGC PRODUCT AD</button>
+          <button class="filter" data-filter="Talking Head Premium Edit">TALKING HEAD PREMIUM EDIT</button>
+          <button class="filter" data-filter="Premium Quality Caption">PREMIUM QUALITY CAPTION</button>
+          <button class="filter" data-filter="Focusing On Your Brand">FOCUSING ON YOUR BRAND</button>
+          <button class="filter" data-filter="Beauty & Skincare Promotional Ads">BEAUTY &amp; SKINCARE PROMOTIONAL ADS</button>
+          <button class="filter" data-filter="Fashion & Apparel Promotional Ads">FASHION &amp; APPAREL PROMOTIONAL ADS</button>
+          <button class="filter" data-filter="Cartoonish Style Story">CARTOONISH STYLE STORY</button>
+          <button class="filter" data-filter="Hyper Edits">HYPER EDITS</button>
+          <button class="filter" data-filter="Trending Edit">TRENDING EDIT</button>
+          <button class="filter" data-filter="AI Based Animation">AI BASED ANIMATION</button>
+          <button class="filter" data-filter="Colour Grading">COLOUR GRADING</button>
+        </div>
+        <div class="work-grid">
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Commercial Tech Reel" data-title="Commercial Tech Reel">
+              <video class="work-video" data-src="commercial-tech-reel.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Commercial Tech Reel</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="UGC Product Ad" data-title="UGC Product Ad">
+              <video class="work-video" data-src="ugc-product-ad.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">UGC Product Ad</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Talking Head Premium Edit" data-title="Talking Head Premium Edit">
+              <video class="work-video" data-src="talking-head-premium-edit.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Talking Head Premium Edit</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Premium Quality Caption" data-title="Premium Quality Caption">
+              <video class="work-video" data-src="premium-quality-caption.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Premium Quality Caption</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Focusing On Your Brand" data-title="Focusing On Your Brand">
+              <video class="work-video" data-src="focusing-on-your-brand.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Focusing On Your Brand</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Beauty & Skincare Promotional Ads" data-title="Beauty & Skincare Promotional Ads">
+              <video class="work-video" data-src="beauty-skincare-promotional-ad.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Beauty &amp; Skincare Promotional Ads</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Fashion & Apparel Promotional Ads" data-title="Fashion & Apparel Promotional Ads">
+              <video class="work-video" data-src="fashion-apparel-promotional-ad.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Fashion &amp; Apparel Promotional Ads</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Cartoonish Style Story" data-title="Cartoonish Style Story">
+              <video class="work-video" data-src="cartoonish-style-story.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Cartoonish Style Story</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass" data-cat="Hyper Edits" data-title="Hyper Edits">
+              <video class="work-video" data-src="hyper-edits.mp4" muted loop playsinline preload="none"></video>
+              <button class="mute-btn" aria-label="Toggle sound">🔇</button>
+              <div class="work-info"><p class="work-cat">Hyper Edits</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass coming-soon" data-cat="Trending Edit" data-title="Trending Edit">
+              <video class="work-video" data-src="trending-edit.mp4" muted loop playsinline preload="none"></video>
+              <span class="soon-badge">Coming Soon</span>
+              <div class="work-info"><p class="work-cat">Trending Edit</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass coming-soon" data-cat="AI Based Animation" data-title="AI Based Animation">
+              <video class="work-video" data-src="ai-based-animation.mp4" muted loop playsinline preload="none"></video>
+              <span class="soon-badge">Coming Soon</span>
+              <div class="work-info"><p class="work-cat">AI Based Animation</p></div>
+            </article>
+          </div>
+          <div class="work-float">
+            <article class="work-card glass coming-soon" data-cat="Colour Grading" data-title="Colour Grading">
+              <video class="work-video" data-src="colour-grading.mp4" muted loop playsinline preload="none"></video>
+              <span class="soon-badge">Coming Soon</span>
+              <div class="work-info"><p class="work-cat">Colour Grading</p></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">— Services</p>
+            <h2 class="heading">Edits that <span>perform.</span></h2>
+          </div>
+          <p class="muted">From short-form scroll-stoppers to full YouTube videos and brand commercials, every package is built around clarity, rhythm and retention.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service glass spotlight"><div class="icon">⚡</div><h3>Short Form Edits</h3><p>Reels, Shorts and TikToks engineered to grab attention in the first 2 seconds.</p></article>
+          <article class="service glass spotlight"><div class="icon">▶</div><h3>YouTube Edits</h3><p>Long-form content with punchy pacing that keeps viewers watching till the end.</p></article>
+          <article class="service glass spotlight"><div class="icon">✦</div><h3>Motion Graphics</h3><p>Clean kinetic animations and title cards that make your content stand out.</p></article>
+          <article class="service glass spotlight"><div class="icon">↗</div><h3>Content That Performs</h3><p>Edits focused on retention, watch time and engagement, not just aesthetics.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="quiz">
+      <div class="container" style="text-align:center">
+        <div class="quiz-mascot">
+          <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="glow2" cx="50%" cy="38%" r="55%">
+                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c084fc"/>
+                <stop offset="100%" stop-color="#7c3aed"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="340" cy="210" rx="230" ry="200" fill="url(#glow2)"/>
+            <ellipse cx="340" cy="430" rx="120" ry="18" fill="#000000" opacity="0.4"/>
+            <path d="M260 300 Q220 300 215 340 Q212 370 245 375 L285 375 L285 300 Z" fill="#a855f7"/>
+            <path d="M245 375 Q235 335 260 310" stroke="#7c3aed" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <rect x="200" y="230" width="72" height="72" rx="14" fill="#f5f0ff" transform="rotate(-14 236 266)"/>
+            <text x="236" y="275" text-anchor="middle" font-size="20" font-weight="700" fill="#7c3aed" font-family="Arial, sans-serif" transform="rotate(-14 236 266)">WAIT</text>
+            <path d="M340 130 C420 130 460 190 460 250 C460 330 400 380 340 380 C280 380 220 330 220 250 C220 190 260 130 340 130 Z" fill="url(#body)"/>
+            <path d="M420 300 Q470 290 480 250 Q485 225 465 220 Q448 220 448 240" fill="#7c3aed"/>
+            <ellipse cx="300" cy="240" rx="20" ry="26" fill="#0b0a12"/>
+            <ellipse cx="380" cy="240" rx="20" ry="26" fill="#0b0a12"/>
+            <circle cx="307" cy="232" r="6" fill="#ffffff"/>
+            <circle cx="387" cy="232" r="6" fill="#ffffff"/>
+            <path d="M310 300 Q340 320 370 300" stroke="#0b0a12" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <ellipse cx="270" cy="270" rx="14" ry="9" fill="#f472d0" opacity="0.55"/>
+            <ellipse cx="410" cy="270" rx="14" ry="9" fill="#f472d0" opacity="0.55"/>
+            <circle cx="150" cy="120" r="4" fill="#c084fc"/>
+            <circle cx="540" cy="150" r="5" fill="#c084fc" opacity="0.8"/>
+            <circle cx="520" cy="360" r="4" fill="#a855f7" opacity="0.7"/>
+            <circle cx="160" cy="380" r="3" fill="#c084fc" opacity="0.6"/>
+            <path d="M300 150 Q340 120 380 150" stroke="#f5f0ff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </div>
+        <p class="eyebrow">— Quick Quiz</p>
+        <h2 class="heading quiz-heading">Find your <span>edit style.</span></h2>
+        <p class="muted" style="max-width:520px;margin:14px auto 0">Answer 4 quick questions and find out which edit style fits your brand best.</p>
+
+        <div class="quiz-box glass spotlight" id="quizBox">
+          <div class="quiz-progress"><div class="quiz-progress-bar" id="quizProgress"></div></div>
+          <div id="quizQuestionWrap">
+            <p class="quiz-step-label" id="quizStepLabel">Question 1 of 4</p>
+            <p class="quiz-question" id="quizQuestionText"></p>
+            <div class="quiz-options" id="quizOptions"></div>
+          </div>
+          <div id="quizResultWrap" style="display:none" class="quiz-result">
+            <p class="tag">Your Edit Style</p>
+            <h3 id="quizResultTitle"></h3>
+            <p id="quizResultDesc"></p>
+            <a href="#work" class="btn btn-primary" id="quizResultCta">See Matching Work ↗</a>
+            <div><button class="quiz-restart" id="quizRestart">Retake the quiz</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container skills-wrap">
+        <div>
+          <p class="eyebrow">— Toolkit</p>
+          <h2 class="heading">Sharp tools.<br><span>Sharper timing.</span></h2>
+          <p class="muted" style="margin-top:20px">Editing is not only software. It is timing, taste, story and knowing exactly where a viewer might swipe away.</p>
+        </div>
+        <div class="glass" style="border-radius:30px;padding:30px">
+          <div class="skill"><div class="skill-row"><span>Premiere Pro</span><span>95%</span></div><div class="bar"><span style="width:95%"></span></div></div>
+          <div class="skill"><div class="skill-row"><span>After Effects</span><span>88%</span></div><div class="bar"><span style="width:88%"></span></div></div>
+          <div class="skill"><div class="skill-row"><span>CapCut Pro</span><span>96%</span></div><div class="bar"><span style="width:96%"></span></div></div>
+          <div class="skill"><div class="skill-row"><span>Storytelling</span><span>92%</span></div><div class="bar"><span style="width:92%"></span></div></div>
+          <div class="skill"><div class="skill-row"><span>Retention Editing</span><span>94%</span></div><div class="bar"><span style="width:94%"></span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ai-tools">
+      <div class="container" style="text-align:center">
+        <p class="eyebrow">— AI-Powered Workflow</p>
+        <h2 class="heading">Tools I <span>create with.</span></h2>
+        <p class="muted" style="max-width:560px;margin:14px auto 0">A blend of AI tools that speed up my workflow without ever replacing the craft.</p>
+        <div class="tools-grid">
+          <div class="tool-badge glass spotlight"><span class="tool-icon">🎬</span><p>Higgsfield</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">✦</span><p>Claude</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">⚡</span><p>Omni Flash</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">🎥</span><p>Veo 3</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">📖</span><p>Fable</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">✨</span><p>Astra 6</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">🗣️</span><p>HeyGen</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">♊</span><p>Gemini</p></div>
+          <div class="tool-badge glass spotlight"><span class="tool-icon">🖋️</span><p>Sonnet 6</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="location">
+      <div class="container" style="text-align:center">
+        <p class="eyebrow">— Where I'm From</p>
+        <h2 class="heading">Rooted in the hills of <span>Bilaspur.</span></h2>
+        <p class="muted" style="max-width:560px;margin:14px auto 0">Originally from Bilaspur, Himachal Pradesh — currently based in Chandigarh, creating for brands everywhere.</p>
+        <div class="hp-map-wrap glass">
+          <img src="himachal-map.jpg" alt="Map of Himachal Pradesh with Bilaspur district highlighted" class="hp-map-img">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packages">
+      <div class="container" style="text-align:center">
+        <p class="eyebrow">— Weekly Packages</p>
+        <h2 class="heading">Pick your <span>weekly plan.</span></h2>
+        <p class="muted" style="max-width:560px;margin:14px auto 0">Consistent short-form editing, delivered weekly. Tap below to see pricing and what's included.</p>
+
+        <button class="pkg-toggle" id="pkgToggle" aria-expanded="false">
+          <span>View Weekly Packages</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="pkgChevron"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+
+        <div class="pkg-panel" id="pkgPanel">
+          <div class="pkg-panel-inner">
+            <div class="pkg-grid">
+              <div class="pkg-card glass spotlight">
+                <p class="pkg-tier">🥈 Silver</p>
+                <p class="pkg-price">$80<span>/week</span></p>
+                <ul class="pkg-list">
+                  <li>Up to 10 short videos / week</li>
+                  <li>Max 60 sec per video</li>
+                  <li>2 revisions per video</li>
+                </ul>
+                <a class="btn btn-ghost pkg-cta" href="https://wa.me/919317621164?text=Hi%20Jaspal%21%20I%27d%20love%20to%20get%20started%20with%20the%20Silver%20package%20%E2%80%94%20%2480%2Fweek%20for%20up%20to%2010%20short%20videos%20%28max%2060%20sec%20each%29%20with%202%20rounds%20of%20revisions%20per%20video.%20Could%20we%20set%20up%20a%20quick%20chat%20to%20begin%3F" target="_blank" rel="noreferrer">Go with this</a>
+              </div>
+              <div class="pkg-card glass featured spotlight">
+                <p class="pkg-badge">Most Popular</p>
+                <p class="pkg-tier">💎 Diamond</p>
+                <p class="pkg-price">$110<span>/week</span></p>
+                <ul class="pkg-list">
+                  <li>Up to 14 short videos / week</li>
+                  <li>Max 60 sec per video</li>
+                  <li>2 revisions per video</li>
+                  <li>Premium subtitles included</li>
+                  <li>SFX included</li>
+                </ul>
+                <a class="btn btn-primary pkg-cta" href="https://wa.me/919317621164?text=Hi%20Jaspal%21%20I%27d%20love%20to%20get%20started%20with%20the%20Diamond%20package%20%E2%80%94%20%24110%2Fweek%20for%20up%20to%2014%20short%20videos%20%28max%2060%20sec%20each%29%20with%202%20rounds%20of%20revisions%20per%20video%2C%20plus%20premium%20subtitles%20and%20SFX.%20Could%20we%20set%20up%20a%20quick%20chat%20to%20begin%3F" target="_blank" rel="noreferrer">Go with this</a>
+              </div>
+            </div>
+            <p class="pkg-discount">✦ Long-term bookings are eligible for up to 5% off — just ask when you reach out.</p>
+            <p class="pkg-note">Have a doubt about a package? <a href="https://wa.me/919317621164?text=Hi%20Jaspal%21%20I%20had%20a%20quick%20question%20about%20your%20weekly%20packages%20before%20deciding%20%E2%80%94%20could%20you%20help%20me%20out%3F" target="_blank" rel="noreferrer">DM me on WhatsApp ↗</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact-card glass glow">
+          <p class="eyebrow">— Contact</p>
+          <h2 class="heading">Have footage?<br><span>Let's make it hit.</span></h2>
+          <p class="muted" style="max-width:620px;margin:22px auto 0">Send your brief, reference style, timeline and budget. I will help shape it into a clean, cinematic edit made for attention.</p>
+          <div class="contact-actions icon-actions">
+            <a class="icon-btn whatsapp" href="https://wa.me/919317621164?text=Hi%20Jaspal!%20I%20found%20your%20portfolio%20and%20I%27d%20like%20to%20talk%20about%20a%20video%20editing%20project." target="_blank" rel="noreferrer" aria-label="Message on WhatsApp">
+              <svg viewBox="0 0 32 32" width="30" height="30" fill="currentColor"><path d="M16.02 3C9.4 3 4 8.38 4 15c0 2.36.7 4.55 1.9 6.4L4 29l7.8-1.86A11.9 11.9 0 0 0 16.02 27C22.64 27 28 21.62 28 15S22.64 3 16.02 3zm0 21.7c-1.98 0-3.83-.55-5.4-1.5l-.39-.23-4.62 1.1 1.13-4.5-.25-.4A9.6 9.6 0 0 1 6.3 15c0-5.36 4.36-9.7 9.72-9.7 5.36 0 9.7 4.34 9.7 9.7s-4.34 9.7-9.7 9.7zm5.34-7.27c-.29-.15-1.73-.85-2-.95-.27-.1-.47-.15-.66.15-.2.29-.76.95-.93 1.14-.17.2-.34.22-.63.07-.29-.14-1.22-.45-2.32-1.43-.86-.76-1.44-1.7-1.6-1.99-.17-.29-.02-.44.13-.59.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.51-.07-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.5-.17-.01-.37-.01-.56-.01-.2 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.44s1.05 2.83 1.19 3.03c.15.2 2.07 3.17 5.03 4.44.7.3 1.25.48 1.68.62.7.22 1.35.19 1.85.11.56-.08 1.73-.7 1.98-1.39.24-.68.24-1.26.17-1.39-.07-.13-.27-.2-.56-.35z"/></svg>
+            </a>
+            <a class="icon-btn mail" href="mailto:gamerolast47@gmail.com" aria-label="Send an email">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg>
+            </a>
+            <a class="icon-btn insta" href="https://instagram.com/brace_09" target="_blank" rel="noreferrer" aria-label="Visit Instagram profile">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div class="brand">JAS<span>PAL</span></div>
+      <div>© 2026 JASPAL - Video Editor & Content Specialist</div>
+    </div>
+  </footer>
+
+  <div class="float-buddy" id="floatBuddy">
+    <a class="float-avatar" href="https://wa.me/919317621164?text=Hi%20Jaspal%21%20I%20was%20browsing%20your%20portfolio%20and%20wanted%20to%20chat." target="_blank" rel="noreferrer" aria-label="Chat with Jaspal on WhatsApp">
+      <img src="profile-hero.jpg" alt="Jaspal">
+    </a>
+    <div class="float-msg" id="floatMsg">Still with me? 👀</div>
+  </div>
+
+  <script>
+    const filters = document.querySelectorAll('.filter');
+    const cards = document.querySelectorAll('.work-card');
+    const workVideos = document.querySelectorAll('.work-video');
+    const muteBtns = document.querySelectorAll('.mute-btn');
+
+    filters.forEach(button => {
+      button.addEventListener('click', () => {
+        filters.forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+        const selected = button.dataset.filter;
+        cards.forEach(card => {
+          card.classList.toggle('hide', selected !== 'All' && card.dataset.cat !== selected);
+        });
+      });
+    });
+
+    // Only ever decode ONE video at a time — the most visible one. Every other video's source is fully released, not just paused, to free decoder memory.
+    const visibilityMap = new Map();
+    let activeVideo = null;
+
+    function releaseVideo(video) {
+      if (!video) return;
+      video.pause();
+      if (video.hasAttribute('src')) {
+        video.removeAttribute('src');
+        video.load();
+      }
+    }
+
+    function pickAndPlayBestVideo() {
+      let best = null;
+      let bestRatio = 0;
+      visibilityMap.forEach((ratio, video) => {
+        if (ratio > bestRatio) { bestRatio = ratio; best = video; }
+      });
+      const next = bestRatio > 0.55 ? best : null;
+      if (next === activeVideo) return;
+      if (activeVideo && activeVideo !== next) releaseVideo(activeVideo);
+      activeVideo = next;
+      if (activeVideo) {
+        if (!activeVideo.getAttribute('src') && activeVideo.dataset.src) {
+          activeVideo.src = activeVideo.dataset.src;
+        }
+        activeVideo.play().catch(() => {});
+      }
+    }
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          visibilityMap.set(entry.target, entry.intersectionRatio);
+        } else {
+          visibilityMap.delete(entry.target);
+          if (entry.target === activeVideo) {
+            releaseVideo(entry.target);
+            activeVideo = null;
+          }
+        }
+      });
+      pickAndPlayBestVideo();
+    }, { threshold: [0, 0.25, 0.5, 0.55, 0.75, 1] });
+    workVideos.forEach(video => io.observe(video));
+
+    // Tap the speaker icon to unmute a preview; unmuting one mutes the rest
+    muteBtns.forEach(btn => {
+      btn.addEventListener('click', event => {
+        event.stopPropagation();
+        const video = btn.closest('.work-card').querySelector('.work-video');
+        if (video.muted) {
+          workVideos.forEach(v => { v.muted = true; });
+          muteBtns.forEach(b => { b.textContent = '🔇'; });
+          video.muted = false;
+          btn.textContent = '🔊';
+        } else {
+          video.muted = true;
+          btn.textContent = '🔇';
+        }
+      });
+    });
+
+    // "Find Your Edit Style" quiz
+    const quizQuestions = [
+      {
+        text: "What's your brand's biggest goal right now?",
+        options: [
+          { label: "Build trust with real customer voices", key: "ugc" },
+          { label: "Look premium, polished and professional", key: "commercial" },
+          { label: "Sell a specific product visually", key: "product" },
+          { label: "Stand out and be memorable", key: "creative" }
+        ]
+      },
+      {
+        text: "Where will most of this content live?",
+        options: [
+          { label: "Instagram Reels / TikTok", key: "ugc" },
+          { label: "YouTube / brand website", key: "commercial" },
+          { label: "Paid ad campaigns", key: "product" },
+          { label: "Anywhere fun and shareable", key: "creative" }
+        ]
+      },
+      {
+        text: "What best describes your industry?",
+        options: [
+          { label: "Tech, SaaS or a corporate brand", key: "commercial" },
+          { label: "Beauty, fashion or food", key: "product" },
+          { label: "Personal brand, coach or creator", key: "ugc" },
+          { label: "Entertainment or something creative", key: "creative" }
+        ]
+      },
+      {
+        text: "What tone do you want your videos to have?",
+        options: [
+          { label: "Authentic and relatable", key: "ugc" },
+          { label: "Sharp, premium and confident", key: "commercial" },
+          { label: "Bold and stylish", key: "product" },
+          { label: "Playful and fun", key: "creative" }
+        ]
+      }
+    ];
+
+    const quizResults = {
+      ugc: {
+        title: "UGC & Talking-Head Edits",
+        desc: "Your brand thrives on authenticity. Raw, relatable, creator-style edits with a real face and voice will build trust fastest.",
+        filter: "UGC Product Ad"
+      },
+      commercial: {
+        title: "Commercial & Brand Reels",
+        desc: "You need polish. Clean cuts, confident pacing and a premium look that positions your brand as the professional choice.",
+        filter: "Commercial Tech Reel"
+      },
+      product: {
+        title: "Promotional Product Ads",
+        desc: "Your content should sell on sight. Bold, stylish, product-first edits built to convert scrollers into customers.",
+        filter: "Fashion & Apparel Promotional Ads"
+      },
+      creative: {
+        title: "Creative Story-Style Edits",
+        desc: "You want to be remembered. Playful, story-driven edits with personality will help you stand out from every competitor.",
+        filter: "Cartoonish Style Story"
+      }
+    };
+
+    let quizIndex = 0;
+    const quizScores = { ugc: 0, commercial: 0, product: 0, creative: 0 };
+
+    const quizSection = document.getElementById('quiz');
+    const quizProgress = document.getElementById('quizProgress');
+    const quizStepLabel = document.getElementById('quizStepLabel');
+    const quizQuestionText = document.getElementById('quizQuestionText');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizQuestionWrap = document.getElementById('quizQuestionWrap');
+    const quizResultWrap = document.getElementById('quizResultWrap');
+    const quizResultTitle = document.getElementById('quizResultTitle');
+    const quizResultDesc = document.getElementById('quizResultDesc');
+    const quizResultCta = document.getElementById('quizResultCta');
+    const quizRestart = document.getElementById('quizRestart');
+    const quizBox = document.getElementById('quizBox');
+
+    // Reveal the whole quiz section with a fade+rise the first time it scrolls into view
+    const quizIO = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          quizSection.classList.add('in-view');
+          quizIO.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+    quizIO.observe(quizSection);
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[quizIndex];
+      quizStepLabel.textContent = `Question ${quizIndex + 1} of ${quizQuestions.length}`;
+      quizQuestionText.textContent = q.text;
+      quizQuestionText.style.animation = 'none';
+      void quizQuestionText.offsetWidth;
+      quizQuestionText.style.animation = '';
+      quizProgress.style.width = `${(quizIndex / quizQuestions.length) * 100}%`;
+      quizOptions.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.innerHTML = `<span class="qnum">${String.fromCharCode(65 + i)}</span><span>${opt.label}</span>`;
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('picked')) return;
+          btn.classList.add('picked');
+          quizOptions.querySelectorAll('.quiz-option').forEach(b => { if (b !== btn) b.style.opacity = '.4'; });
+          quizScores[opt.key]++;
+          setTimeout(() => {
+            quizIndex++;
+            if (quizIndex < quizQuestions.length) {
+              renderQuizQuestion();
+            } else {
+              showQuizResult();
+            }
+          }, 320);
+        });
+        quizOptions.appendChild(btn);
+      });
+    }
+
+    function spawnSparks(container) {
+      const target = container || quizResultWrap;
+      const colors = ['#a855f7', '#c084fc', '#38bdf8', '#f472d0'];
+      for (let i = 0; i < 18; i++) {
+        const bit = document.createElement('span');
+        bit.className = 'spark-bit';
+        const size = 4 + Math.random() * 6;
+        bit.style.width = `${size}px`;
+        bit.style.height = `${size}px`;
+        bit.style.left = '50%';
+        bit.style.top = '10px';
+        bit.style.background = colors[i % colors.length];
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 60 + Math.random() * 120;
+        bit.style.setProperty('--sx', `${Math.cos(angle) * dist}px`);
+        bit.style.setProperty('--sy', `${Math.sin(angle) * dist}px`);
+        target.appendChild(bit);
+        setTimeout(() => bit.remove(), 950);
+      }
+    }
+
+    function showQuizResult() {
+      quizProgress.style.width = '100%';
+      let topKey = 'ugc';
+      let topScore = -1;
+      Object.keys(quizScores).forEach(key => {
+        if (quizScores[key] > topScore) { topScore = quizScores[key]; topKey = key; }
+      });
+      const result = quizResults[topKey];
+      quizQuestionWrap.style.display = 'none';
+      quizResultWrap.style.display = 'block';
+      quizResultWrap.classList.remove('show');
+      void quizResultWrap.offsetWidth;
+      quizResultWrap.classList.add('show');
+      quizResultTitle.textContent = result.title;
+      quizResultDesc.textContent = result.desc;
+      quizResultCta.onclick = () => {
+        setTimeout(() => {
+          const targetFilter = Array.from(filters).find(f => f.dataset.filter === result.filter);
+          if (targetFilter) targetFilter.click();
+        }, 400);
+      };
+      spawnSparks();
+    }
+
+    quizRestart.addEventListener('click', () => {
+      quizIndex = 0;
+      Object.keys(quizScores).forEach(k => quizScores[k] = 0);
+      quizResultWrap.style.display = 'none';
+      quizResultWrap.classList.remove('show');
+      quizQuestionWrap.style.display = 'block';
+      renderQuizQuestion();
+    });
+
+    if (quizQuestions.length) renderQuizQuestion();
+
+    // Weekly Packages toggle
+    const pkgToggle = document.getElementById('pkgToggle');
+    const pkgPanel = document.getElementById('pkgPanel');
+    pkgToggle.addEventListener('click', () => {
+      const isOpen = pkgPanel.classList.toggle('open');
+      pkgToggle.classList.toggle('open', isOpen);
+      pkgToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      pkgToggle.querySelector('span').textContent = isOpen ? 'Hide Packages' : 'View Weekly Packages';
+    });
+
+    // Light 3D tilt effect on hover (desktop pointers only)
+    function initTilt(selector, maxTilt, scale) {
+      document.querySelectorAll(selector).forEach(el => {
+        let ticking = false;
+        let pendingEvent = null;
+        el.addEventListener('mousemove', e => {
+          pendingEvent = e;
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const rect = el.getBoundingClientRect();
+            const x = pendingEvent.clientX - rect.left;
+            const y = pendingEvent.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const rotateY = ((x - cx) / cx) * maxTilt;
+            const rotateX = -((y - cy) / cy) * maxTilt;
+            el.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+            if (el.classList.contains('spotlight')) {
+              el.style.setProperty('--mx', `${x}px`);
+              el.style.setProperty('--my', `${y}px`);
+            }
+            ticking = false;
+          });
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transform = '';
+        });
+      });
+    }
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      initTilt('.phone', 10, 1.02);
+      // Tilt removed from .work-card intentionally — 12 videos + tilt was the main lag source
+      initTilt('.style-card', 6, 1.015);
+      initTilt('.service', 6, 1.015);
+      initTilt('.pkg-card', 5, 1.01);
+      initTilt('.tool-badge', 8, 1.03);
+      initTilt('.quiz-box', 3, 1.005);
+
+      // Magnetic buttons — nudge toward the cursor on hover
+      document.querySelectorAll('.btn-primary, .btn-ghost, .hire, .pkg-toggle, .icon-btn').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * 0.18}px, ${y * 0.28}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = '';
+        });
+      });
+    }
+
+    // Fade + rise reveal for sections as they scroll into view
+    document.querySelectorAll('.section .container').forEach(el => el.classList.add('reveal'));
+    const revealIO = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+    // Staggered reveal for individual cards inside grids
+    const workCardsForReveal = document.querySelectorAll('.work-grid .work-card');
+    const otherCardGroups = document.querySelectorAll('.style-grid, .service-grid, .pkg-grid, .tools-grid');
+    let revealIdx = 0;
+    workCardsForReveal.forEach(card => {
+      card.classList.add('reveal-card');
+      card.style.transitionDelay = `${(revealIdx++ % 8) * 0.09}s`;
+    });
+    otherCardGroups.forEach(group => {
+      Array.from(group.children).forEach((card, i) => {
+        card.classList.add('reveal-card');
+        card.style.transitionDelay = `${(i % 8) * 0.09}s`;
+      });
+    });
+    const cardIO = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          cardIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal-card').forEach(el => cardIO.observe(el));
+
+    // Scroll parallax on hero text + morph the profile card from rectangle to circle
+    const heroPill = document.querySelector('.pill');
+    const heroNameEl = document.querySelector('.hero-name');
+    const heroRole = document.querySelector('.role');
+    const heroTagline = document.querySelector('.tagline');
+    const phoneShapeEl = document.getElementById('phoneShape');
+    const isSmallScreen = () => window.innerWidth < 860;
+    const SCROLL_STEP = 100; // ~1 "scroll" unit
+    const MORPH_AFTER_SCROLLS = 6;
+
+    function onScrollEffects() {
+      const y = window.scrollY;
+      if (!isSmallScreen()) {
+        if (heroPill) heroPill.style.transform = `translateY(${-y * 0.15}px)`;
+        if (heroNameEl) heroNameEl.style.transform = `translateY(${-y * 0.35}px)`;
+        if (heroRole) heroRole.style.transform = `translateY(${-y * 0.25}px)`;
+        if (heroTagline) heroTagline.style.transform = `translateY(${-y * 0.18}px)`;
+      } else {
+        if (heroPill) heroPill.style.transform = '';
+        if (heroNameEl) heroNameEl.style.transform = '';
+        if (heroRole) heroRole.style.transform = '';
+        if (heroTagline) heroTagline.style.transform = '';
+      }
+      if (phoneShapeEl) {
+        const shouldMorph = y > SCROLL_STEP * MORPH_AFTER_SCROLLS;
+        phoneShapeEl.classList.toggle('circle', shouldMorph);
+      }
+    }
+    window.addEventListener('scroll', onScrollEffects, { passive: true });
+    window.addEventListener('resize', onScrollEffects);
+    onScrollEffects();
+
+    // Floating buddy avatar — appears after a few scrolls, cycles fun messages
+    const floatBuddy = document.getElementById('floatBuddy');
+    const floatMsg = document.getElementById('floatMsg');
+    const buddyMessages = [
+      "Hey 👋 still exploring?",
+      "That video you just saw? Took 40 hours to perfect.",
+      "Fun fact: I've edited 120+ projects.",
+      "Your scroll speed says you're interested 😏",
+      "Every cut has a reason. Every frame has a purpose.",
+      "Psst... the pricing's a few scrolls away 💰",
+      "I don't just edit. I engineer attention.",
+      "Bilaspur to your screen — one edit at a time.",
+      "Curious what I could do for your brand?",
+      "Tap me, let's make something people can't scroll past. 💬"
+    ];
+    let buddyIndex = 0;
+    let buddyInterval = null;
+
+    function cycleBuddyMessage() {
+      floatMsg.classList.add('fade');
+      setTimeout(() => {
+        buddyIndex = (buddyIndex + 1) % buddyMessages.length;
+        floatMsg.textContent = buddyMessages[buddyIndex];
+        floatMsg.classList.remove('fade');
+      }, 350);
+    }
+
+    function onBuddyScroll() {
+      const shouldShow = window.scrollY > window.innerHeight * 1.6;
+      floatBuddy.classList.toggle('show', shouldShow);
+      if (shouldShow && !buddyInterval) {
+        buddyInterval = setInterval(cycleBuddyMessage, 3600);
+      } else if (!shouldShow && buddyInterval) {
+        clearInterval(buddyInterval);
+        buddyInterval = null;
+      }
+    }
+    window.addEventListener('scroll', onBuddyScroll, { passive: true });
+    onBuddyScroll();
+
+    // Pause continuously-looping CSS animations while off-screen (perf: fewer floating cards animating at once)
+    const animatedEls = document.querySelectorAll('.visual, .quiz-mascot, .quiz-box');
+    const animIO = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        entry.target.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+      });
+    }, { threshold: 0 });
+    animatedEls.forEach(el => animIO.observe(el));
+  </script>
+</body>
+</html>
