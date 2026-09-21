@@ -461,7 +461,7 @@
         <div class="work-grid">
           <div class="work-float wide-float">
             <article class="work-card wide-card glass" data-cat="Hyper Editz" data-title="Hyper Editz">
-                <video class="work-video" data-src="hyper-editz-reel.mp4" poster="hyper-editz-reel.webp" muted loop playsinline preload="none"></video>
+                <video class="work-video" data-src="hyper-editz-reel.mp4" muted loop playsinline preload="none"></video>
                 <button class="mute-btn" aria-label="Toggle sound">🔇</button>
                 <div class="work-info">
                   <div class="wide-card-content">
@@ -476,56 +476,56 @@
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Commercial Tech Reel" data-title="Commercial Tech Reel">
-              <video class="work-video" data-src="commercial-tech-reel.mp4" poster="commercial-tech-reel.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="commercial-tech-reel.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Commercial Tech Reel</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="UGC Product Ad" data-title="UGC Product Ad">
-              <video class="work-video" data-src="ugc-product-ad.mp4" poster="ugc-product-ad.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="ugc-product-ad.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">UGC Product Ad</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Talking Head Premium Edit" data-title="Talking Head Premium Edit">
-              <video class="work-video" data-src="talking-head-premium-edit.mp4" poster="talking-head-premium-edit.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="talking-head-premium-edit.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Talking Head Premium Edit</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Premium Quality Caption" data-title="Premium Quality Caption">
-              <video class="work-video" data-src="premium-quality-caption.mp4" poster="premium-quality-caption.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="premium-quality-caption.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Premium Quality Caption</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Focusing On Your Brand" data-title="Focusing On Your Brand">
-              <video class="work-video" data-src="focusing-on-your-brand.mp4" poster="focusing-on-your-brand.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="focusing-on-your-brand.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Focusing On Your Brand</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Beauty & Skincare Promotional Ads" data-title="Beauty & Skincare Promotional Ads">
-              <video class="work-video" data-src="beauty-skincare-promotional-ad.mp4" poster="beauty-skincare-promotional-ad.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="beauty-skincare-promotional-ad.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Beauty &amp; Skincare Promotional Ads</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Fashion & Apparel Promotional Ads" data-title="Fashion & Apparel Promotional Ads">
-              <video class="work-video" data-src="fashion-apparel-promotional-ad.mp4" poster="fashion-apparel-promotional-ad.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="fashion-apparel-promotional-ad.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Fashion &amp; Apparel Promotional Ads</p></div>
             </article>
           </div>
           <div class="work-float">
             <article class="work-card glass" data-cat="Cartoonish Style Story" data-title="Cartoonish Style Story">
-              <video class="work-video" data-src="cartoonish-style-story.mp4" poster="cartoonish-style-story.webp" muted loop playsinline preload="none"></video>
+              <video class="work-video" data-src="cartoonish-style-story.mp4" muted loop playsinline preload="none"></video>
               <button class="mute-btn" aria-label="Toggle sound">🔇</button>
               <div class="work-info"><p class="work-cat">Cartoonish Style Story</p></div>
             </article>
@@ -780,9 +780,11 @@
       });
     });
 
-    // Videos are lazy: a source is only attached when a card is actually on screen, and at most
-    // MAX_CONCURRENT decode at once. Everything else has its src released so it costs nothing.
-    // Only genuine data-saving situations turn autoplay off — the poster frame still shows either way.
+    // Videos are lazy, and playback is split into two stages for smoothness:
+    //  1) "warm" — a video approaching the viewport gets its source attached (starts buffering,
+    //     stays paused) well before it needs to play, so there's no cold-start stutter.
+    //  2) "play" — only the most visible warmed-up video(s) actually play; everything else pauses.
+    // A video's source is only fully released once it's well clear of the viewport.
     const conn = navigator.connection || {};
     const saveData = conn.saveData === true;
     const slowNetwork = /(^|-)2g$/.test(conn.effectiveType || '');
@@ -794,7 +796,9 @@
     let MAX_CONCURRENT = 2;
     if (weakDevice) MAX_CONCURRENT = 1;
     if (saveData || slowNetwork) MAX_CONCURRENT = 0;
+
     const visibility = new Map();
+    const warm = new Set();
     let playing = [];
     let rafPending = false;
 
@@ -818,7 +822,7 @@
         .map(([video]) => video);
 
       playing.forEach(video => {
-        if (!ranked.includes(video)) release(video);
+        if (!ranked.includes(video)) video.pause();
       });
       ranked.forEach(video => {
         attach(video);
@@ -833,6 +837,7 @@
       requestAnimationFrame(syncPlayback);
     }
 
+    // Stage 2: which of the warmed videos should actually be playing right now
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) visibility.set(entry.target, entry.intersectionRatio);
@@ -841,6 +846,23 @@
       queueSync();
     }, { threshold: [0, 0.1, 0.2, 0.3, 0.45, 0.6, 0.8, 1] });
     workVideos.forEach(video => io.observe(video));
+
+    // Stage 1: start buffering a video well before it's actually needed, release it once it's
+    // genuinely far away — MAX_CONCURRENT === 0 (data saver) skips warming entirely
+    if (MAX_CONCURRENT > 0) {
+      const warmIO = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            warm.add(entry.target);
+            attach(entry.target);
+          } else {
+            warm.delete(entry.target);
+            if (!playing.includes(entry.target)) release(entry.target);
+          }
+        });
+      }, { threshold: 0, rootMargin: '60% 0px 60% 0px' });
+      workVideos.forEach(video => warmIO.observe(video));
+    }
 
     // Nudge playback state on scroll too, in case an observer callback got missed on a fast flick
     let scrollNudge = null;
