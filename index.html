@@ -110,7 +110,32 @@
     .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:58px;align-items:center}
     .hero-name{font-family:'Sora',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(56px,9.5vw,124px);line-height:1;letter-spacing:-.02em;margin:10px 0 18px;background:linear-gradient(135deg,#ffffff 0%,#e9d5ff 35%,#c084fc 65%,#8b5cf6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 44px rgba(168,85,247,.4);animation:letterIn .8s both}
     @supports not (background-clip: text){.hero-name{background:none;color:#c084fc}}
+    .hero-name{position:relative;display:inline-flex;align-items:flex-end;gap:0.01em}
     .letter{position:relative;display:inline-block;animation:letterIn .7s both}
+    .panda-jumper{position:absolute;left:0;top:-0.58em;font-size:clamp(22px,3.8vw,48px);line-height:1;z-index:4;pointer-events:none;filter:drop-shadow(0 8px 8px rgba(0,0,0,.35));animation:pandaHop 5.4s cubic-bezier(.45,.05,.55,.95) infinite}
+    @keyframes pandaHop{
+      0%,8%{left:0%;transform:translateY(0) rotate(-5deg)}
+      13%{transform:translateY(-18px) rotate(4deg)}
+      17%{left:20%;transform:translateY(0) rotate(-3deg)}
+      22%{transform:translateY(-18px) rotate(5deg)}
+      26%{left:40%;transform:translateY(0) rotate(-4deg)}
+      31%{transform:translateY(-18px) rotate(4deg)}
+      35%{left:60%;transform:translateY(0) rotate(-3deg)}
+      40%{transform:translateY(-18px) rotate(5deg)}
+      44%{left:80%;transform:translateY(0) rotate(-4deg)}
+      49%{transform:translateY(-18px) rotate(4deg)}
+      53%{left:100%;transform:translateY(0) rotate(-5deg)}
+      58%{transform:translateY(-18px) rotate(4deg)}
+      62%{left:80%;transform:translateY(0) rotate(-4deg)}
+      67%{transform:translateY(-18px) rotate(4deg)}
+      71%{left:60%;transform:translateY(0) rotate(-3deg)}
+      76%{transform:translateY(-18px) rotate(5deg)}
+      80%{left:40%;transform:translateY(0) rotate(-4deg)}
+      85%{transform:translateY(-18px) rotate(4deg)}
+      89%{left:20%;transform:translateY(0) rotate(-3deg)}
+      94%{transform:translateY(-18px) rotate(5deg)}
+      100%{left:0%;transform:translateY(0) rotate(-5deg)}
+    }
     .letter:nth-child(2){animation-delay:.05s}.letter:nth-child(3){animation-delay:.1s}.letter:nth-child(4){animation-delay:.15s}.letter:nth-child(5){animation-delay:.2s}.letter:nth-child(6){animation-delay:.25s}
     .letter:before,.letter:after{content:attr(data-char);position:absolute;inset:0;opacity:.32;pointer-events:none}
     .letter:before{color:#a855f7;transform:translate(2px,-1px)}
@@ -378,7 +403,7 @@
       <div class="container hero-grid">
         <div>
           <div class="pill"><span class="spark"></span> Video Editor</div>
-          <h1 class="hero-name" aria-label="Jaspal">Jaspal</h1>
+          <h1 class="hero-name" aria-label="JASPAL"><span class="panda-jumper" aria-hidden="true">🐼</span><span class="letter" data-char="J">J</span><span class="letter" data-char="A">A</span><span class="letter" data-char="S">S</span><span class="letter" data-char="P">P</span><span class="letter" data-char="A">A</span><span class="letter" data-char="L">L</span></h1>
           <div class="underline"></div>
           <p class="role">Creative Video Editor & Content Specialist</p>
           <p class="tagline">I turn raw footage into engaging, high-retention videos that help creators and brands grow faster. From viral short-form edits to polished YouTube content, I focus on storytelling, pacing, motion, and results.</p>
