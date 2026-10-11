@@ -769,6 +769,45 @@
     .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important}
     @media(max-width:700px){.wire-intro .spidey-drop{top:7vh!important;width:112px!important;min-height:140px!important}.wire-intro .jaspal-hanging-photo{min-height:140px!important}}
 
+
+    /* Final Jaspal character animation override */
+    .wire-intro .spidey-drop{
+      position:absolute!important;left:50%!important;top:-230px!important;
+      width:clamp(105px,11vw,145px)!important;height:auto!important;min-height:0!important;
+      display:block!important;visibility:visible!important;opacity:1!important;
+      overflow:visible!important;z-index:50!important;pointer-events:none!important;
+      transform:translateX(-50%) rotate(-8deg)!important;
+      animation:jaspalEnter 1.65s cubic-bezier(.2,.72,.25,1) .25s forwards!important;
+      filter:drop-shadow(0 10px 10px rgba(0,0,0,.2))!important;
+    }
+    .wire-intro .jaspal-hanging-photo{
+      display:block!important;width:100%!important;height:auto!important;min-height:0!important;
+      max-width:none!important;object-fit:contain!important;opacity:1!important;visibility:visible!important;
+    }
+    .wire-intro .spidey-web{display:block!important;left:50%!important;top:-10vh!important;height:10vh!important;width:2px!important}
+    @keyframes jaspalEnter{
+      0%{top:-230px;transform:translateX(-50%) rotate(-9deg);opacity:0}
+      75%{top:12vh;transform:translateX(-50%) rotate(5deg);opacity:1}
+      88%{top:10vh;transform:translateX(-50%) rotate(-3deg);opacity:1}
+      100%{top:11vh;transform:translateX(-50%) rotate(0);opacity:1}
+    }
+    .wire-intro.is-blasting .spidey-drop{
+      animation:jaspalFall .95s cubic-bezier(.28,.04,.62,1) forwards!important;
+    }
+    @keyframes jaspalFall{
+      0%{top:11vh;transform:translateX(-50%) rotate(0) scale(1)}
+      18%{top:15vh;transform:translateX(-50%) rotate(16deg) scale(1.04)}
+      48%{top:39vh;transform:translateX(-50%) rotate(85deg) scale(1.03)}
+      72%{top:59vh;transform:translateX(-50%) rotate(175deg) scale(.98)}
+      100%{top:68vh;transform:translateX(-50%) rotate(255deg) scale(.94);opacity:.96}
+    }
+    @media(max-width:700px){
+      .wire-intro .spidey-drop{width:clamp(90px,24vw,112px)!important;top:-190px!important}
+      .wire-intro .jaspal-hanging-photo{min-height:0!important}
+      @keyframes jaspalEnter{0%{top:-190px;transform:translateX(-50%) rotate(-9deg);opacity:0}75%{top:11vh;transform:translateX(-50%) rotate(5deg);opacity:1}88%{top:9vh;transform:translateX(-50%) rotate(-3deg);opacity:1}100%{top:10vh;transform:translateX(-50%) rotate(0);opacity:1}}
+      @keyframes jaspalFall{0%{top:10vh;transform:translateX(-50%) rotate(0)}22%{top:20vh;transform:translateX(-50%) rotate(30deg)}55%{top:47vh;transform:translateX(-50%) rotate(125deg)}80%{top:63vh;transform:translateX(-50%) rotate(220deg)}100%{top:70vh;transform:translateX(-50%) rotate(260deg);opacity:.96}}
+    }
+
   </style>
 </head>
 <body>
