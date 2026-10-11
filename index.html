@@ -1790,15 +1790,19 @@
 
     // Play the supplied ElevenLabs scroll voiceover on the visitor's first scroll.
     let portfolioScrollVoicePlayed = false;
-    const portfolioScrollVoice = new Audio('./portfolio-scroll-voice.mp3');
-    portfolioScrollVoice.preload = 'auto';
-    portfolioScrollVoice.volume = 1;
-    window.addEventListener('scroll', () => {
+    function playPortfolioScrollVoice() {
       if (portfolioScrollVoicePlayed || window.scrollY < 40) return;
       portfolioScrollVoicePlayed = true;
       portfolioScrollVoice.currentTime = 0;
-      portfolioScrollVoice.play().catch(() => {});
-    }, { passive: true });
+      portfolioScrollVoice.play().catch(err => {
+        console.warn('Scroll voice playback failed:', err);
+        portfolioScrollVoicePlayed = false;
+      });
+    }
+    window.addEventListener('scroll', playPortfolioScrollVoice, { passive: true });
+    // Also attempt on a direct user gesture once the page has reached the first-scroll position.
+    window.addEventListener('wheel', playPortfolioScrollVoice, { passive: true });
+    window.addEventListener('touchmove', playPortfolioScrollVoice, { passive: true });
 
     // Floating buddy avatar — appears after a few scrolls, cycles fun messages
     const floatBuddy = document.getElementById('floatBuddy');
@@ -1944,9 +1948,22 @@
         } catch (_) {}
       }
 
+      const welcomeAudio = new Audio('./welcome-voice.mp3');
+      welcomeAudio.preload = 'auto';
+      welcomeAudio.volume = 1;
+      const portfolioScrollVoice = new Audio('./portfolio-scroll-voice.mp3');
+      portfolioScrollVoice.preload = 'auto';
+      portfolioScrollVoice.volume = 1;
+
       function connectWires(){
         if(connected)return;
         connected=true;dragging=false;target={...left};tip={...left};
+        // Start the welcome MP3 directly in the wire-connection user gesture
+        // so browser autoplay policies do not block it after a delayed timeout.
+        try {
+          welcomeAudio.currentTime = 0;
+          welcomeAudio.play().catch(err => console.warn('Welcome voice playback failed:', err));
+        } catch(err) { console.warn('Welcome voice playback failed:', err); }
         welcomeScreen.classList.add('is-connected');
         wireRight.classList.add('wire-joined');
         wireGrip.style.cursor='default';
@@ -1990,12 +2007,6 @@
           if(welcomeCard){
             welcomeCard.setAttribute('aria-hidden','false');
             welcomeCard.classList.add('is-active');
-            try{
-              const welcomeAudio=new Audio('./welcome-voice.mp3');
-              welcomeAudio.preload='auto';
-              welcomeAudio.volume=1;
-              welcomeAudio.play().catch(()=>{});
-            }catch(_){}
             window.setTimeout(()=>{
               welcomeCard.classList.add('is-done');
               welcomeCard.setAttribute('aria-hidden','true');
