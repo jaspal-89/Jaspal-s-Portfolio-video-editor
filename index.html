@@ -1814,6 +1814,11 @@
     window.addEventListener('resize', onScrollEffects);
     onScrollEffects();
 
+    // Keep the scroll voice in this shared scope so the scroll handlers can access it.
+    const portfolioScrollVoice = new Audio('./portfolio-scroll-voice.mp3');
+    portfolioScrollVoice.preload = 'auto';
+    portfolioScrollVoice.volume = 1;
+
     // Play the second voiceover once, on the first actual scroll after the welcome screen closes.
     let portfolioScrollVoicePlayed = false;
     let portfolioScrollVoicePending = false;
@@ -1995,9 +2000,6 @@
       const welcomeAudio = new Audio('./welcome-voice.mp3');
       welcomeAudio.preload = 'auto';
       welcomeAudio.volume = 1;
-      const portfolioScrollVoice = new Audio('./portfolio-scroll-voice.mp3');
-      portfolioScrollVoice.preload = 'auto';
-      portfolioScrollVoice.volume = 1;
 
       function connectWires(){
         if(connected)return;
