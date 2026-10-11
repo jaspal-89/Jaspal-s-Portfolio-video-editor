@@ -1130,6 +1130,35 @@
     }
     .phone:hover{border-color:#c18aff!important;box-shadow:0 0 0 1px rgba(193,138,255,.34),0 0 46px rgba(155,77,255,.52),0 35px 90px rgba(0,0,0,.55)!important}
     .phone:before,.phone:after{border-color:rgba(155,77,255,.72)!important;box-shadow:0 0 24px rgba(155,77,255,.38)!important}
+
+    /* Refined typography system: clean editorial sans-serif, less condensed display text. */
+    body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;letter-spacing:0}
+    h1,h2,h3,h4,.heading,.quiz-heading,.wide-card-text,.brand-text-main,.welcome-title{
+      font-family:'Sora','Inter',sans-serif!important;
+      font-weight:700!important;
+      letter-spacing:-.045em!important;
+      line-height:1.08!important
+    }
+    .brand,.hero-name,.stat b,.mini-card b,.pkg-price,.quiz-result h3{
+      font-family:'Sora','Inter',sans-serif!important;
+      font-weight:800!important;
+      letter-spacing:-.055em!important
+    }
+    .hero-name{font-size:clamp(58px,8.8vw,112px)!important;line-height:.98!important;letter-spacing:-.065em!important}
+    .role{font-family:'Inter',sans-serif!important;font-weight:700!important;letter-spacing:.015em!important}
+    .navlinks a,.hire,.btn,.btn-primary,.btn-ghost,.filter,.pkg-badge,.eyebrow,.pill,.wide-card-eyebrow{
+      font-family:'Inter',sans-serif!important;letter-spacing:.035em!important;font-weight:700!important
+    }
+    p,.work-desc,.wide-card-desc,.point,.feature-card,.service-card,.skill-card,.tool-card,.pkg-card,.contact-card{
+      font-family:'Inter',sans-serif!important;letter-spacing:-.01em
+    }
+    .stat b,.mini-card b{font-size:clamp(28px,3.5vw,42px)!important}
+    .heading{font-size:clamp(38px,5.8vw,72px)!important;line-height:1.04!important}
+    .wide-card-text{font-size:clamp(28px,4.6vw,56px)!important;line-height:1.04!important}
+    .brand{font-size:24px!important;letter-spacing:-.04em!important}
+    .welcome-kicker,.welcome-title,.welcome-direction,.switch-label{font-family:'Inter',sans-serif!important}
+    .welcome-title{letter-spacing:-.035em!important;line-height:1.18!important}
+    @media(max-width:700px){.hero-name{font-size:clamp(48px,14vw,82px)!important}}
 </style>
 </head>
 <body>
