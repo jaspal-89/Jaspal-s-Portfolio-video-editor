@@ -1848,23 +1848,27 @@
       if (!ctx || ctx.state !== 'running') return;
       try {
         const now = ctx.currentTime;
-        const duration = isButton ? 0.045 : 0.105;
+        // Button clicks stay crisp; scrolling gets a longer, softer, low-frequency swish instead of repeated ticks.
+        const duration = isButton ? 0.045 : 0.24;
         const length = Math.max(1, Math.floor(ctx.sampleRate * duration));
         const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
         const data = buffer.getChannelData(0);
         for (let i = 0; i < length; i++) {
-          const fade = 1 - i / length;
-          data[i] = (Math.random() * 2 - 1) * fade;
+          const t = i / length;
+          const envelope = isButton ? (1 - t) : Math.sin(Math.PI * t) * (0.72 + 0.28 * Math.sin(Math.PI * t));
+          data[i] = (Math.random() * 2 - 1) * envelope;
         }
         const source = ctx.createBufferSource();
         source.buffer = buffer;
         const filter = ctx.createBiquadFilter();
-        filter.type = isButton ? 'highpass' : 'bandpass';
-        filter.frequency.setValueAtTime(isButton ? 1800 : 950, now);
-        filter.Q.value = isButton ? 0.7 : 0.55;
+        filter.type = isButton ? 'highpass' : 'lowpass';
+        filter.frequency.setValueAtTime(isButton ? 1800 : 520, now);
+        if (!isButton) filter.frequency.linearRampToValueAtTime(1050, now + duration * 0.48);
+        filter.Q.value = isButton ? 0.7 : 0.35;
         const gain = ctx.createGain();
         gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.exponentialRampToValueAtTime(isButton ? 0.055 : 0.035, now + 0.008);
+        gain.gain.exponentialRampToValueAtTime(isButton ? 0.055 : 0.014, now + (isButton ? 0.008 : 0.055));
+        gain.gain.setValueAtTime(isButton ? 0.055 : 0.014, now + (isButton ? 0.008 : duration * 0.48));
         gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
         source.connect(filter);
         filter.connect(gain);
@@ -1883,7 +1887,7 @@
     function playScrollScrape() {
       if (document.getElementById('portfolioWelcome')?.classList.contains('is-active')) return;
       const now = performance.now();
-      if (now - scrollSoundLastAt < 115) return;
+      if (now - scrollSoundLastAt < 230) return;
       scrollSoundLastAt = now;
       playUiScrape(false);
     }
