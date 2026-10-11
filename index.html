@@ -915,7 +915,22 @@
     /* Cinematic spoken welcome card shown as the portfolio reveals behind it */
     .portfolio-welcome{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:rgba(5,5,7,.96);color:#fff;opacity:0;visibility:hidden;pointer-events:none;overflow:hidden}
     .portfolio-welcome:before{content:"";position:absolute;width:min(70vw,720px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(239,35,60,.19),rgba(239,35,60,.04) 45%,transparent 70%);filter:blur(10px);animation:pwGlow 2s ease-in-out both}
-    .pw-overline,.pw-title,.pw-rule,.pw-subtitle{position:relative}
+    .pw-overline,.pw-title,.pw-rule,.pw-subtitle,.pw-signature{position:relative;z-index:2}
+    .pw-overline{display:flex;align-items:center;justify-content:center;gap:11px;font-size:10px;letter-spacing:.28em}
+    .pw-live-dot{width:7px;height:7px;display:inline-block;border-radius:50%;background:#ff344b;box-shadow:0 0 16px #ff344b;animation:pwDotPulse 1.3s ease-in-out infinite}
+    .pw-title{gap:14px;margin:30px 0 24px}
+    .pw-title .pw-eyebrow{font:500 clamp(13px,1.7vw,19px)/1.2 'Space Grotesk',sans-serif;letter-spacing:.38em;color:rgba(255,255,255,.68);min-height:1.2em}
+    .pw-title strong{font-size:clamp(76px,16vw,190px);letter-spacing:-.085em;line-height:.82;background:linear-gradient(180deg,#fff 15%,#e7dfe0 62%,#ff5365 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+    .pw-title strong .pw-period{-webkit-text-fill-color:#ff344b}
+    .pw-rule{width:min(280px,55vw);margin:0 auto}
+    .pw-subtitle{margin-top:24px;font:500 clamp(10px,1.15vw,13px)/1.7 'Space Grotesk',sans-serif;letter-spacing:.18em;color:rgba(255,255,255,.72);text-transform:uppercase}
+    .pw-signature{margin-top:clamp(38px,7vh,70px);font:500 9px/1.5 'Space Grotesk',sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.36)}
+    .pw-signature span{color:#ff5365;padding:0 7px}
+    .pw-orbit{position:absolute;z-index:1;left:50%;top:50%;width:min(82vw,760px);aspect-ratio:1;border:1px solid rgba(255,83,101,.12);border-radius:50%;transform:translate(-50%,-50%) scale(.82);pointer-events:none}
+    .pw-orbit-one{animation:pwOrbit 9s linear infinite}
+    .pw-orbit-two{width:min(65vw,600px);border-style:dashed;border-color:rgba(255,255,255,.08);animation:pwOrbit 15s linear infinite reverse}
+    @keyframes pwOrbit{to{transform:translate(-50%,-50%) rotate(360deg) scale(.82)}}
+    @media(max-width:700px){.pw-title strong{font-size:clamp(64px,19vw,112px)}.pw-title .pw-eyebrow{letter-spacing:.24em}.pw-subtitle{max-width:300px;margin-left:auto;margin-right:auto}.pw-signature{font-size:7px;letter-spacing:.1em;max-width:280px}}
     .pw-overline{font:600 10px/1.4 'Space Grotesk',sans-serif;letter-spacing:.38em;color:#ff6a78;opacity:0;transform:translateY(14px);text-transform:uppercase}
     .pw-title{margin:22px 0 18px;display:flex;flex-direction:column;gap:12px}
     .pw-title span{font:600 clamp(12px,1.5vw,17px)/1 'Space Grotesk',sans-serif;letter-spacing:.42em;color:rgba(255,255,255,.72);opacity:0;transform:translateY(20px);clip-path:inset(0 100% 0 0)}
@@ -1001,10 +1016,16 @@
   </div>
 
   <div class="portfolio-welcome" id="portfolioWelcome" aria-live="polite" aria-hidden="true">
-    <div class="pw-overline">VIDEO EDITOR <b>•</b> VISUAL STORYTELLER</div>
-    <div class="pw-title"><span data-typewriter="HEY, I'M"></span><strong><span data-typewriter="JASPAL"></span><span class="pw-period">.</span></strong></div>
+    <div class="pw-orbit pw-orbit-one" aria-hidden="true"></div>
+    <div class="pw-orbit pw-orbit-two" aria-hidden="true"></div>
+    <div class="pw-overline"><span class="pw-live-dot"></span> THE WORLD, THROUGH MY LENS</div>
+    <div class="pw-title">
+      <span class="pw-eyebrow" data-typewriter="HEY THERE, I'M"></span>
+      <strong><span data-typewriter="JASPAL"></span><span class="pw-period">.</span></strong>
+    </div>
     <div class="pw-rule"><span></span></div>
-    <div class="pw-subtitle"><span data-typewriter="LET'S CREATE SOMETHING GREAT."></span></div>
+    <div class="pw-subtitle"><span data-typewriter="I TURN IDEAS INTO VISUAL STORIES."></span></div>
+    <div class="pw-signature">VIDEO EDITOR <span>✳</span> VISUAL STORYTELLER <span>✳</span> CREATIVE MIND</div>
   </div>
 
   <div class="noise"></div>
