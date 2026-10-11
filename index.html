@@ -587,6 +587,31 @@
     }
     @media(prefers-reduced-motion:reduce){.wire-instruction{animation:none}.wire-blast,.blast-ring,.blast-rays,.blast-sparks{animation-duration:.01ms!important}}
 
+
+    /* Electric workshop: asymmetrical hanging cables and responsive rubber-hose motion */
+    .wire-intro{background:radial-gradient(ellipse at 80% 18%,rgba(235,73,40,.12),transparent 42%),radial-gradient(ellipse at 15% 80%,rgba(145,25,48,.12),transparent 43%),#08090c}
+    .wire-grid{background:repeating-linear-gradient(0deg,transparent 0 47px,rgba(230,230,240,.025) 48px),repeating-linear-gradient(90deg,transparent 0 47px,rgba(230,230,240,.025) 48px),radial-gradient(ellipse at 50% 60%,rgba(225,36,54,.08),transparent 65%)}
+    .wire-intro:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.11) 4px);opacity:.55}
+    .wire-center-copy{top:45%;width:min(66vw,720px);z-index:3}
+    .wire-center-copy h2{font-size:clamp(42px,6.5vw,92px)}
+    .wire-topline,.wire-footer{z-index:6}
+    .wire-run,.wire-left,.wire-right{animation:none!important;transform:none!important;filter:none;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .wire-run:before,.wire-core{display:none}
+    .wire-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 4px 3px rgba(0,0,0,.85))}
+    .wire-svg path{stroke:#222329;stroke-width:13;stroke-linecap:round}
+    .wire-svg .wire-highlight{stroke:#656670;stroke-width:3;opacity:.85}
+    .wire-svg .wire-live{stroke:#b82c3e;stroke-width:1.8;opacity:.85;filter:drop-shadow(0 0 4px #f33)}
+    .wire-left .wire-copper,.wire-right .wire-copper{left:0;top:0;bottom:auto;width:12px;height:18px;transform:translate(-50%,-50%) rotate(22deg)}
+    .wire-tip-grip{left:0;top:0;bottom:auto;transform:translate(-50%,-50%);pointer-events:auto;touch-action:none;cursor:grab;width:46px;height:40px;border-radius:11px;z-index:10}
+    .wire-right{pointer-events:none;cursor:default}
+    .wire-spark{left:0;top:0;bottom:auto;z-index:9;pointer-events:none}
+    .wire-intro.is-connected .wire-right{transform:none!important}
+    .wire-blast{left:50%;top:65%}
+    .wire-intro.is-blasting .wire-blast{animation:blastFlash .9s ease-out forwards}
+    .wire-intro.is-blasting .wire-grid{animation:blastBackground 1s ease-out forwards}
+    @media(max-width:700px){.wire-center-copy{top:40%;width:92vw}.wire-center-copy h2{font-size:clamp(37px,9.5vw,60px)}.wire-instruction{max-width:250px;margin:18px auto 0}.wire-blast{top:70%}}
+    @media(prefers-reduced-motion:reduce){.wire-spark,.wire-spark:before,.wire-spark:after{animation:none!important}}
+
   </style>
 </head>
 <body>
@@ -600,14 +625,14 @@
       <p class="wire-instruction" id="wireInstruction">DRAG THE LOOSE WIRE TO CONNECT</p>
     </div>
     <div class="wire-run wire-left" aria-hidden="true">
-      <svg class="wire-svg" viewBox="0 0 240 300" preserveAspectRatio="none"><path d="M120 0 C112 45 34 42 46 112 S174 168 112 226 S118 268 120 292"/><path class="wire-highlight" d="M118 0 C110 45 32 42 44 112 S172 168 110 226 S116 268 118 292"/><path class="wire-live" d="M120 0 C112 45 34 42 46 112 S174 168 112 226 S118 268 120 292"/></svg>
-      <span class="wire-core"></span><span class="wire-copper"></span>
+      <svg class="wire-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path class="wire-body" id="wireLeftPath"/><path class="wire-highlight" id="wireLeftHighlight"/><path class="wire-live" id="wireLeftLive"/></svg>
+      <span class="wire-copper" id="wireLeftTip"></span>
     </div>
-    <div class="wire-run wire-right" id="wireRight" role="button" tabindex="0" aria-label="Connect the loose wire to open the portfolio">
-      <svg class="wire-svg" viewBox="0 0 240 300" preserveAspectRatio="none"><path d="M120 0 C128 48 204 54 190 120 S48 170 122 230 S126 268 120 292"/><path class="wire-highlight" d="M122 0 C130 48 206 54 192 120 S50 170 124 230 S128 268 122 292"/><path class="wire-live" d="M120 0 C128 48 204 54 190 120 S48 170 122 230 S126 268 120 292"/></svg>
-      <span class="wire-core"></span><span class="wire-copper"></span>
-      <span class="wire-spark"></span>
-      <span class="wire-tip-grip" aria-hidden="true"><i></i><i></i><i></i></span>
+    <div class="wire-run wire-right" id="wireRight" role="button" tabindex="0" aria-label="Drag the right wire to the left contact to open portfolio">
+      <svg class="wire-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path class="wire-body" id="wireRightPath"/><path class="wire-highlight" id="wireRightHighlight"/><path class="wire-live" id="wireRightLive"/></svg>
+      <span class="wire-copper" id="wireRightTip"></span>
+      <span class="wire-spark" id="wireSpark"></span>
+      <span class="wire-tip-grip" id="wireGrip" aria-hidden="true"><i></i><i></i><i></i></span>
     </div>
     <div class="wire-blast" id="wireBlast" aria-hidden="true">
       <span class="blast-core"></span><span class="blast-ring"></span><span class="blast-ring blast-ring-two"></span>
@@ -1451,20 +1476,58 @@
     }, { threshold: 0 });
     animatedEls.forEach(el => animIO.observe(el));
   
-    // Drag the loose wire into the contact: spark burst, electric blast, then reveal the portfolio.
+    // Flexible hanging SVG cables: anchored at opposite upper corners, free ends follow pointer with spring physics.
     const welcomeScreen = document.getElementById('welcomeScreen');
     const wireRight = document.getElementById('wireRight');
+    const wireGrip = document.getElementById('wireGrip');
     const wireInstruction = document.getElementById('wireInstruction');
-    let wireDragging = false;
-    let wireConnected = false;
-    let wireStartX = 0;
-    let wireOffset = 0;
-    if (welcomeScreen && wireRight) {
+    if (welcomeScreen && wireRight && wireGrip) {
       document.body.classList.add('welcome-open');
-      const setWireOffset = value => {
-        wireOffset = Math.min(0, Math.max(-window.innerWidth * .24, value));
-        wireRight.style.transform = `translate(${wireOffset}px,-50%) rotate(${window.innerWidth <= 600 ? -5 : -4}deg)`;
+      const leftPath = document.getElementById('wireLeftPath');
+      const rightPath = document.getElementById('wireRightPath');
+      const leftTip = document.getElementById('wireLeftTip');
+      const rightTip = document.getElementById('wireRightTip');
+      const spark = document.getElementById('wireSpark');
+      const paths = [
+        [leftPath, document.getElementById('wireLeftHighlight'), document.getElementById('wireLeftLive')],
+        [rightPath, document.getElementById('wireRightHighlight'), document.getElementById('wireRightLive')]
+      ];
+      let connected = false, dragging = false, lastTime = 0, motion = 0;
+      let tip = {x:0,y:0}, velocity={x:0,y:0}, target={x:0,y:0}, left={x:0,y:0};
+      const pos = (el,x,y) => { el.style.left=x+'px'; el.style.top=y+'px'; };
+      function layout(reset) {
+        const w=welcomeScreen.clientWidth,h=welcomeScreen.clientHeight;
+        left={x:w*(w<700?.29:.31),y:h*(w<700?.76:.71)};
+        if(reset){tip={x:w*(w<700?.77:.76),y:h*(w<700?.77:.70)};target={...tip};velocity={x:0,y:0};}
+        pos(leftTip,left.x,left.y);
+      }
+      layout(true);
+      const curve=(sx,sy,ex,ey,side,sway)=>{
+        const dx=ex-sx,dy=ey-sy;
+        return `M ${sx} ${sy} C ${sx+side*95+sway} ${sy+dy*.28}, ${ex-side*135+sway*.5} ${ey-dy*.45}, ${ex} ${ey}`;
       };
+      function render(time){
+        const dt=Math.min(2.2,(time-(lastTime||time))/16.67);lastTime=time;
+        const w=welcomeScreen.clientWidth,h=welcomeScreen.clientHeight;
+        const leftStart={x:w*.08,y:-24},rightStart={x:w*.91,y:-24};
+        const sway=Math.sin(time*.0013)*12;
+        if(!dragging&&!connected){
+          target.x=w*(w<700?.77:.76)+Math.sin(time*.0011)*14;
+          target.y=h*(w<700?.77:.70)+Math.sin(time*.0017)*17;
+        }
+        const spring=dragging?.18:.035;
+        velocity.x=(velocity.x+(target.x-tip.x)*spring*dt)*Math.pow(dragging?.72:.91,dt);
+        velocity.y=(velocity.y+(target.y-tip.y)*spring*dt)*Math.pow(dragging?.72:.91,dt);
+        tip.x+=velocity.x*dt;tip.y+=velocity.y*dt;
+        const leftD=curve(leftStart.x,leftStart.y,left.x,left.y,1,sway);
+        const rightD=curve(rightStart.x,rightStart.y,tip.x,tip.y,-1,-sway);
+        paths[0].forEach(p=>p.setAttribute('d',leftD));
+        paths[1].forEach(p=>p.setAttribute('d',rightD));
+        pos(rightTip,tip.x,tip.y);pos(wireGrip,tip.x,tip.y);pos(spark,tip.x,tip.y);
+        if(!connected && Math.hypot(tip.x-left.x,tip.y-left.y)<45) connectWires();
+        if(welcomeScreen.isConnected&&!connected)requestAnimationFrame(render);
+        else if(welcomeScreen.isConnected&&connected&&motion++<30)requestAnimationFrame(render);
+      }
       function playElectricBlast() {
         try {
           const AC = window.AudioContext || window.webkitAudioContext;
@@ -1494,65 +1557,40 @@
           window.setTimeout(() => audio.close().catch(() => {}), 800);
         } catch (_) {}
       }
-      function connectWires() {
-        if (wireConnected) return;
-        wireConnected = true;
-        wireDragging = false;
-        setWireOffset(-window.innerWidth * (window.innerWidth <= 600 ? .20 : .135));
-        wireRight.style.transform = `translate(${wireOffset}px,-50%) rotate(${window.innerWidth <= 600 ? -5 : -4}deg)`;
-        wireRight.classList.add('wire-joined');
-        wireRight.style.cursor = 'default';
-        wireRight.style.animation = 'none';
+
+      function connectWires(){
+        if(connected)return;
+        connected=true;dragging=false;target={...left};tip={...left};
         welcomeScreen.classList.add('is-connected');
-        if (wireInstruction) wireInstruction.textContent = 'CONNECTION ESTABLISHED';
+        wireRight.classList.add('wire-joined');
+        wireGrip.style.cursor='default';
+        if(wireInstruction)wireInstruction.textContent='CONNECTION ESTABLISHED';
+        const blast=document.getElementById('wireBlast');
+        pos(blast,left.x,left.y);
         playElectricBlast();
-        window.setTimeout(() => {
-          welcomeScreen.classList.add('is-blasting');
-          if (wireInstruction) wireInstruction.textContent = 'IGNITION';
-        }, 100);
-        window.setTimeout(() => {
+        window.setTimeout(()=>welcomeScreen.classList.add('is-blasting'),100);
+        window.setTimeout(()=>{
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
-          window.setTimeout(() => welcomeScreen.remove(), 650);
-        }, 1100);
+          window.setTimeout(()=>welcomeScreen.remove(),650);
+        },1200);
       }
-      wireRight.addEventListener('pointerdown', event => {
-        if (wireConnected) return;
-        wireDragging = true;
-        wireStartX = event.clientX - wireOffset;
-        wireRight.setPointerCapture(event.pointerId);
-        event.preventDefault();
+      wireGrip.addEventListener('pointerdown',event=>{
+        if(connected)return;
+        dragging=true;wireGrip.setPointerCapture(event.pointerId);event.preventDefault();
       });
-      wireRight.addEventListener('pointermove', event => {
-        if (!wireDragging || wireConnected) return;
-        const delta = event.clientX - wireStartX;
-        setWireOffset(delta);
-        wireRight.style.animation = 'none';
-        if (event.clientX < window.innerWidth * .49) connectWires();
+      wireGrip.addEventListener('pointermove',event=>{
+        if(!dragging||connected)return;
+        const rect=welcomeScreen.getBoundingClientRect();
+        target={x:Math.max(20,Math.min(rect.width-20,event.clientX-rect.left)),y:Math.max(20,Math.min(rect.height-20,event.clientY-rect.top))};
       });
-      wireRight.addEventListener('pointerup', event => {
-        if (!wireDragging || wireConnected) return;
-        wireDragging = false;
-        if (event.clientX < window.innerWidth * .49) connectWires();
-        else {
-          wireRight.style.transition = 'transform .28s cubic-bezier(.2,.8,.2,1)';
-          setWireOffset(0);
-          window.setTimeout(() => { wireRight.style.transition = ''; }, 300);
-        }
+      wireGrip.addEventListener('pointerup',()=>{dragging=false;});
+      wireGrip.addEventListener('pointercancel',()=>{dragging=false;});
+      wireRight.addEventListener('keydown',event=>{
+        if(event.key==='Enter'||event.key===' '){event.preventDefault();connectWires();}
       });
-      wireRight.addEventListener('pointercancel', () => {
-        if (!wireDragging || wireConnected) return;
-        wireDragging = false;
-        wireRight.style.transition = 'transform .28s ease';
-        setWireOffset(0);
-        window.setTimeout(() => { wireRight.style.transition = ''; }, 300);
-      });
-      wireRight.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          connectWires();
-        }
-      });
+      window.addEventListener('resize',()=>layout(false));
+      requestAnimationFrame(render);
     }
   </script>
 </body>
