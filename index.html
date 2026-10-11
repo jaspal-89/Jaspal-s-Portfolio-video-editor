@@ -911,6 +911,36 @@
       .wire-intro .jaspal-hanging-photo{max-height:34vh!important}
     }
 
+  
+    /* Cinematic spoken welcome card shown as the portfolio reveals behind it */
+    .portfolio-welcome{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:rgba(5,5,7,.96);color:#fff;opacity:0;visibility:hidden;pointer-events:none;overflow:hidden}
+    .portfolio-welcome:before{content:"";position:absolute;width:min(70vw,720px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(239,35,60,.19),rgba(239,35,60,.04) 45%,transparent 70%);filter:blur(10px);animation:pwGlow 2s ease-in-out both}
+    .pw-overline,.pw-title,.pw-rule,.pw-subtitle{position:relative}
+    .pw-overline{font:600 10px/1.4 'Space Grotesk',sans-serif;letter-spacing:.38em;color:#ff6a78;opacity:0;transform:translateY(14px);text-transform:uppercase}
+    .pw-title{margin:22px 0 18px;display:flex;flex-direction:column;gap:12px}
+    .pw-title span{font:600 clamp(12px,1.5vw,17px)/1 'Space Grotesk',sans-serif;letter-spacing:.42em;color:rgba(255,255,255,.72);opacity:0;transform:translateY(20px);clip-path:inset(0 100% 0 0)}
+    .pw-title strong{font:800 clamp(48px,10vw,118px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em;text-transform:uppercase;opacity:0;transform:translateY(35px) scale(.96);filter:blur(8px)}
+    .pw-title strong i{font-style:normal;color:#ff344b;text-shadow:0 0 34px rgba(255,52,75,.25)}
+    .pw-rule{width:min(220px,45vw);height:2px;background:rgba(255,255,255,.14);overflow:hidden}
+    .pw-rule span{display:block;width:100%;height:100%;background:#ff344b;transform:scaleX(0);transform-origin:left}
+    .pw-subtitle{margin-top:17px;font:600 9px/1.5 'Space Grotesk',sans-serif;letter-spacing:.28em;color:rgba(255,255,255,.56);opacity:0;transform:translateY(10px)}
+    .pw-subtitle b{color:#ff344b;padding:0 7px}
+    .portfolio-welcome.is-active{visibility:visible;opacity:1}
+    .portfolio-welcome.is-active .pw-overline{animation:pwRise .45s ease-out .08s forwards}
+    .portfolio-welcome.is-active .pw-title span{animation:pwReveal .55s cubic-bezier(.2,.7,.2,1) .22s forwards}
+    .portfolio-welcome.is-active .pw-title strong{animation:pwTitleIn .72s cubic-bezier(.16,1,.3,1) .45s forwards}
+    .portfolio-welcome.is-active .pw-rule span{animation:pwLine .5s ease-out .9s forwards}
+    .portfolio-welcome.is-active .pw-subtitle{animation:pwRise .5s ease-out 1.02s forwards}
+    .portfolio-welcome.is-done{animation:pwOut .35s ease-in forwards}
+    @keyframes pwRise{to{opacity:1;transform:translateY(0)}}
+    @keyframes pwReveal{to{opacity:1;transform:translateY(0);clip-path:inset(0 0 0 0)}}
+    @keyframes pwTitleIn{to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+    @keyframes pwLine{to{transform:scaleX(1)}}
+    @keyframes pwGlow{0%{opacity:0;transform:scale(.7)}40%{opacity:1;transform:scale(1.05)}100%{opacity:.7;transform:scale(1)}}
+    @keyframes pwOut{to{opacity:0;visibility:hidden;transform:scale(1.02)}}
+    @media(max-width:700px){.pw-title strong{font-size:clamp(45px,13vw,76px)}.pw-title span{letter-spacing:.28em}.pw-overline{letter-spacing:.25em}.pw-subtitle{letter-spacing:.16em}}
+    @media(prefers-reduced-motion:reduce){.portfolio-welcome *{animation-duration:.01ms!important;animation-delay:0ms!important}}
+
   </style>
 </head>
 <body>
@@ -961,6 +991,13 @@
       <span class="blast-rays"></span><span class="blast-sparks"></span>
     </div>
     <div class="wire-footer" aria-hidden="true"><span>01 — CONNECT</span><span>02 — IGNITE</span><span>03 — EXPLORE</span></div>
+  </div>
+
+  <div class="portfolio-welcome" id="portfolioWelcome" aria-live="polite" aria-hidden="true">
+    <div class="pw-overline">CREATIVE • STORY • MOTION</div>
+    <div class="pw-title"><span>WELCOME TO</span><strong>JASPAL'S<br><i>PORTFOLIO.</i></strong></div>
+    <div class="pw-rule"><span></span></div>
+    <div class="pw-subtitle">VIDEO EDITOR <b>·</b> CREATIVE PRODUCER</div>
   </div>
 
   <div class="noise"></div>
@@ -1931,10 +1968,35 @@
           }
         },100);
         window.setTimeout(()=>{
+          /* Reveal the actual portfolio immediately after the blast, then play the branded welcome. */
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
-          window.setTimeout(()=>welcomeScreen.remove(),650);
-        },3000);
+          window.setTimeout(()=>welcomeScreen.remove(),180);
+          const welcomeCard=document.getElementById('portfolioWelcome');
+          if(welcomeCard){
+            welcomeCard.setAttribute('aria-hidden','false');
+            welcomeCard.classList.add('is-active');
+            try{
+              if('speechSynthesis' in window){
+                window.speechSynthesis.cancel();
+                const line=new SpeechSynthesisUtterance("Welcome to Jaspal's portfolio.");
+                line.lang='en-IN';
+                line.rate=0.92;
+                line.pitch=0.88;
+                line.volume=1;
+                const voices=window.speechSynthesis.getVoices();
+                const voice=voices.find(v=>/en-IN/i.test(v.lang))||voices.find(v=>/en-GB|en-US/i.test(v.lang));
+                if(voice)line.voice=voice;
+                window.speechSynthesis.speak(line);
+              }
+            }catch(_){}
+            window.setTimeout(()=>{
+              welcomeCard.classList.add('is-done');
+              welcomeCard.setAttribute('aria-hidden','true');
+              window.setTimeout(()=>welcomeCard.classList.remove('is-active','is-done'),400);
+            },2350);
+          }
+        },650);
       }
       function beginWireDrag(side, event, handle){
         if(connected)return;
