@@ -657,6 +657,37 @@
       .wire-topline,.wire-footer{color:#777b84!important}
     }
 
+
+    /* Character-led wire connection scene */
+    .wire-people{position:absolute;inset:0;z-index:4;pointer-events:none}
+    .wire-person{position:absolute;width:clamp(90px,14vw,170px);height:auto;overflow:visible;filter:drop-shadow(0 12px 8px rgba(20,25,35,.15))}
+    .wire-person.left-person{left:18%;top:57%;transform:translate(-50%,-50%)}
+    .wire-person.right-person{right:15%;top:57%;transform:translate(50%,-50%)}
+    .wire-person .body{fill:#f8f9fb;stroke:#b7bbc3;stroke-width:2}
+    .wire-person .blue-part{fill:#1678f2;stroke:#0751b9;stroke-width:2}
+    .wire-person .red-part{fill:#e32636;stroke:#a80f22;stroke-width:2}
+    .wire-person .metal{fill:#c9cdd4;stroke:#7d838d;stroke-width:2}
+    .wire-person .shadow{fill:#a8adb6;opacity:.3}
+    .spidey-drop{position:absolute;z-index:5;left:50%;top:-220px;width:clamp(76px,10vw,120px);transform:translateX(-50%);pointer-events:none;animation:spideyArrive 1.8s cubic-bezier(.2,.75,.25,1) .35s forwards;filter:drop-shadow(0 12px 9px rgba(0,0,0,.22))}
+    .spidey-web{position:absolute;left:50%;top:0;width:2px;height:0;background:linear-gradient(#aaa,#fff);box-shadow:0 0 3px #aaa;animation:webDrop 1.6s ease-out .25s forwards}
+    @keyframes webDrop{to{height:clamp(100px,22vh,220px)}}
+    @keyframes spideyArrive{0%{top:-220px;transform:translateX(-50%) rotate(-12deg)}70%{top:clamp(95px,22vh,215px);transform:translateX(-50%) rotate(8deg)}86%{top:clamp(80px,20vh,195px);transform:translateX(-50%) rotate(-5deg)}100%{top:clamp(88px,21vh,205px);transform:translateX(-50%) rotate(0)}}
+    .wire-intro.is-blasting .left-person{animation:personJoltLeft .85s cubic-bezier(.2,.8,.2,1) both}
+    .wire-intro.is-blasting .right-person{animation:personJoltRight .85s cubic-bezier(.2,.8,.2,1) both}
+    .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards}
+    .wire-intro.is-blasting .spidey-web{animation:webSnap .18s steps(2,end) forwards}
+    @keyframes personJoltLeft{0%{translate:0 0}18%{translate:-18px -9px}35%{translate:15px 4px}55%{translate:-10px 0}75%{translate:5px 0}100%{translate:0 0}}
+    @keyframes personJoltRight{0%{translate:0 0}18%{translate:20px -8px}35%{translate:-16px 4px}55%{translate:11px 0}75%{translate:-5px 0}100%{translate:0 0}}
+    @keyframes spideyFall{0%{top:clamp(88px,21vh,205px);transform:translateX(-50%) rotate(0)}22%{top:clamp(110px,25vh,245px);transform:translateX(-50%) rotate(24deg)}55%{top:62vh;transform:translateX(-50%) rotate(125deg)}78%{top:70vh;transform:translateX(-50%) rotate(215deg)}100%{top:72vh;transform:translateX(-50%) rotate(260deg)}}
+    @keyframes webSnap{to{height:0;opacity:0}}
+    .wire-intro.is-blasting .wire-person .connector{animation:connectorFlash .22s steps(2,end) 4}
+    @keyframes connectorFlash{50%{filter:brightness(2.5);stroke:#ff4b19}}
+    @media(max-width:700px){
+      .wire-person.left-person{left:15%;top:59%;width:100px}
+      .wire-person.right-person{right:12%;top:59%;width:100px}
+      .spidey-drop{width:74px}
+    }
+
   </style>
 </head>
 <body>
@@ -678,6 +709,37 @@
       <span class="wire-copper" id="wireRightTip"></span>
       <span class="wire-spark" id="wireSpark"></span>
       <span class="wire-tip-grip" id="wireGrip" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+
+    <div class="wire-people" aria-hidden="true">
+      <svg class="wire-person left-person" viewBox="0 0 160 180">
+        <ellipse class="shadow" cx="80" cy="166" rx="47" ry="8"/>
+        <circle class="body" cx="65" cy="28" r="20"/>
+        <path class="body" d="M51 49 Q40 65 48 89 L60 117 L42 145 Q38 155 49 158 L68 158 L83 126 L93 100 L100 126 L118 147 Q127 155 137 148 Q143 141 135 134 L114 106 L107 75 Q105 56 84 50Z"/>
+        <path class="body" d="M52 58 Q34 69 39 88 L55 104 L75 89 L66 78 L59 75Z"/>
+        <path class="blue-part connector" d="M20 83 Q18 71 30 67 L49 60 Q58 58 63 68 L72 84 Q77 95 66 101 L49 108 Q40 111 34 101Z"/>
+        <rect class="metal" x="44" y="73" width="18" height="12" rx="3" transform="rotate(-25 53 79)"/>
+      </svg>
+      <svg class="wire-person right-person" viewBox="0 0 160 180">
+        <ellipse class="shadow" cx="80" cy="166" rx="47" ry="8"/>
+        <circle class="body" cx="94" cy="28" r="20"/>
+        <path class="body" d="M107 49 Q121 65 111 89 L100 117 L119 145 Q124 155 113 158 L94 158 L78 126 L68 100 L61 126 L40 147 Q31 155 21 148 Q15 141 23 134 L44 106 L51 75 Q53 56 74 50Z"/>
+        <path class="body" d="M108 58 Q126 69 121 88 L105 104 L85 89 L94 78 L101 75Z"/>
+        <path class="red-part connector" d="M140 83 Q142 71 130 67 L111 60 Q102 58 97 68 L88 84 Q83 95 94 101 L111 108 Q120 111 126 101Z"/>
+        <rect class="metal" x="98" y="73" width="18" height="12" rx="3" transform="rotate(25 107 79)"/>
+      </svg>
+    </div>
+    <div class="spidey-drop" aria-hidden="true">
+      <span class="spidey-web"></span>
+      <svg viewBox="0 0 100 120" width="100%" aria-hidden="true">
+        <path d="M50 0 L50 15" stroke="#aeb4bd" stroke-width="2"/>
+        <path d="M31 25 Q30 10 50 8 Q70 10 69 25 L63 44 L37 44Z" fill="#d92335" stroke="#8d1221" stroke-width="2"/>
+        <path d="M38 26 L47 24 L42 30Z M62 26 L53 24 L58 30Z" fill="#fff" stroke="#c6d7e8" stroke-width="1.5"/>
+        <path d="M38 44 L62 44 L69 75 L57 88 L43 88 L31 75Z" fill="#1766c2" stroke="#10448b" stroke-width="2"/>
+        <path d="M38 47 L25 56 L14 73 L21 78 L39 64 M62 47 L75 56 L86 73 L79 78 L61 64" fill="none" stroke="#d92335" stroke-width="10" stroke-linecap="round"/>
+        <path d="M43 86 L40 106 L31 115 M57 86 L60 106 L69 115" fill="none" stroke="#1766c2" stroke-width="11" stroke-linecap="round"/>
+        <path d="M43 48 L57 48 M39 57 L61 57 M39 67 L61 67 M40 77 L60 77" stroke="#9fc5ff" stroke-width="1" opacity=".6"/>
+      </svg>
     </div>
     <div class="wire-blast" id="wireBlast" aria-hidden="true">
       <span class="blast-core"></span><span class="blast-ring"></span><span class="blast-ring blast-ring-two"></span>
@@ -1585,7 +1647,7 @@
           osc.frequency.setValueAtTime(115, now);
           osc.frequency.exponentialRampToValueAtTime(34, now + .42);
           gain.gain.setValueAtTime(.0001, now);
-          gain.gain.exponentialRampToValueAtTime(.68, now + .018);
+          gain.gain.exponentialRampToValueAtTime(.95, now + .018);
           gain.gain.exponentialRampToValueAtTime(.0001, now + .48);
           osc.connect(gain); gain.connect(audio.destination);
           osc.start(now); osc.stop(now + .5);
@@ -1595,7 +1657,7 @@
           crack.frequency.setValueAtTime(920, now);
           crack.frequency.exponentialRampToValueAtTime(110, now + .11);
           crackGain.gain.setValueAtTime(.0001, now);
-          crackGain.gain.exponentialRampToValueAtTime(.2, now + .006);
+          crackGain.gain.exponentialRampToValueAtTime(.42, now + .006);
           crackGain.gain.exponentialRampToValueAtTime(.0001, now + .16);
           crack.connect(crackGain); crackGain.connect(audio.destination);
           crack.start(now); crack.stop(now + .17);
