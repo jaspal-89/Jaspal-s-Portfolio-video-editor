@@ -612,6 +612,51 @@
     @media(max-width:700px){.wire-center-copy{top:40%;width:92vw}.wire-center-copy h2{font-size:clamp(37px,9.5vw,60px)}.wire-instruction{max-width:250px;margin:18px auto 0}.wire-blast{top:70%}}
     @media(prefers-reduced-motion:reduce){.wire-spark,.wire-spark:before,.wire-spark:after{animation:none!important}}
 
+
+    /* White studio + physically-inspired 3D electrical cables */
+    .wire-intro{
+      background:radial-gradient(ellipse at 50% 55%,#fff 0%,#f6f6f8 56%,#e8e9ed 100%) !important;
+      color:#17191e;
+    }
+    .wire-intro:before{
+      opacity:.52!important;
+      background-image:linear-gradient(rgba(30,35,45,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(30,35,45,.045) 1px,transparent 1px)!important;
+      background-size:44px 44px!important;
+      mask-image:radial-gradient(ellipse at center,#000 10%,transparent 82%)!important;
+    }
+    .wire-grid{
+      background:radial-gradient(ellipse at 50% 66%,rgba(239,35,60,.10),transparent 45%),linear-gradient(180deg,rgba(255,255,255,.3),transparent)!important;
+    }
+    .wire-topline,.wire-footer{color:#7c8089!important}
+    .wire-center-copy h2{color:#202126!important;text-shadow:0 3px 0 rgba(255,255,255,.9),0 12px 28px rgba(25,28,35,.08)!important}
+    .wire-center-copy h2 em{-webkit-text-stroke:1.7px #e32943!important;text-shadow:0 0 22px rgba(239,35,60,.12)!important}
+    .wire-kicker{color:#e32943!important}
+    .wire-instruction{color:#686b73!important}
+    .wire-stage{filter:drop-shadow(0 18px 15px rgba(20,22,30,.10))}
+    .cable-main{
+      stroke:#202127!important;stroke-width:17!important;stroke-linecap:round!important;
+      filter:drop-shadow(0 4px 2px rgba(0,0,0,.23)) drop-shadow(0 0 1px #000)!important;
+    }
+    .cable-sheen{stroke:#737780!important;stroke-width:3.1!important;opacity:.88!important}
+    .cable-red{stroke:#bd273c!important;stroke-width:1.4!important;opacity:.75!important;filter:drop-shadow(0 0 3px rgba(239,35,60,.45))!important}
+    .cable-end{
+      fill:url(#copperMetal)!important;stroke:#8d552b!important;stroke-width:2.5!important;
+      filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)) drop-shadow(0 0 7px rgba(230,135,66,.35))!important;
+    }
+    .cable-handle{
+      fill:#282a30!important;stroke:#555963!important;stroke-width:4!important;
+      filter:drop-shadow(0 5px 5px rgba(0,0,0,.3)) drop-shadow(0 0 8px rgba(239,35,60,.22))!important;
+    }
+    .wire-spark-point{filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px #ff7b35)!important}
+    .wire-spark-lines{stroke:#f17a38!important;filter:drop-shadow(0 0 3px #f33)!important}
+    .wire-intro.is-blasting:after{background:#fff!important}
+    .wire-blast .blast-core{background:#fff!important;box-shadow:0 0 35px 20px #fff,0 0 90px 45px rgba(255,91,58,.85)!important}
+    .wire-blast .blast-ring{border-color:#ef344b!important}
+    @media(max-width:600px){
+      .wire-center-copy h2{color:#202126!important}
+      .wire-topline,.wire-footer{color:#777b84!important}
+    }
+
   </style>
 </head>
 <body>
