@@ -712,6 +712,39 @@
       .spidey-drop{width:74px!important}
     }
 
+
+    /* Reference scene: compact suspended character, curved leads, clean white studio */
+    .wire-intro{background:radial-gradient(ellipse at 50% 40%,#fdfdfd 0%,#f4f5f7 68%,#e9ebef 100%)!important;color:#252832!important;overflow:hidden!important}
+    .wire-grid{opacity:.06!important;background-size:42px 42px!important}
+    .wire-intro:before{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(225,228,234,.2))!important}
+    .wire-topline,.wire-footer{display:none!important}
+    .wire-center-copy{top:56%!important;left:50%!important;width:min(92vw,340px)!important;z-index:4!important}
+    .wire-center-copy .wire-kicker{display:none!important}
+    .wire-center-copy h2{font-family:Inter,Arial,sans-serif!important;font-size:clamp(15px,1.8vw,23px)!important;line-height:1.25!important;letter-spacing:.16em!important;font-weight:800!important;color:#252832!important;text-shadow:none!important}
+    .wire-center-copy h2 em{display:block!important;margin-top:5px!important;font-size:.7em!important;letter-spacing:.19em!important;color:#606775!important;-webkit-text-stroke:0!important;text-shadow:none!important}
+    .wire-instruction{display:none!important}
+    .wire-run{z-index:2!important}
+    .wire-left{left:0!important;top:0!important;width:44%!important;height:100%!important}
+    .wire-right{right:0!important;top:0!important;width:44%!important;height:100%!important}
+    .wire-svg{overflow:visible!important}
+    .wire-person{width:clamp(100px,14vw,170px)!important;filter:drop-shadow(0 8px 7px rgba(20,25,35,.16))!important}
+    .wire-person.left-person{left:25%!important;top:76%!important;transform:translate(-50%,-50%)!important}
+    .wire-person.right-person{right:21%!important;top:76%!important;transform:translate(50%,-50%)!important}
+    .spidey-drop{width:clamp(78px,8.5vw,110px)!important;top:-220px!important;z-index:5!important}
+    .spidey-web{background:linear-gradient(#b9bdc6,#fff)!important;box-shadow:0 0 2px #adb3bd!important}
+    .wire-copper{filter:drop-shadow(0 2px 3px rgba(0,0,0,.22))}
+    .wire-intro.is-blasting .wire-center-copy{opacity:0!important}
+    .wire-intro.is-blasting .wire-person{filter:drop-shadow(0 0 18px rgba(255,90,45,.7))!important}
+    .wire-intro.is-connected .wire-center-copy{opacity:1!important;filter:none!important}
+    @media(max-width:700px){
+      .wire-center-copy{top:56%!important;width:92vw!important}
+      .wire-center-copy h2{font-size:15px!important;letter-spacing:.12em!important}
+      .wire-person.left-person{left:22%!important;top:75%!important;width:95px!important}
+      .wire-person.right-person{right:18%!important;top:75%!important;width:95px!important}
+      .spidey-drop{width:72px!important}
+      .wire-left{width:46%!important}.wire-right{width:46%!important}
+    }
+
   </style>
 </head>
 <body>
