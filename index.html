@@ -1967,34 +1967,49 @@
         if(welcomeScreen.isConnected&&!connected)requestAnimationFrame(render);
         else if(welcomeScreen.isConnected&&connected&&motion++<30)requestAnimationFrame(render);
       }
-      function playElectricBlast() {
+      let blastAudioContext = null;
+      function unlockBlastAudio() {
         try {
           const AC = window.AudioContext || window.webkitAudioContext;
           if (!AC) return;
-          const audio = new AC();
-          const now = audio.currentTime;
-          const osc = audio.createOscillator();
-          const gain = audio.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(115, now);
-          osc.frequency.exponentialRampToValueAtTime(34, now + .42);
-          gain.gain.setValueAtTime(.0001, now);
-          gain.gain.exponentialRampToValueAtTime(.95, now + .018);
-          gain.gain.exponentialRampToValueAtTime(.0001, now + .48);
-          osc.connect(gain); gain.connect(audio.destination);
-          osc.start(now); osc.stop(now + .5);
-          const crack = audio.createOscillator();
-          const crackGain = audio.createGain();
-          crack.type = 'square';
-          crack.frequency.setValueAtTime(920, now);
-          crack.frequency.exponentialRampToValueAtTime(110, now + .11);
-          crackGain.gain.setValueAtTime(.0001, now);
-          crackGain.gain.exponentialRampToValueAtTime(.42, now + .006);
-          crackGain.gain.exponentialRampToValueAtTime(.0001, now + .16);
-          crack.connect(crackGain); crackGain.connect(audio.destination);
-          crack.start(now); crack.stop(now + .17);
-          window.setTimeout(() => audio.close().catch(() => {}), 800);
-        } catch (_) {}
+          if (!blastAudioContext || blastAudioContext.state === 'closed') blastAudioContext = new AC();
+          if (blastAudioContext.state === 'suspended') {
+            const resumeResult = blastAudioContext.resume();
+            if (resumeResult && typeof resumeResult.catch === 'function') resumeResult.catch(err => console.warn('Blast audio resume failed:', err));
+          }
+        } catch (err) { console.warn('Blast audio unlock failed:', err); }
+      }
+      function playElectricBlast() {
+        try {
+          unlockBlastAudio();
+          const audio = blastAudioContext;
+          if (!audio) return;
+          const play = () => {
+            const now = audio.currentTime;
+            const osc = audio.createOscillator();
+            const gain = audio.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(115, now);
+            osc.frequency.exponentialRampToValueAtTime(34, now + .42);
+            gain.gain.setValueAtTime(.0001, now);
+            gain.gain.exponentialRampToValueAtTime(.95, now + .018);
+            gain.gain.exponentialRampToValueAtTime(.0001, now + .48);
+            osc.connect(gain); gain.connect(audio.destination);
+            osc.start(now); osc.stop(now + .5);
+            const crack = audio.createOscillator();
+            const crackGain = audio.createGain();
+            crack.type = 'square';
+            crack.frequency.setValueAtTime(920, now);
+            crack.frequency.exponentialRampToValueAtTime(110, now + .11);
+            crackGain.gain.setValueAtTime(.0001, now);
+            crackGain.gain.exponentialRampToValueAtTime(.42, now + .006);
+            crackGain.gain.exponentialRampToValueAtTime(.0001, now + .16);
+            crack.connect(crackGain); crackGain.connect(audio.destination);
+            crack.start(now); crack.stop(now + .17);
+          };
+          if (audio.state === 'running') play();
+          else audio.resume().then(() => { if (audio.state === 'running') play(); }).catch(err => console.warn('Blast audio playback failed:', err));
+        } catch (err) { console.warn('Blast audio playback failed:', err); }
       }
 
       const welcomeAudio = new Audio('./welcome-voice.mp3');
@@ -2125,6 +2140,8 @@
       }
       function beginWireDrag(side, event, handle){
         if(connected)return;
+        // Create/resume Web Audio synchronously inside the user's touch/click gesture (important on iOS Safari).
+        unlockBlastAudio();
         dragging=true;draggingSide=side;
         try{handle.setPointerCapture(event.pointerId)}catch(_){}
         event.preventDefault();
