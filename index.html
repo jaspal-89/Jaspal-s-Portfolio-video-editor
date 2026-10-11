@@ -1015,6 +1015,14 @@
     button,.btn,.hire,.filter,.mute-btn,.quiz-option,.quiz-submit,.quiz-reset,.tool-button,[role="button"],input[type="button"],input[type="submit"]{border-radius:12px!important}
     .nav .hire{border-radius:12px!important}
 
+  
+    /* Ensure the existing portrait and map assets render at their intended sizes. */
+    .hero-grid>.visual{display:block;min-width:0;min-height:280px;visibility:visible;opacity:1}
+    #phoneShape{display:block;width:100%;max-width:460px;min-height:280px;aspect-ratio:1/1;visibility:visible;opacity:1}
+    #phoneShape img{display:block;width:100%;height:100%;min-height:280px;object-fit:cover;visibility:visible;opacity:1}
+    .hp-map-wrap{display:block;width:100%;visibility:visible;opacity:1}
+    .hp-map-img{display:block;width:100%;height:auto;visibility:visible;opacity:1;object-fit:contain}
+
   </style>
 </head>
 <body>
@@ -1125,7 +1133,7 @@
         </div>
         <div class="visual">
           <div class="phone" id="phoneShape">
-            <img src="profile-hero.jpg" alt="Jaspal video editor portrait">
+            <img src="profile-hero.png" alt="Jaspal video editor portrait">
           </div>
         </div>
       </div>
@@ -1354,7 +1362,7 @@
         <h2 class="heading">Rooted in the hills of <span>Bilaspur.</span></h2>
         <p class="muted" style="max-width:560px;margin:14px auto 0">Originally from Bilaspur, Himachal Pradesh — available for remote projects and opportunities across the Chandigarh–Mohali region.</p>
         <div class="hp-map-wrap glass">
-          <img src="himachal-map.jpg" alt="Map of Himachal Pradesh with Bilaspur district highlighted" class="hp-map-img">
+          <img src="himachal-map.png" alt="Map of Himachal Pradesh with Bilaspur district highlighted" class="hp-map-img">
         </div>
       </div>
     </section>
@@ -1496,7 +1504,7 @@
 
   <div class="float-buddy" id="floatBuddy">
     <a class="float-avatar" href="https://wa.me/919317621164?text=Hi%20Jaspal%21%20I%20was%20browsing%20your%20portfolio%20and%20wanted%20to%20chat." target="_blank" rel="noreferrer" aria-label="Chat with Jaspal on WhatsApp">
-      <img src="profile-hero.jpg" alt="Jaspal">
+      <img src="profile-hero.png" alt="Jaspal">
     </a>
     <div class="float-msg" id="floatMsg">Still with me? 👀</div>
   </div>
