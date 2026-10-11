@@ -828,6 +828,36 @@
       .wire-intro .jaspal-hanging-photo{max-height:34vh!important}
     }
 
+
+    /* Premium red/blue cable pair with clear touch-friendly drag handles */
+    .wire-intro .wire-left .wire-svg .wire-body{stroke:#1269d3!important;stroke-width:13!important;filter:drop-shadow(0 0 5px rgba(22,119,255,.4))}
+    .wire-intro .wire-left .wire-svg .wire-highlight{stroke:#9dd5ff!important;stroke-width:3!important;opacity:.95!important}
+    .wire-intro .wire-left .wire-svg .wire-live{stroke:#48a8ff!important;stroke-width:2.5!important;filter:drop-shadow(0 0 7px #1683ff)!important}
+    .wire-intro .wire-right .wire-svg .wire-body{stroke:#c61e36!important;stroke-width:13!important;filter:drop-shadow(0 0 5px rgba(239,35,60,.4))}
+    .wire-intro .wire-right .wire-svg .wire-highlight{stroke:#ffb0b9!important;stroke-width:3!important;opacity:.95!important}
+    .wire-intro .wire-right .wire-svg .wire-live{stroke:#ff4b61!important;stroke-width:2.5!important;filter:drop-shadow(0 0 7px #ff233f)!important}
+    .wire-intro .wire-left .wire-copper{background:linear-gradient(90deg,#0751a7,#a6ddff 35%,#1269d3 70%,#8ed0ff)!important;box-shadow:0 0 14px rgba(22,119,255,.6)!important}
+    .wire-intro .wire-right .wire-copper{background:linear-gradient(90deg,#85152a,#ffb3bc 35%,#bd1e36 70%,#ff9ba8)!important;box-shadow:0 0 14px rgba(239,35,60,.6)!important}
+    .wire-intro .wire-tip-grip{
+      width:48px!important;height:48px!important;border-radius:50%!important;
+      border:2px solid rgba(255,255,255,.88)!important;
+      background:radial-gradient(circle at 32% 25%,#555c69,#171a20 65%)!important;
+      box-shadow:0 0 0 5px rgba(255,255,255,.3),0 6px 18px rgba(0,0,0,.22),0 0 20px rgba(255,70,90,.28)!important;
+      cursor:grab!important;touch-action:none!important;pointer-events:auto!important;
+    }
+    .wire-intro .wire-tip-grip:before{content:"";position:absolute;inset:7px;border-radius:50%;border:2px solid #ff4358;box-shadow:0 0 10px rgba(255,67,88,.7)}
+    .wire-intro .wire-tip-grip i{width:3px!important;height:14px!important;border-radius:3px!important;background:linear-gradient(#fff,#ff6879)!important;z-index:1}
+    .wire-intro .wire-left .wire-copper{width:18px!important;height:21px!important;border-radius:5px!important}
+    .wire-intro .wire-right .wire-copper{width:18px!important;height:21px!important;border-radius:5px!important}
+    .wire-intro .wire-left .wire-copper{filter:drop-shadow(0 0 8px #1683ff)!important}
+    .wire-intro .wire-right .wire-copper{filter:drop-shadow(0 0 8px #ff304d)!important}
+    .wire-intro .wire-left{filter:drop-shadow(0 0 8px rgba(22,119,255,.25))!important}
+    .wire-intro .wire-right{filter:drop-shadow(0 0 8px rgba(239,35,60,.25))!important}
+    @media(max-width:700px){
+      .wire-intro .wire-tip-grip{width:54px!important;height:54px!important}
+      .wire-intro .wire-tip-grip i{height:15px!important}
+    }
+
   </style>
 </head>
 <body>
@@ -1731,7 +1761,7 @@
         [leftPath, document.getElementById('wireLeftHighlight'), document.getElementById('wireLeftLive')],
         [rightPath, document.getElementById('wireRightHighlight'), document.getElementById('wireRightLive')]
       ];
-      let connected = false, dragging = false, lastTime = 0, motion = 0;
+      let connected = false, dragging = false, draggingSide = 'right', lastTime = 0, motion = 0;
       let tip = {x:0,y:0}, velocity={x:0,y:0}, target={x:0,y:0}, left={x:0,y:0};
       const pos = (el,x,y) => { el.style.left=x+'px'; el.style.top=y+'px'; };
       function layout(reset) {
@@ -1823,17 +1853,31 @@
           window.setTimeout(()=>welcomeScreen.remove(),650);
         },1200);
       }
-      wireGrip.addEventListener('pointerdown',event=>{
+      function beginWireDrag(side, event, handle){
         if(connected)return;
-        dragging=true;wireGrip.setPointerCapture(event.pointerId);event.preventDefault();
-      });
-      wireGrip.addEventListener('pointermove',event=>{
+        dragging=true;draggingSide=side;
+        try{handle.setPointerCapture(event.pointerId)}catch(_){}
+        event.preventDefault();
+      }
+      function moveWireDrag(event){
         if(!dragging||connected)return;
         const rect=welcomeScreen.getBoundingClientRect();
-        target={x:Math.max(20,Math.min(rect.width-20,event.clientX-rect.left)),y:Math.max(20,Math.min(rect.height-20,event.clientY-rect.top))};
-      });
-      wireGrip.addEventListener('pointerup',()=>{dragging=false;});
-      wireGrip.addEventListener('pointercancel',()=>{dragging=false;});
+        const point={x:Math.max(20,Math.min(rect.width-20,event.clientX-rect.left)),y:Math.max(20,Math.min(rect.height-20,event.clientY-rect.top))};
+        if(draggingSide==='left'){left=point;pos(leftTip,left.x,left.y)}
+        else target=point;
+      }
+      function endWireDrag(){dragging=false;}
+      wireGrip.addEventListener('pointerdown',event=>beginWireDrag('right',event,wireGrip));
+      wireGrip.addEventListener('pointermove',moveWireDrag);
+      wireGrip.addEventListener('pointerup',endWireDrag);
+      wireGrip.addEventListener('pointercancel',endWireDrag);
+      leftTip.style.pointerEvents='auto';
+      leftTip.style.cursor='grab';
+      leftTip.style.touchAction='none';
+      leftTip.addEventListener('pointerdown',event=>beginWireDrag('left',event,leftTip));
+      leftTip.addEventListener('pointermove',moveWireDrag);
+      leftTip.addEventListener('pointerup',endWireDrag);
+      leftTip.addEventListener('pointercancel',endWireDrag);
       wireRight.addEventListener('keydown',event=>{
         if(event.key==='Enter'||event.key===' '){event.preventDefault();connectWires();}
       });
