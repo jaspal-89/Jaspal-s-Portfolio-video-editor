@@ -873,6 +873,44 @@
       .wire-intro .spidey-drop{top:10vh;width:clamp(120px,31vw,155px)!important}
     }
 
+  
+    /* Stable character positioning: keep the portrait visible and animate with transforms, not top. */
+    .wire-intro .spidey-drop{
+      position:absolute!important;left:50%!important;top:11vh!important;
+      width:clamp(150px,16vw,210px)!important;height:auto!important;min-height:0!important;
+      display:block!important;visibility:visible!important;opacity:1!important;
+      z-index:100!important;overflow:visible!important;pointer-events:none!important;
+      transform:translateX(-50%) translateY(0) rotate(0)!important;
+      animation:characterIntroStable 1.65s cubic-bezier(.2,.72,.25,1) .25s both!important;
+    }
+    .wire-intro .jaspal-hanging-photo{
+      display:block!important;visibility:visible!important;opacity:1!important;
+      width:100%!important;height:auto!important;min-height:0!important;
+      max-height:42vh!important;object-fit:contain!important;
+    }
+    .wire-intro.is-blasting .spidey-drop{
+      top:11vh!important;
+      animation:characterFallStable 2.1s cubic-bezier(.28,.04,.62,1) forwards!important;
+    }
+    @keyframes characterIntroStable{
+      0%{transform:translateX(-50%) translateY(-32vh) rotate(-9deg);opacity:0}
+      75%{transform:translateX(-50%) translateY(2vh) rotate(5deg);opacity:1}
+      90%{transform:translateX(-50%) translateY(-1vh) rotate(-3deg);opacity:1}
+      100%{transform:translateX(-50%) translateY(0) rotate(0);opacity:1}
+    }
+    @keyframes characterFallStable{
+      0%{transform:translateX(-50%) translateY(0) rotate(0);opacity:1}
+      22%{transform:translateX(-50%) translateY(12vh) rotate(28deg);opacity:1}
+      52%{transform:translateX(-50%) translateY(34vh) rotate(100deg);opacity:1}
+      78%{transform:translateX(-50%) translateY(52vh) rotate(205deg);opacity:1}
+      100%{transform:translateX(-50%) translateY(60vh) rotate(265deg);opacity:.98}
+    }
+    @media(max-width:700px){
+      .wire-intro .spidey-drop{top:10vh!important;width:clamp(120px,31vw,155px)!important}
+      .wire-intro.is-blasting .spidey-drop{top:10vh!important}
+      .wire-intro .jaspal-hanging-photo{max-height:34vh!important}
+    }
+
   </style>
 </head>
 <body>
