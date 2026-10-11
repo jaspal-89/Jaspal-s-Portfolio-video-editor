@@ -348,37 +348,44 @@
       .footer-row{display:block;text-align:center}.footer-row .brand{margin-bottom:10px}
     }
   
-    /* Hindi welcome screen */
+    /* Minimal physical light-switch welcome */
     body.welcome-open{overflow:hidden}
-    .welcome-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 44%,rgba(239,35,60,.12),transparent 48%),#07070a;opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease}
-    .welcome-screen:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:58px 58px;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 78%)}
+    .welcome-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 48%,rgba(239,35,60,.10),transparent 42%),#080809;opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease}
+    .welcome-screen:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at center,#000 15%,transparent 75%)}
     .welcome-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
-    .welcome-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:650px;width:100%;animation:welcomeRise .85s cubic-bezier(.2,.8,.2,1) both}
-    .welcome-mark{font-family:Sora,sans-serif;font-size:clamp(12px,2vw,15px);font-weight:800;letter-spacing:.32em;color:#ff7a86;margin-bottom:34px}
-    .welcome-title{font-family:Sora,sans-serif;font-weight:800;font-size:clamp(34px,7vw,72px);line-height:1.12;letter-spacing:-.04em;color:#fff;text-wrap:balance}
-    .welcome-title span{display:block;margin-top:8px;color:#ef233c;text-shadow:0 0 32px rgba(239,35,60,.4)}
-    .welcome-subtitle{margin-top:20px;color:rgba(255,255,255,.62);font-size:clamp(14px,2vw,17px);line-height:1.8}
-    .welcome-enter{display:inline-flex;align-items:center;justify-content:center;gap:13px;margin-top:36px;padding:17px 25px;border:1px solid rgba(255,122,134,.6);border-radius:999px;background:linear-gradient(120deg,#ef233c,#b91c1c);color:#fff;font:800 15px/1 Inter,sans-serif;cursor:pointer;box-shadow:0 0 30px rgba(239,35,60,.27),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
-    .welcome-enter:hover{transform:translateY(-3px);box-shadow:0 0 44px rgba(239,35,60,.42),inset 0 1px 0 rgba(255,255,255,.25);filter:brightness(1.08)}
-    .welcome-enter:focus-visible{outline:2px solid #fff;outline-offset:5px}
-    .welcome-enter svg{width:18px;height:18px;transition:transform .25s ease}
-    .welcome-enter:hover svg{transform:translateX(4px)}
-    .welcome-footnote{margin-top:22px;color:rgba(255,255,255,.32);font-size:10px;letter-spacing:.22em;text-transform:uppercase}
-    @keyframes welcomeRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-    @media(max-width:600px){.welcome-mark{margin-bottom:26px}.welcome-enter{margin-top:30px;padding:16px 21px}.welcome-footnote{letter-spacing:.14em}}
-    @media(prefers-reduced-motion:reduce){.welcome-content{animation:none}.welcome-screen,.welcome-enter,.welcome-enter svg{transition:none}}
-
-  </style>
+    .welcome-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;animation:switchWelcomeIn .8s cubic-bezier(.2,.8,.2,1) both}
+    .switch-control{display:flex;flex-direction:column;align-items:center;gap:27px;border:0;background:transparent;color:#fff;cursor:pointer;padding:16px;touch-action:manipulation}
+    .switch-plate{position:relative;width:116px;height:174px;border-radius:15px;background:linear-gradient(135deg,#29292d 0%,#18181b 38%,#0e0e10 100%);border:1px solid #414146;box-shadow:inset 1px 1px 1px rgba(255,255,255,.16),inset -2px -3px 5px rgba(0,0,0,.9),0 22px 45px rgba(0,0,0,.55);display:grid;place-items:center;transition:box-shadow .35s ease,border-color .35s ease}
+    .switch-plate:before{content:"";position:absolute;inset:7px;border-radius:10px;border:1px solid rgba(255,255,255,.045);pointer-events:none}
+    .switch-screw{position:absolute;width:5px;height:5px;border-radius:50%;background:linear-gradient(135deg,#74747a,#252529);box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 1px 2px #000}
+    .switch-screw.top{top:12px}.switch-screw.bottom{bottom:12px}
+    .switch-rocker{position:relative;width:65px;height:104px;border-radius:9px;background:linear-gradient(100deg,#101012 0%,#2a2a2f 17%,#1a1a1e 48%,#303035 82%,#111113 100%);border:1px solid #09090b;box-shadow:inset 0 2px 3px rgba(255,255,255,.13),inset 0 -4px 6px rgba(0,0,0,.85),0 3px 5px rgba(0,0,0,.8);transform:perspective(300px) rotateX(5deg);transform-origin:center;transition:transform .22s ease,background .22s ease,box-shadow .22s ease}
+    .switch-rocker:before{content:"";position:absolute;inset:5px;border-radius:6px;background:linear-gradient(115deg,rgba(255,255,255,.06),transparent 32%,rgba(0,0,0,.16) 72%,rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.035)}
+    .switch-rocker:after{content:"";position:absolute;left:50%;top:14px;width:3px;height:3px;border-radius:50%;transform:translateX(-50%);background:#626268;box-shadow:0 0 4px rgba(255,255,255,.08);transition:all .25s ease}
+    .switch-control:hover .switch-plate{border-color:#5b3035;box-shadow:inset 1px 1px 1px rgba(255,255,255,.16),inset -2px -3px 5px rgba(0,0,0,.9),0 22px 48px rgba(0,0,0,.6),0 0 28px rgba(239,35,60,.08)}
+    .switch-control:focus-visible{outline:2px solid #ef233c;outline-offset:5px;border-radius:18px}
+    .switch-control:active .switch-rocker{transform:perspective(300px) rotateX(-7deg) translateY(2px)}
+    .switch-control.is-on .switch-rocker{transform:perspective(300px) rotateX(-9deg) translateY(3px);background:linear-gradient(100deg,#3a151a 0%,#76202a 24%,#50131a 55%,#8d2630 83%,#301014 100%);box-shadow:inset 0 2px 3px rgba(255,255,255,.17),inset 0 -4px 6px rgba(0,0,0,.65),0 1px 2px rgba(0,0,0,.6)}
+    .switch-control.is-on .switch-rocker:after{top:auto;bottom:14px;background:#ff5867;box-shadow:0 0 9px #ef233c,0 0 20px rgba(239,35,60,.65)}
+    .switch-control.is-on .switch-plate{box-shadow:inset 1px 1px 1px rgba(255,255,255,.16),inset -2px -3px 5px rgba(0,0,0,.9),0 22px 45px rgba(0,0,0,.55),0 0 38px rgba(239,35,60,.18)}
+    .switch-label{font-family:Sora,Inter,sans-serif;font-weight:700;font-size:clamp(17px,2.5vw,22px);letter-spacing:-.02em;color:#fff;text-shadow:0 0 22px rgba(239,35,60,.2);transition:color .25s ease,text-shadow .25s ease}
+    .switch-control:hover .switch-label,.switch-control.is-on .switch-label{color:#ffb1b8;text-shadow:0 0 24px rgba(239,35,60,.38)}
+    @keyframes switchWelcomeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:600px){.switch-plate{width:105px;height:160px}.switch-rocker{width:59px;height:95px}.switch-control{gap:24px}}
+    @media(prefers-reduced-motion:reduce){.welcome-content{animation:none}.welcome-screen,.switch-rocker,.switch-plate,.switch-label{transition:none}}
+</style>
 </head>
 <body>
 
-  <div class="welcome-screen" id="welcomeScreen" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-describedby="welcomeSubtitle">
+  <div class="welcome-screen" id="welcomeScreen" role="dialog" aria-modal="true" aria-label="Welcome">
     <div class="welcome-content">
-      <div class="welcome-mark">JASPAL · VIDEO EDITOR</div>
-      <h1 class="welcome-title" id="welcomeTitle">हर कहानी की शुरुआत<br><span>एक नए नज़रिए से।</span></h1>
-      <p class="welcome-subtitle" id="welcomeSubtitle">मेरी क्रिएटिव दुनिया में आपका स्वागत है।<br>आइए, शुरुआत करते हैं।</p>
-      <button class="welcome-enter" id="welcomeEnter" type="button">चलिए आरंभ करते हैं <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <div class="welcome-footnote">Stories · Motion · Creative Editing</div>
+      <button class="switch-control" id="welcomeEnter" type="button" aria-label="चलिए आरंभ करते हैं">
+        <span class="switch-plate" aria-hidden="true">
+          <i class="switch-screw top"></i><i class="switch-screw bottom"></i>
+          <span class="switch-rocker"></span>
+        </span>
+        <span class="switch-label">चलिए आरंभ करते हैं</span>
+      </button>
     </div>
   </div>
 
@@ -1217,35 +1224,37 @@
     }, { threshold: 0 });
     animatedEls.forEach(el => animIO.observe(el));
   
-    // Play a subtle synthesized click only after the visitor presses the welcome button.
+    // Toggle the physical-style light switch, play a soft click, then reveal the portfolio.
     const welcomeScreen = document.getElementById('welcomeScreen');
     const welcomeEnter = document.getElementById('welcomeEnter');
     if (welcomeScreen && welcomeEnter) {
       document.body.classList.add('welcome-open');
       welcomeEnter.addEventListener('click', () => {
+        welcomeEnter.classList.add('is-on');
         try {
           const AudioContextClass = window.AudioContext || window.webkitAudioContext;
           if (AudioContextClass) {
             const audio = new AudioContextClass();
             const oscillator = audio.createOscillator();
             const gain = audio.createGain();
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(880, audio.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(520, audio.currentTime + 0.045);
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(740, audio.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(360, audio.currentTime + 0.035);
             gain.gain.setValueAtTime(0.0001, audio.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.055, audio.currentTime + 0.006);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.075);
+            gain.gain.exponentialRampToValueAtTime(0.045, audio.currentTime + 0.004);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.065);
             oscillator.connect(gain); gain.connect(audio.destination);
-            oscillator.start(); oscillator.stop(audio.currentTime + 0.08);
+            oscillator.start(); oscillator.stop(audio.currentTime + 0.07);
             oscillator.addEventListener('ended', () => audio.close(), { once:true });
           }
         } catch (_) {}
-        welcomeScreen.classList.add('is-leaving');
-        document.body.classList.remove('welcome-open');
-        window.setTimeout(() => welcomeScreen.remove(), 700);
+        window.setTimeout(() => {
+          welcomeScreen.classList.add('is-leaving');
+          document.body.classList.remove('welcome-open');
+          window.setTimeout(() => welcomeScreen.remove(), 700);
+        }, 180);
       }, { once:true });
     }
-
   </script>
 </body>
 </html>
