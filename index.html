@@ -753,26 +753,26 @@
 
 
     /* Visibility hotfix: keep the hanging portrait in the visible hero area */
-    .wire-intro .spidey-drop{display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;top:8vh!important;width:clamp(100px,12vw,150px)!important;transform:translateX(-50%)!important;z-index:8!important;overflow:visible!important;animation:portraitDropIn 1.5s cubic-bezier(.2,.75,.25,1) .25s both!important}
+    .wire-intro .spidey-drop{display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;width:clamp(100px,12vw,150px)!important;transform:translateX(-50%)!important;z-index:8!important;overflow:visible!important;animation:portraitDropIn 1.5s cubic-bezier(.2,.75,.25,1) .25s both!important}
     .wire-intro .jaspal-hanging-photo{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:auto!important;min-height:120px;object-fit:contain!important;position:relative!important;z-index:2!important}
     .wire-intro .spidey-web{display:block!important;left:50%!important;top:-8vh!important;height:8vh!important;z-index:1!important}
     @keyframes portraitDropIn{0%{top:-30vh;transform:translateX(-50%) rotate(-8deg);opacity:0}100%{top:8vh;transform:translateX(-50%) rotate(0);opacity:1}}
     .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important}
-    @media(max-width:700px){.wire-intro .spidey-drop{top:7vh!important;width:92px!important}.wire-intro .jaspal-hanging-photo{min-height:100px}}
+    @media(max-width:700px){.wire-intro .spidey-drop{width:92px!important}.wire-intro .jaspal-hanging-photo{min-height:100px}}
 
 
     /* Hard fallback for portrait: reserve visible space even if embedded image decode fails */
-    .wire-intro .spidey-drop{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;top:7vh!important;width:clamp(130px,14vw,180px)!important;height:auto!important;min-height:180px!important;overflow:visible!important;z-index:50!important;pointer-events:none!important;transform:translateX(-50%)!important;animation:portraitDropIn 1.4s ease-out .2s both!important}
+    .wire-intro .spidey-drop{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;width:clamp(130px,14vw,180px)!important;height:auto!important;min-height:180px!important;overflow:visible!important;z-index:50!important;pointer-events:none!important;transform:translateX(-50%)!important;animation:portraitDropIn 1.4s ease-out .2s both!important}
     .wire-intro .jaspal-hanging-photo{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;width:100%!important;height:auto!important;min-height:180px!important;object-fit:contain!important;z-index:51!important}
     .wire-intro .spidey-web{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;top:-7vh!important;height:7vh!important;width:2px!important;z-index:1!important}
     @keyframes portraitDropIn{from{top:-25vh;transform:translateX(-50%) rotate(-8deg);opacity:.3}to{top:7vh;transform:translateX(-50%) rotate(0);opacity:1}}
     .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important}
-    @media(max-width:700px){.wire-intro .spidey-drop{top:7vh!important;width:112px!important;min-height:140px!important}.wire-intro .jaspal-hanging-photo{min-height:140px!important}}
+    @media(max-width:700px){.wire-intro .spidey-drop{width:112px!important;min-height:140px!important}.wire-intro .jaspal-hanging-photo{min-height:140px!important}}
 
 
     /* Final Jaspal character animation override */
     .wire-intro .spidey-drop{
-      position:absolute!important;left:50%!important;top:-230px!important;
+      position:absolute!important;left:50%!important;
       width:clamp(105px,11vw,145px)!important;height:auto!important;min-height:0!important;
       display:block!important;visibility:visible!important;opacity:1!important;
       overflow:visible!important;z-index:50!important;pointer-events:none!important;
@@ -811,7 +811,7 @@
 
     /* Emergency visibility fix: show uploaded portrait at a reliable size */
     .wire-intro .spidey-drop{
-      top:11vh!important;left:50%!important;width:clamp(150px,16vw,210px)!important;
+      left:50%!important;width:clamp(150px,16vw,210px)!important;
       height:auto!important;min-height:0!important;display:block!important;
       visibility:visible!important;opacity:1!important;z-index:100!important;
       overflow:visible!important;transform:translateX(-50%)!important;
@@ -824,7 +824,7 @@
     }
     .wire-intro.is-blasting .spidey-drop{animation:jaspalFall .95s cubic-bezier(.28,.04,.62,1) forwards!important}
     @media(max-width:700px){
-      .wire-intro .spidey-drop{top:10vh!important;width:clamp(120px,31vw,155px)!important}
+      .wire-intro .spidey-drop{width:clamp(120px,31vw,155px)!important}
       .wire-intro .jaspal-hanging-photo{max-height:34vh!important}
     }
 
@@ -856,6 +856,21 @@
     @media(max-width:700px){
       .wire-intro .wire-tip-grip{width:54px!important;height:54px!important}
       .wire-intro .wire-tip-grip i{height:15px!important}
+    }
+
+  
+    /* Final animation fix: do not lock top with !important; keyframes must move the character. */
+    .wire-intro .spidey-drop{
+      top:11vh;
+      transform:translateX(-50%) rotate(0);
+      animation:jaspalEnter 1.65s cubic-bezier(.2,.72,.25,1) .25s forwards!important;
+      will-change:top,transform;
+    }
+    .wire-intro.is-blasting .spidey-drop{
+      animation:jaspalFall 2.1s cubic-bezier(.28,.04,.62,1) forwards!important;
+    }
+    @media(max-width:700px){
+      .wire-intro .spidey-drop{top:10vh;width:clamp(120px,31vw,155px)!important}
     }
 
   </style>
@@ -1863,7 +1878,7 @@
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
           window.setTimeout(()=>welcomeScreen.remove(),650);
-        },1850);
+        },3000);
       }
       function beginWireDrag(side, event, handle){
         if(connected)return;
