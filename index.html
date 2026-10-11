@@ -1473,7 +1473,7 @@
         if (wireConnected) return;
         wireConnected = true;
         wireDragging = false;
-        setWireOffset(-window.innerWidth * .135);
+        setWireOffset(-window.innerWidth * (window.innerWidth <= 600 ? .20 : .135));
         wireRight.classList.add('wire-joined');
         wireRight.style.cursor = 'default';
         welcomeScreen.classList.add('is-connected');
