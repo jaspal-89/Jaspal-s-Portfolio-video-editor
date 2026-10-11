@@ -851,8 +851,8 @@
     .wire-intro .wire-right .wire-copper{width:18px!important;height:21px!important;border-radius:5px!important}
     .wire-intro .wire-left .wire-copper{filter:drop-shadow(0 0 8px #1683ff)!important}
     .wire-intro .wire-right .wire-copper{filter:drop-shadow(0 0 8px #ff304d)!important}
-    .wire-intro .wire-left{filter:drop-shadow(0 0 8px rgba(22,119,255,.25))!important}
-    .wire-intro .wire-right{filter:drop-shadow(0 0 8px rgba(239,35,60,.25))!important}
+    .wire-intro .wire-left{filter:drop-shadow(0 0 8px rgba(22,119,255,.25))!important;transform:none!important}
+    .wire-intro .wire-right{filter:drop-shadow(0 0 8px rgba(239,35,60,.25))!important;transform:none!important}
     @media(max-width:700px){
       .wire-intro .wire-tip-grip{width:54px!important;height:54px!important}
       .wire-intro .wire-tip-grip i{height:15px!important}
@@ -1763,7 +1763,16 @@
       ];
       let connected = false, dragging = false, draggingSide = 'right', lastTime = 0, motion = 0;
       let tip = {x:0,y:0}, velocity={x:0,y:0}, target={x:0,y:0}, left={x:0,y:0};
-      const pos = (el,x,y) => { el.style.left=x+'px'; el.style.top=y+'px'; };
+      const pos = (el,x,y) => {
+        const parent = el.offsetParent || el.parentElement;
+        const rect = parent.getBoundingClientRect();
+        el.style.left=(x-rect.left)+'px';
+        el.style.top=(y-rect.top)+'px';
+      };
+      const localPoint = (svg,x,y) => {
+        const r=svg.getBoundingClientRect();
+        return {x:x-r.left,y:y-r.top,w:r.width,h:r.height};
+      };
       function layout(reset) {
         const w=welcomeScreen.clientWidth,h=welcomeScreen.clientHeight;
         left={x:w*(w<700?.29:.31),y:h*(w<700?.76:.71)};
@@ -1778,21 +1787,25 @@
       function render(time){
         const dt=Math.min(2.2,(time-(lastTime||time))/16.67);lastTime=time;
         const w=welcomeScreen.clientWidth,h=welcomeScreen.clientHeight;
-        const leftStart={x:w*.08,y:-24},rightStart={x:w*.91,y:-24};
         const sway=Math.sin(time*.0013)*12;
         if(!dragging&&!connected){
           target.x=w*(w<700?.77:.76)+Math.sin(time*.0011)*14;
-          target.y=h*(w<700?.77:.70)+Math.sin(time*.0017)*17;
+          target.y=h*(w<700?.76:.70)+Math.sin(time*.0017)*12;
         }
         const spring=dragging?.18:.035;
         velocity.x=(velocity.x+(target.x-tip.x)*spring*dt)*Math.pow(dragging?.72:.91,dt);
         velocity.y=(velocity.y+(target.y-tip.y)*spring*dt)*Math.pow(dragging?.72:.91,dt);
         tip.x+=velocity.x*dt;tip.y+=velocity.y*dt;
-        const leftD=curve(leftStart.x,leftStart.y,left.x,left.y,1,sway);
-        const rightD=curve(rightStart.x,rightStart.y,tip.x,tip.y,-1,-sway);
+        const leftSvg=paths[0][0].ownerSVGElement, rightSvg=paths[1][0].ownerSVGElement;
+        const lp=localPoint(leftSvg,left.x,left.y), rp=localPoint(rightSvg,tip.x,tip.y);
+        leftSvg.setAttribute('viewBox',`0 0 ${lp.w} ${lp.h}`);
+        rightSvg.setAttribute('viewBox',`0 0 ${rp.w} ${rp.h}`);
+        const leftStart={x:lp.w*.02,y:-8},rightStart={x:rp.w*.98,y:-8};
+        const leftD=curve(leftStart.x,leftStart.y,lp.x,lp.y,1,sway);
+        const rightD=curve(rightStart.x,rightStart.y,rp.x,rp.y,-1,-sway);
         paths[0].forEach(p=>p.setAttribute('d',leftD));
         paths[1].forEach(p=>p.setAttribute('d',rightD));
-        pos(rightTip,tip.x,tip.y);pos(wireGrip,tip.x,tip.y);pos(spark,tip.x,tip.y);
+        pos(leftTip,left.x,left.y);pos(rightTip,tip.x,tip.y);pos(wireGrip,tip.x,tip.y);pos(spark,tip.x,tip.y);
         if(!connected && Math.hypot(tip.x-left.x,tip.y-left.y)<45) connectWires();
         if(welcomeScreen.isConnected&&!connected)requestAnimationFrame(render);
         else if(welcomeScreen.isConnected&&connected&&motion++<30)requestAnimationFrame(render);
@@ -1844,14 +1857,13 @@
             fallingCharacter.style.setProperty('animation','none','important');
             fallingCharacter.offsetHeight;
             fallingCharacter.style.setProperty('animation','jaspalFall .95s cubic-bezier(.28,.04,.62,1) forwards','important');
-            fallingCharacter.style.setProperty('top','11vh','important');
           }
         },100);
         window.setTimeout(()=>{
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
           window.setTimeout(()=>welcomeScreen.remove(),650);
-        },1200);
+        },1850);
       }
       function beginWireDrag(side, event, handle){
         if(connected)return;
