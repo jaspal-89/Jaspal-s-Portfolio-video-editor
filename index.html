@@ -1907,12 +1907,27 @@
           welcomeScreen.classList.add('is-blasting');
           const fallingCharacter = welcomeScreen.querySelector('.spidey-drop');
           if (fallingCharacter) {
-            /* Restart the exact transform-based fall animation; avoid the older top-based keyframes. */
+            /*
+              Animate with requestAnimationFrame instead of CSS keyframes.
+              Several legacy !important transform rules were overriding keyframe transforms.
+            */
             fallingCharacter.style.setProperty('animation','none','important');
-            fallingCharacter.style.setProperty('top','11vh','important');
-            fallingCharacter.style.setProperty('transform','translateX(-50%) translateY(0) rotate(0)','important');
-            void fallingCharacter.offsetWidth;
-            fallingCharacter.style.setProperty('animation','characterFallStable 2.1s cubic-bezier(.28,.04,.62,1) forwards','important');
+            fallingCharacter.style.setProperty('transition','none','important');
+            const start=performance.now();
+            const duration=1500;
+            const startTop=11;
+            const endTop=68;
+            function fallFrame(now){
+              const raw=Math.min(1,(now-start)/duration);
+              const eased=1-Math.pow(1-raw,2.15);
+              const top=startTop+(endTop-startTop)*eased;
+              const rotate=265*eased;
+              fallingCharacter.style.setProperty('top',top+'vh','important');
+              fallingCharacter.style.setProperty('transform','translateX(-50%) rotate('+rotate+'deg)','important');
+              fallingCharacter.style.setProperty('opacity',String(1-.04*raw),'important');
+              if(raw<1 && fallingCharacter.isConnected) requestAnimationFrame(fallFrame);
+            }
+            requestAnimationFrame(fallFrame);
           }
         },100);
         window.setTimeout(()=>{
