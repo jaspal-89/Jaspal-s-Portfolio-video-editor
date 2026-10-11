@@ -751,6 +751,15 @@
     .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important;}
     @media(max-width:700px){.spidey-drop{width:86px!important;top:-220px}.jaspal-hanging-photo{width:100%}}
 
+
+    /* Visibility hotfix: keep the hanging portrait in the visible hero area */
+    .wire-intro .spidey-drop{display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;top:8vh!important;width:clamp(100px,12vw,150px)!important;transform:translateX(-50%)!important;z-index:8!important;overflow:visible!important;animation:portraitDropIn 1.5s cubic-bezier(.2,.75,.25,1) .25s both!important}
+    .wire-intro .jaspal-hanging-photo{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:auto!important;min-height:120px;object-fit:contain!important;position:relative!important;z-index:2!important}
+    .wire-intro .spidey-web{display:block!important;left:50%!important;top:-8vh!important;height:8vh!important;z-index:1!important}
+    @keyframes portraitDropIn{0%{top:-30vh;transform:translateX(-50%) rotate(-8deg);opacity:0}100%{top:8vh;transform:translateX(-50%) rotate(0);opacity:1}}
+    .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important}
+    @media(max-width:700px){.wire-intro .spidey-drop{top:7vh!important;width:92px!important}.wire-intro .jaspal-hanging-photo{min-height:100px}}
+
   </style>
 </head>
 <body>
