@@ -929,10 +929,12 @@
     .pw-subtitle b{color:#ff344b;padding:0 7px}
     .portfolio-welcome.is-active{visibility:visible;opacity:1}
     .portfolio-welcome.is-active .pw-overline{animation:pwRise .45s ease-out .08s forwards}
-    .portfolio-welcome.is-active .pw-title span{animation:pwReveal .55s cubic-bezier(.2,.7,.2,1) .22s forwards}
-    .portfolio-welcome.is-active .pw-title strong{animation:pwTitleIn .72s cubic-bezier(.16,1,.3,1) .45s forwards}
-    .portfolio-welcome.is-active .pw-rule span{animation:pwLine .5s ease-out .9s forwards}
-    .portfolio-welcome.is-active .pw-subtitle{animation:pwRise .5s ease-out 1.02s forwards}
+    .portfolio-welcome.is-active .pw-title span{opacity:1;transform:none;clip-path:none}
+    .portfolio-welcome.is-active .pw-title strong{opacity:1;transform:none;filter:none}
+    .portfolio-welcome.is-active .pw-rule span{animation:pwLine .5s ease-out .2s forwards}
+    .portfolio-welcome.is-active .pw-subtitle{opacity:1;transform:none}
+    .pw-type-cursor{display:inline-block;width:.08em;height:.85em;background:#ff344b;margin-left:.08em;vertical-align:-.04em;animation:pwCursor .7s steps(1) infinite}
+    @keyframes pwCursor{50%{opacity:0}}
     .portfolio-welcome.is-done{animation:pwOut .35s ease-in forwards}
     @keyframes pwRise{to{opacity:1;transform:translateY(0)}}
     @keyframes pwReveal{to{opacity:1;transform:translateY(0);clip-path:inset(0 0 0 0)}}
@@ -997,9 +999,9 @@
 
   <div class="portfolio-welcome" id="portfolioWelcome" aria-live="polite" aria-hidden="true">
     <div class="pw-overline">VIDEO EDITOR <b>•</b> VISUAL STORYTELLER</div>
-    <div class="pw-title"><span>HEY, I'M</span><strong>JASPAL<span class="pw-period">.</span></strong></div>
+    <div class="pw-title"><span data-typewriter="HEY, I'M"></span><strong><span data-typewriter="JASPAL"></span><span class="pw-period">.</span></strong></div>
     <div class="pw-rule"><span></span></div>
-    <div class="pw-subtitle">LET'S CREATE <b>SOMETHING GREAT.</b></div>
+    <div class="pw-subtitle"><span data-typewriter="LET'S CREATE SOMETHING GREAT."></span></div>
   </div>
 
   <div class="noise"></div>
@@ -1788,21 +1790,23 @@
     window.addEventListener('resize', onScrollEffects);
     onScrollEffects();
 
-    // Play the supplied ElevenLabs scroll voiceover on the visitor's first scroll.
+    // Play the second voiceover directly from the visitor's first scroll gesture.
     let portfolioScrollVoicePlayed = false;
     function playPortfolioScrollVoice() {
-      if (portfolioScrollVoicePlayed || window.scrollY < 40) return;
+      if (portfolioScrollVoicePlayed) return;
       portfolioScrollVoicePlayed = true;
       portfolioScrollVoice.currentTime = 0;
-      portfolioScrollVoice.play().catch(err => {
+      const playback = portfolioScrollVoice.play();
+      if (playback && typeof playback.catch === 'function') playback.catch(err => {
         console.warn('Scroll voice playback failed:', err);
         portfolioScrollVoicePlayed = false;
       });
     }
-    window.addEventListener('scroll', playPortfolioScrollVoice, { passive: true });
-    // Also attempt on a direct user gesture once the page has reached the first-scroll position.
-    window.addEventListener('wheel', playPortfolioScrollVoice, { passive: true });
-    window.addEventListener('touchmove', playPortfolioScrollVoice, { passive: true });
+    window.addEventListener('wheel', playPortfolioScrollVoice, { passive: true, once: true });
+    window.addEventListener('touchstart', playPortfolioScrollVoice, { passive: true, once: true });
+    window.addEventListener('keydown', event => {
+      if (['ArrowDown','PageDown','Space'].includes(event.code) && !portfolioScrollVoicePlayed) playPortfolioScrollVoice();
+    });
 
     // Floating buddy avatar — appears after a few scrolls, cycles fun messages
     const floatBuddy = document.getElementById('floatBuddy');
@@ -1958,12 +1962,9 @@
       function connectWires(){
         if(connected)return;
         connected=true;dragging=false;target={...left};tip={...left};
-        // Start the welcome MP3 directly in the wire-connection user gesture
-        // so browser autoplay policies do not block it after a delayed timeout.
-        try {
-          welcomeAudio.currentTime = 0;
-          welcomeAudio.play().catch(err => console.warn('Welcome voice playback failed:', err));
-        } catch(err) { console.warn('Welcome voice playback failed:', err); }
+        // Unlock audio from the wire gesture; actual playback starts with the welcome card.
+        welcomeAudio.pause();
+        welcomeAudio.currentTime = 0;
         welcomeScreen.classList.add('is-connected');
         wireRight.classList.add('wire-joined');
         wireGrip.style.cursor='default';
@@ -2007,11 +2008,45 @@
           if(welcomeCard){
             welcomeCard.setAttribute('aria-hidden','false');
             welcomeCard.classList.add('is-active');
-            window.setTimeout(()=>{
-              welcomeCard.classList.add('is-done');
-              welcomeCard.setAttribute('aria-hidden','true');
-              window.setTimeout(()=>welcomeCard.classList.remove('is-active','is-done'),400);
-            },2350);
+            const typewriterNodes = [...welcomeCard.querySelectorAll('[data-typewriter]')];
+            const fullTexts = typewriterNodes.map(node => node.dataset.typewriter);
+            typewriterNodes.forEach(node => { node.textContent = ''; });
+            let voiceDuration = 0;
+            const showCardUntilDone = () => {
+              const totalChars = fullTexts.reduce((sum, value) => sum + value.length, 0);
+              const typeDuration = Math.max(2200, voiceDuration || 4500);
+              const startAt = performance.now();
+              function typeFrame(now) {
+                const progress = Math.min(1, (now - startAt) / typeDuration);
+                let charsToShow = Math.floor(progress * totalChars);
+                typewriterNodes.forEach((node, index) => {
+                  const prior = fullTexts.slice(0, index).reduce((sum, value) => sum + value.length, 0);
+                  node.textContent = fullTexts[index].slice(0, Math.max(0, Math.min(fullTexts[index].length, charsToShow - prior)));
+                });
+                if(progress < 1) requestAnimationFrame(typeFrame);
+              }
+              requestAnimationFrame(typeFrame);
+              const keepMs = Math.max(2200, (voiceDuration || 4.5) * 1000) + 450;
+              window.setTimeout(() => {
+                welcomeCard.classList.add('is-done');
+                welcomeCard.setAttribute('aria-hidden','true');
+                window.setTimeout(()=>welcomeCard.classList.remove('is-active','is-done'),400);
+              }, keepMs);
+            };
+            welcomeAudio.pause();
+            welcomeAudio.currentTime = 0;
+            welcomeAudio.onloadedmetadata = () => { voiceDuration = Number.isFinite(welcomeAudio.duration) ? welcomeAudio.duration * 1000 : 0; };
+            welcomeAudio.onended = () => {};
+            const startVoice = welcomeAudio.play();
+            if(startVoice && typeof startVoice.then === 'function') {
+              startVoice.then(() => {
+                voiceDuration = Number.isFinite(welcomeAudio.duration) ? welcomeAudio.duration * 1000 : 0;
+                showCardUntilDone();
+              }).catch(err => {
+                console.warn('Welcome voice playback failed:', err);
+                showCardUntilDone();
+              });
+            } else showCardUntilDone();
           }
         },650);
       }
