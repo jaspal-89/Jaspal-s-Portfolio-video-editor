@@ -450,32 +450,98 @@
     }
 
 
+  
+    /* Cinematic editor intro — clean composition, restrained red light, tactile switch */
+    .welcome-screen{
+      overflow:hidden;isolation:isolate;background:#070708;
+      background-image:radial-gradient(ellipse at 50% 46%,rgba(239,35,60,.10),transparent 37%),linear-gradient(120deg,#09090b 0%,#0c090b 55%,#070708 100%);
+      transition:opacity .65s ease,visibility .65s ease;
+    }
+    .welcome-screen:before{
+      opacity:.055;background-image:linear-gradient(rgba(255,255,255,.45) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.45) 1px,transparent 1px);
+      background-size:72px 72px;mask-image:radial-gradient(ellipse at center,#000 12%,transparent 75%);
+    }
+    .cinema-backdrop{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .cinema-halo{position:absolute;width:min(68vw,900px);aspect-ratio:1;left:50%;top:46%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(239,35,60,.105),rgba(239,35,60,.025) 36%,transparent 69%);filter:blur(8px)}
+    .cinema-frame{position:absolute;top:9vh;bottom:9vh;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.12) 20%,rgba(255,255,255,.12) 80%,transparent)}
+    .cinema-frame-left{left:7vw}.cinema-frame-right{right:7vw}
+    .cinema-index{position:absolute;left:calc(7vw + 20px);top:9vh;color:rgba(255,255,255,.34);font:600 10px/1 'Space Grotesk',sans-serif;letter-spacing:.22em}
+    .cinema-bottomline{position:absolute;left:calc(7vw + 20px);right:calc(7vw + 20px);bottom:8.7vh;display:flex;justify-content:space-between;color:rgba(255,255,255,.30);font:600 9px/1 'Space Grotesk',sans-serif;letter-spacing:.2em}
+    .welcome-content{width:min(100%,760px);min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;text-align:center;animation:switchWelcomeIn .85s cubic-bezier(.2,.8,.2,1) both}
+    .welcome-copy{max-width:690px;padding:0 12px}
+    .welcome-kicker{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;color:rgba(255,255,255,.55);font:600 10px/1.4 'Space Grotesk',sans-serif;letter-spacing:.28em}
+    .welcome-kicker:before{content:"";width:22px;height:1px;background:#ef233c}
+    .kicker-dot{width:4px;height:4px;border-radius:50%;background:#ef233c;box-shadow:0 0 10px rgba(239,35,60,.7)}
+    .welcome-title{font-family:"Tiro Devanagari Hindi","Noto Serif Devanagari",serif;font-weight:500;font-size:clamp(39px,6.3vw,76px);line-height:1.32;letter-spacing:0;color:#f7f3f3;text-wrap:balance;text-shadow:0 8px 40px rgba(0,0,0,.34)}
+    .welcome-title .title-line{display:block;overflow:hidden;padding-bottom:.05em}
+    .welcome-title .title-line span{display:inline-block;transform:translateY(115%);opacity:0;animation:devanagariLineReveal .9s cubic-bezier(.18,.75,.22,1) forwards}
+    .welcome-title .title-line:nth-child(1) span{animation-delay:.25s}
+    .welcome-title .title-line:nth-child(2) span{animation-delay:.48s}
+    .welcome-title .title-line:nth-child(3) span{animation-delay:.70s}
+    .welcome-title em{font-style:normal;color:#ff5365;text-shadow:0 0 32px rgba(239,35,60,.17)}
+    .welcome-direction{margin-top:15px;color:rgba(255,255,255,.55);font-family:"Noto Serif Devanagari",serif;font-size:clamp(14px,1.55vw,17px);line-height:1.9;opacity:0;animation:welcomeTextRise .7s .88s ease forwards}
+    .switch-control{display:flex;flex-direction:row;align-items:center;gap:14px;padding:7px 7px 7px 9px;border:1px solid rgba(255,255,255,.17);border-radius:999px;background:rgba(255,255,255,.035);backdrop-filter:blur(10px);color:#fff;opacity:0;animation:welcomeSwitchArrive .75s 1.05s cubic-bezier(.2,.8,.2,1) forwards;transition:border-color .25s ease,background .25s ease,transform .25s ease}
+    .switch-plate{display:grid;place-items:center;width:46px;height:28px;padding:3px;border-radius:999px;background:#262326;border:1px solid #494047;box-shadow:inset 0 2px 5px rgba(0,0,0,.55);transition:background .25s ease,border-color .25s ease}
+    .switch-plate:before{display:none}
+    .switch-rocker{display:block;width:20px;height:20px;margin-right:auto;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:linear-gradient(145deg,#f7f3f3,#aaa4a6);box-shadow:0 2px 5px rgba(0,0,0,.45);transform:none;transition:transform .25s ease,background .25s ease,box-shadow .25s ease}
+    .switch-rocker:before,.switch-rocker:after,.switch-screw{display:none}
+    .switch-label{display:flex;align-items:center;gap:13px;padding:0 16px 0 0;font-family:"Noto Serif Devanagari",serif;font-size:16px;font-weight:500;letter-spacing:0;color:#f5f0f1;text-shadow:none;white-space:nowrap;transition:color .25s ease}
+    .switch-arrow{font:18px/1 'Inter',sans-serif;color:#ff5365;transition:transform .25s ease}
+    .switch-control:hover{border-color:rgba(239,35,60,.52);background:rgba(239,35,60,.055);transform:translateY(-2px)}
+    .switch-control:hover .switch-arrow{transform:translate(2px,-2px)}
+    .switch-control:hover .switch-plate{border-color:#7a333c}
+    .switch-control:hover .switch-label,.switch-control.is-on .switch-label{color:#fff}
+    .switch-control:focus-visible{outline:2px solid #ef233c;outline-offset:5px}
+    .switch-control:active .switch-rocker{transform:scale(.92)}
+    .switch-control.is-on .switch-plate{background:#3b1219;border-color:#8a2d3a}
+    .switch-control.is-on .switch-rocker{transform:translateX(16px);background:#ff5365;box-shadow:0 0 12px rgba(239,35,60,.48)}
+    .welcome-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.015);transition:opacity .65s ease,visibility .65s ease,transform .8s ease}
+    .welcome-screen.switch-entering .welcome-content{opacity:0;transform:translateY(-8px);filter:blur(3px);transition:opacity .35s ease,transform .4s ease,filter .35s ease}
+    @media(max-width:600px){
+      .cinema-frame-left{left:20px}.cinema-frame-right{right:20px}
+      .cinema-index{left:34px;top:28px}.cinema-bottomline{left:34px;right:34px;bottom:28px;font-size:8px;letter-spacing:.12em}
+      .welcome-content{gap:27px;padding:0 4px}
+      .welcome-kicker{font-size:9px;letter-spacing:.2em;margin-bottom:19px}
+      .welcome-title{font-size:clamp(36px,10vw,53px);line-height:1.42}
+      .welcome-direction{font-size:14px;max-width:320px}
+      .switch-control{gap:10px}
+      .switch-label{font-size:14px;gap:10px;padding-right:12px}
+      .switch-plate{width:42px;height:26px}
+      .switch-rocker{width:18px;height:18px}
+      .switch-control.is-on .switch-rocker{transform:translateX(14px)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .welcome-content,.welcome-kicker,.welcome-title,.welcome-title .title-line span,.welcome-direction,.switch-control{opacity:1;animation:none;transform:none;filter:none}
+      .welcome-screen,.switch-rocker,.switch-plate,.switch-label{transition:none}
+    }
+
   </style>
 </head>
 <body>
 
   <div class="welcome-screen" id="welcomeScreen" role="dialog" aria-modal="true" aria-label="स्वागत है">
-    <div class="welcome-room" aria-hidden="true">
-      <div class="room-wall-texture"></div><div class="room-cornice"></div>
-      <div class="room-floor"></div>
-      <div class="room-door-frame"><div class="room-door-light"></div><div class="room-door"></div></div>
+    <div class="cinema-backdrop" aria-hidden="true">
+      <div class="cinema-halo"></div>
+      <div class="cinema-frame cinema-frame-left"></div>
+      <div class="cinema-frame cinema-frame-right"></div>
+      <div class="cinema-index">J / 01</div>
+      <div class="cinema-bottomline"><span>VIDEO EDITING</span><span>CREATIVE PORTFOLIO</span></div>
     </div>
     <div class="welcome-content">
       <div class="welcome-copy">
-        <p class="welcome-kicker">एक नई शुरुआत</p>
-        <h2 class="welcome-title" aria-label="पधारिए, हमारी रचनात्मक दुनिया में आपका स्वागत है।">
-          <span class="title-line"><span>पधारिए, हमारी</span></span>
-          <span class="title-line"><span><em>रचनात्मक दुनिया</em> में</span></span>
-          <span class="title-line"><span>आपका स्वागत है।</span></span>
+        <p class="welcome-kicker">JASPAL <span class="kicker-dot"></span> VIDEO EDITOR</p>
+        <h2 class="welcome-title" aria-label="हर फ़्रेम की अपनी कहानी है।">
+          <span class="title-line"><span>हर फ़्रेम की</span></span>
+          <span class="title-line"><span><em>अपनी कहानी</em></span></span>
+          <span class="title-line"><span>है।</span></span>
         </h2>
-        <p class="welcome-direction">स्विच दबाइए और इस कक्ष में प्रवेश कीजिए।</p>
+        <p class="welcome-direction">कुछ ऐसा देखने के लिए तैयार हैं, जिसे लोग रोककर देखें?</p>
       </div>
       <button class="switch-control" id="welcomeEnter" type="button" aria-label="चलिए आरंभ करते हैं">
         <span class="switch-plate" aria-hidden="true">
-          <i class="switch-screw top"></i><i class="switch-screw bottom"></i>
           <span class="switch-rocker"></span>
         </span>
-        <span class="switch-label">चलिए आरंभ करते हैं</span>
+        <span class="switch-label">चलिए आरंभ करते हैं <span class="switch-arrow" aria-hidden="true">↗</span></span>
       </button>
     </div>
   </div>
@@ -1320,57 +1386,41 @@
     const welcomeEnter = document.getElementById('welcomeEnter');
     if (welcomeScreen && welcomeEnter) {
       document.body.classList.add('welcome-open');
-      // A restrained synthesized soundscape: tactile switch, low door movement, and a warm three-note chime.
+      // Quiet tactile switch click with a soft, short confirmation chime.
       function playEntrySoundscape() {
         try {
           const AudioContextClass = window.AudioContext || window.webkitAudioContext;
           if (!AudioContextClass) return;
           const audio = new AudioContextClass();
           const now = audio.currentTime;
-          // Mechanical switch click
           const click = audio.createOscillator();
           const clickGain = audio.createGain();
           click.type = 'triangle';
-          click.frequency.setValueAtTime(740, now);
-          click.frequency.exponentialRampToValueAtTime(360, now + 0.035);
+          click.frequency.setValueAtTime(680, now);
+          click.frequency.exponentialRampToValueAtTime(320, now + 0.028);
           clickGain.gain.setValueAtTime(0.0001, now);
-          clickGain.gain.exponentialRampToValueAtTime(0.045, now + 0.004);
-          clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+          clickGain.gain.exponentialRampToValueAtTime(0.026, now + 0.003);
+          clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
           click.connect(clickGain); clickGain.connect(audio.destination);
-          click.start(now); click.stop(now + 0.075);
-          // Deep, quiet door-opening movement
-          const door = audio.createOscillator();
-          const doorGain = audio.createGain();
-          const filter = audio.createBiquadFilter();
-          door.type = 'sawtooth';
-          door.frequency.setValueAtTime(105, now + 0.12);
-          door.frequency.exponentialRampToValueAtTime(48, now + 0.85);
-          filter.type = 'lowpass'; filter.frequency.setValueAtTime(180, now + 0.12);
-          filter.frequency.exponentialRampToValueAtTime(85, now + 0.85);
-          doorGain.gain.setValueAtTime(0.0001, now + 0.12);
-          doorGain.gain.exponentialRampToValueAtTime(0.018, now + 0.22);
-          doorGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.92);
-          door.connect(filter); filter.connect(doorGain); doorGain.connect(audio.destination);
-          door.start(now + 0.12); door.stop(now + 0.95);
-          // Soft, warm chime as the doorway opens
-          [523.25, 659.25, 783.99].forEach((frequency, index) => {
-            const start = now + 0.62 + index * 0.16;
+          click.start(now); click.stop(now + 0.06);
+          [587.33, 783.99].forEach((frequency, index) => {
+            const start = now + 0.12 + index * 0.11;
             const tone = audio.createOscillator();
-            const toneGain = audio.createGain();
+            const gain = audio.createGain();
             tone.type = 'sine';
             tone.frequency.setValueAtTime(frequency, start);
-            toneGain.gain.setValueAtTime(0.0001, start);
-            toneGain.gain.exponentialRampToValueAtTime(0.022, start + 0.035);
-            toneGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.72);
-            tone.connect(toneGain); toneGain.connect(audio.destination);
-            tone.start(start); tone.stop(start + 0.74);
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(0.012, start + 0.025);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.42);
+            tone.connect(gain); gain.connect(audio.destination);
+            tone.start(start); tone.stop(start + 0.44);
           });
-          window.setTimeout(() => audio.close().catch(() => {}), 1900);
+          window.setTimeout(() => audio.close().catch(() => {}), 900);
         } catch (_) {}
       }
       welcomeEnter.addEventListener('click', () => {
         welcomeEnter.classList.add('is-on');
-        welcomeScreen.classList.add('room-entering');
+        welcomeScreen.classList.add('switch-entering');
         playEntrySoundscape();
         window.setTimeout(() => {
           welcomeScreen.classList.add('is-leaving');
