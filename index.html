@@ -527,17 +527,37 @@
     .wire-center-copy h2 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px #ff4358;text-shadow:0 0 30px rgba(239,35,60,.2)}
     .wire-instruction{margin-top:23px;font:700 10px/1.5 'Space Grotesk',sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.48);animation:wirePulse 1.8s ease-in-out infinite}
     @keyframes wirePulse{0%,100%{opacity:.45}50%{opacity:1}}
-    .wire-run{position:absolute;top:62%;height:12px;transform:translateY(-50%);z-index:4;filter:drop-shadow(0 0 12px rgba(239,35,60,.2))}
-    .wire-left{left:0;width:43.5vw;transform:translateY(-50%) rotate(4deg);transform-origin:right center}
-    .wire-right{left:56.5vw;width:43.5vw;transform:translateY(-50%) rotate(-4deg);transform-origin:left center;cursor:grab;touch-action:none;outline:none;user-select:none;-webkit-user-select:none}
+    .wire-run{position:absolute;top:43%;height:clamp(190px,30vh,340px);width:clamp(170px,25vw,360px);z-index:4;filter:drop-shadow(0 0 10px rgba(239,35,60,.22));pointer-events:none}
+    .wire-left{left:calc(50% - clamp(170px,25vw,360px) - 2px);transform:rotate(-8deg);transform-origin:top right}
+    .wire-right{left:calc(50% + 2px);transform:rotate(8deg);transform-origin:top left;cursor:grab;touch-action:none;outline:none;user-select:none;-webkit-user-select:none;pointer-events:auto}
     .wire-right:active{cursor:grabbing}
-    .wire-core{position:absolute;left:0;right:0;top:4px;height:4px;border-radius:4px;background:linear-gradient(90deg,#151518,#4b171e 45%,#f04456 100%);box-shadow:0 0 7px rgba(239,35,60,.4)}
-    .wire-left .wire-core{background:linear-gradient(90deg,#111114,#29292d 65%,#c52c3f)}
-    .wire-core:after{content:"";position:absolute;inset:1px 0;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent);border-radius:4px}
-    .wire-copper{position:absolute;right:-4px;top:0;width:9px;height:12px;border-radius:2px;background:linear-gradient(90deg,#713a23,#f0b16c 35%,#7c4327 70%,#e8a568);box-shadow:0 0 12px rgba(255,157,83,.3)}
-    .wire-right .wire-copper{right:auto;left:-4px}
-    .wire-tip-grip{position:absolute;left:-22px;top:-7px;width:28px;height:26px;display:flex;align-items:center;justify-content:center;gap:3px;border:1px solid rgba(255,112,122,.55);border-radius:7px;background:rgba(14,10,12,.95);box-shadow:0 0 18px rgba(239,35,60,.25)}
+    .wire-run:before{content:"";position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,transparent 46%,rgba(0,0,0,.85) 47%,#28252a 49%,#100f12 52%,transparent 54%);clip-path:polygon(46% 0,55% 0,78% 24%,100% 43%,90% 50%,70% 32%,49% 9%,35% 28%,13% 44%,0 40%,25% 24%);opacity:.8}
+    .wire-core{position:absolute;left:0;right:0;top:0;height:100%;border-radius:50%;background:transparent}
+    .wire-core:after{content:"";position:absolute;inset:0;background:none}
+    .wire-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 3px rgba(239,35,60,.35))}
+    .wire-svg path{fill:none;stroke:#29262a;stroke-width:9;stroke-linecap:round}
+    .wire-svg .wire-highlight{stroke:#777078;stroke-width:2;opacity:.7}
+    .wire-svg .wire-live{stroke:#ef233c;stroke-width:1.8;opacity:.75;filter:drop-shadow(0 0 5px #ef233c)}
+    .wire-copper{position:absolute;bottom:0;left:calc(50% - 5px);width:12px;height:16px;border-radius:3px;background:linear-gradient(90deg,#713a23,#f0b16c 35%,#7c4327 70%,#e8a568);box-shadow:0 0 12px rgba(255,157,83,.45);z-index:3}
+    .wire-left .wire-copper{left:calc(50% - 5px)}
+    .wire-right .wire-copper{left:calc(50% - 5px)}
+    .wire-tip-grip{position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);width:28px;height:24px;display:flex;align-items:center;justify-content:center;gap:3px;border:1px solid rgba(255,112,122,.55);border-radius:7px;background:rgba(14,10,12,.95);box-shadow:0 0 18px rgba(239,35,60,.25);pointer-events:auto;cursor:grab}
     .wire-tip-grip i{width:2px;height:10px;border-radius:2px;background:#ff6573;opacity:.85}
+    .wire-spark{position:absolute;left:50%;bottom:-3px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px 4px #ff5a68,0 0 22px 10px rgba(239,35,60,.8);opacity:0;pointer-events:none;z-index:7}
+    .wire-spark:before,.wire-spark:after{content:"";position:absolute;left:50%;top:50%;width:60px;height:2px;background:linear-gradient(90deg,transparent,#fff,#ff5365,transparent);transform-origin:left center;animation:sparkArc .16s steps(2,end) infinite}
+    .wire-spark:before{transform:rotate(-50deg)}.wire-spark:after{transform:rotate(140deg)}
+    .wire-right:not(.wire-joined) .wire-spark{opacity:.95;animation:sparkFlicker .24s steps(2,end) infinite}
+    @keyframes sparkFlicker{0%,100%{opacity:.25;transform:scale(.6)}50%{opacity:1;transform:scale(1.5)}}
+    @keyframes sparkArc{0%{opacity:.2;scale:.6}100%{opacity:1;scale:1.2}}
+    @keyframes wireSwayLeft{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(-3deg)}}
+    @keyframes wireSwayRight{0%,100%{transform:rotate(8deg)}50%{transform:rotate(3deg)}}
+    .wire-left{animation:wireSwayLeft 2.7s ease-in-out infinite}
+    .wire-right{animation:wireSwayRight 2.4s ease-in-out infinite}
+    .wire-intro.is-connected .wire-left,.wire-intro.is-connected .wire-right{animation:none}
+    .wire-intro.is-connected .wire-right{transform:translateX(calc(-1 * clamp(170px,25vw,360px))) rotate(0deg)}
+    .wire-intro.is-connected .wire-spark{opacity:1;transform:scale(2.8)}
+    .wire-intro.is-blasting{animation:screenImpact .8s cubic-bezier(.3,.05,.6,1) both}
+    @keyframes screenImpact{0%,100%{translate:0 0}8%{translate:-14px 7px}16%{translate:13px -8px}24%{translate:-11px -6px}32%{translate:10px 5px}42%{translate:-7px 4px}52%{translate:6px -3px}64%{translate:-3px 2px}76%{translate:2px -1px}88%{translate:-1px 1px}}
     .wire-footer{position:absolute;bottom:8vh;left:7vw;right:7vw;display:flex;justify-content:space-between;color:rgba(255,255,255,.24);font:600 9px/1 'Space Grotesk',sans-serif;letter-spacing:.2em}
     .wire-blast{position:absolute;left:50%;top:50%;width:20px;height:20px;transform:translate(-50%,-50%) scale(.1);opacity:0;pointer-events:none;z-index:8}
     .blast-core{position:absolute;inset:-20px;border-radius:50%;background:#fff;box-shadow:0 0 24px 12px #ffb7a0,0 0 70px 34px #ef233c}
@@ -579,9 +599,14 @@
       <h2>MAKE THE<br><em>CONNECTION.</em></h2>
       <p class="wire-instruction" id="wireInstruction">DRAG THE LOOSE WIRE TO CONNECT</p>
     </div>
-    <div class="wire-run wire-left" aria-hidden="true"><span class="wire-core"></span><span class="wire-copper"></span></div>
-    <div class="wire-run wire-right" id="wireRight" role="button" tabindex="0" aria-label="Connect the loose wire to open the portfolio">
+    <div class="wire-run wire-left" aria-hidden="true">
+      <svg class="wire-svg" viewBox="0 0 240 300" preserveAspectRatio="none"><path d="M120 0 C112 45 34 42 46 112 S174 168 112 226 S118 268 120 292"/><path class="wire-highlight" d="M118 0 C110 45 32 42 44 112 S172 168 110 226 S116 268 118 292"/><path class="wire-live" d="M120 0 C112 45 34 42 46 112 S174 168 112 226 S118 268 120 292"/></svg>
       <span class="wire-core"></span><span class="wire-copper"></span>
+    </div>
+    <div class="wire-run wire-right" id="wireRight" role="button" tabindex="0" aria-label="Connect the loose wire to open the portfolio">
+      <svg class="wire-svg" viewBox="0 0 240 300" preserveAspectRatio="none"><path d="M120 0 C128 48 204 54 190 120 S48 170 122 230 S126 268 120 292"/><path class="wire-highlight" d="M122 0 C130 48 206 54 192 120 S50 170 124 230 S128 268 122 292"/><path class="wire-live" d="M120 0 C128 48 204 54 190 120 S48 170 122 230 S126 268 120 292"/></svg>
+      <span class="wire-core"></span><span class="wire-copper"></span>
+      <span class="wire-spark"></span>
       <span class="wire-tip-grip" aria-hidden="true"><i></i><i></i><i></i></span>
     </div>
     <div class="wire-blast" id="wireBlast" aria-hidden="true">
@@ -1452,7 +1477,7 @@
           osc.frequency.setValueAtTime(115, now);
           osc.frequency.exponentialRampToValueAtTime(34, now + .42);
           gain.gain.setValueAtTime(.0001, now);
-          gain.gain.exponentialRampToValueAtTime(.42, now + .018);
+          gain.gain.exponentialRampToValueAtTime(.68, now + .018);
           gain.gain.exponentialRampToValueAtTime(.0001, now + .48);
           osc.connect(gain); gain.connect(audio.destination);
           osc.start(now); osc.stop(now + .5);
@@ -1462,7 +1487,7 @@
           crack.frequency.setValueAtTime(920, now);
           crack.frequency.exponentialRampToValueAtTime(110, now + .11);
           crackGain.gain.setValueAtTime(.0001, now);
-          crackGain.gain.exponentialRampToValueAtTime(.12, now + .006);
+          crackGain.gain.exponentialRampToValueAtTime(.2, now + .006);
           crackGain.gain.exponentialRampToValueAtTime(.0001, now + .16);
           crack.connect(crackGain); crackGain.connect(audio.destination);
           crack.start(now); crack.stop(now + .17);
@@ -1477,6 +1502,7 @@
         wireRight.style.transform = `translate(${wireOffset}px,-50%) rotate(${window.innerWidth <= 600 ? -5 : -4}deg)`;
         wireRight.classList.add('wire-joined');
         wireRight.style.cursor = 'default';
+        wireRight.style.animation = 'none';
         welcomeScreen.classList.add('is-connected');
         if (wireInstruction) wireInstruction.textContent = 'CONNECTION ESTABLISHED';
         playElectricBlast();
@@ -1488,7 +1514,7 @@
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
           window.setTimeout(() => welcomeScreen.remove(), 650);
-        }, 820);
+        }, 1100);
       }
       wireRight.addEventListener('pointerdown', event => {
         if (wireConnected) return;
@@ -1501,6 +1527,7 @@
         if (!wireDragging || wireConnected) return;
         const delta = event.clientX - wireStartX;
         setWireOffset(delta);
+        wireRight.style.animation = 'none';
         if (event.clientX < window.innerWidth * .49) connectWires();
       });
       wireRight.addEventListener('pointerup', event => {
