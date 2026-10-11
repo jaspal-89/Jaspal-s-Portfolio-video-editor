@@ -760,6 +760,15 @@
     .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important}
     @media(max-width:700px){.wire-intro .spidey-drop{top:7vh!important;width:92px!important}.wire-intro .jaspal-hanging-photo{min-height:100px}}
 
+
+    /* Hard fallback for portrait: reserve visible space even if embedded image decode fails */
+    .wire-intro .spidey-drop{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;top:7vh!important;width:clamp(130px,14vw,180px)!important;height:auto!important;min-height:180px!important;overflow:visible!important;z-index:50!important;pointer-events:none!important;transform:translateX(-50%)!important;animation:portraitDropIn 1.4s ease-out .2s both!important}
+    .wire-intro .jaspal-hanging-photo{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;width:100%!important;height:auto!important;min-height:180px!important;object-fit:contain!important;z-index:51!important}
+    .wire-intro .spidey-web{position:absolute!important;display:block!important;visibility:visible!important;opacity:1!important;left:50%!important;top:-7vh!important;height:7vh!important;width:2px!important;z-index:1!important}
+    @keyframes portraitDropIn{from{top:-25vh;transform:translateX(-50%) rotate(-8deg);opacity:.3}to{top:7vh;transform:translateX(-50%) rotate(0);opacity:1}}
+    .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important}
+    @media(max-width:700px){.wire-intro .spidey-drop{top:7vh!important;width:112px!important;min-height:140px!important}.wire-intro .jaspal-hanging-photo{min-height:140px!important}}
+
   </style>
 </head>
 <body>
