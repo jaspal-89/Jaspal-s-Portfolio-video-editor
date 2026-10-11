@@ -1807,7 +1807,16 @@
         const blast=document.getElementById('wireBlast');
         pos(blast,left.x,left.y);
         playElectricBlast();
-        window.setTimeout(()=>welcomeScreen.classList.add('is-blasting'),100);
+        window.setTimeout(()=>{
+          welcomeScreen.classList.add('is-blasting');
+          const fallingCharacter = welcomeScreen.querySelector('.spidey-drop');
+          if (fallingCharacter) {
+            fallingCharacter.style.setProperty('animation','none','important');
+            fallingCharacter.offsetHeight;
+            fallingCharacter.style.setProperty('animation','jaspalFall .95s cubic-bezier(.28,.04,.62,1) forwards','important');
+            fallingCharacter.style.setProperty('top','11vh','important');
+          }
+        },100);
         window.setTimeout(()=>{
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
