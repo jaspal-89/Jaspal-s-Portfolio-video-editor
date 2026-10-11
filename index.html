@@ -1023,6 +1023,64 @@
     .hp-map-wrap{display:block;width:100%;visibility:visible;opacity:1}
     .hp-map-img{display:block;width:100%;height:auto;visibility:visible;opacity:1;object-fit:contain}
 
+  
+    /* Burgundy + Ivory visual identity — elegant editorial, less neon. */
+    :root{
+      --bg:#10090b;
+      --bg-soft:#1a0d10;
+      --glass:rgba(38,18,22,.72);
+      --glass-strong:rgba(25,12,15,.94);
+      --line:rgba(239,222,208,.17);
+      --line-purple:rgba(151,54,72,.48);
+      --purple:#873448;
+      --purple2:#5b202e;
+      --purple3:#b45b6a;
+      --text:#f4eadf;
+      --muted:rgba(244,234,223,.72);
+      --faint:rgba(244,234,223,.46)
+    }
+    body{background:#10090b;color:#f4eadf}
+    body:before{background:
+      radial-gradient(900px 650px at 78% 12%,rgba(111,34,52,.26),transparent 66%),
+      radial-gradient(720px 560px at 8% 72%,rgba(91,32,46,.19),transparent 68%),
+      linear-gradient(125deg,rgba(255,242,228,.025),transparent 42%),#10090b}
+    body:after{opacity:.055;background-image:linear-gradient(rgba(239,222,208,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(239,222,208,.6) 1px,transparent 1px);background-size:72px 72px}
+    .glass{background:linear-gradient(135deg,rgba(255,244,232,.055),rgba(105,38,55,.11));border-color:rgba(239,222,208,.17);box-shadow:inset 0 1px 0 rgba(255,244,232,.045),0 24px 80px rgba(0,0,0,.28)}
+    .nav{background:rgba(16,9,11,.86);border-color:rgba(239,222,208,.16)}
+    .brand span{color:#b45b6a}
+    .navlinks a:hover{color:#d28b95;background:rgba(135,52,72,.12)}
+    .hire{background:transparent;border-color:rgba(210,139,149,.55);color:#f4eadf}
+    .hire:hover{background:#873448;border-color:#873448}
+    .hero{background:radial-gradient(ellipse at 76% 48%,rgba(135,52,72,.14),transparent 46%)}
+    .hero:before{background:linear-gradient(90deg,transparent,rgba(92,30,45,.48),rgba(180,91,106,.2),transparent);border-block:1px solid rgba(180,91,106,.18);opacity:.35}
+    .pill{border-color:rgba(180,91,106,.4);background:rgba(135,52,72,.13);color:#e7c8c5}
+    .spark{background:#b45b6a;box-shadow:0 0 12px rgba(180,91,106,.55)}
+    .hero-name{background:linear-gradient(135deg,#fff8ed 0%,#ead9ca 48%,#c58a91 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none;filter:none}
+    .underline{background:linear-gradient(90deg,transparent,#873448,#b45b6a,transparent);box-shadow:0 0 18px rgba(135,52,72,.22)}
+    .btn-primary,.hire,.filter.active,.filter:hover,.pkg-badge{background:#873448;color:#fff8ed;box-shadow:none}
+    .btn-primary:hover{background:#a14a5d}
+    .btn-ghost{border-color:rgba(239,222,208,.22);background:rgba(255,244,232,.035);color:#f4eadf}
+    .eyebrow{color:#c58a91}
+    .heading span,.text-glow{color:#c58a91;text-shadow:none}
+    .point{background:rgba(255,244,232,.035);border-color:rgba(239,222,208,.13)}
+    .check{background:rgba(135,52,72,.2);border-color:rgba(180,91,106,.4);color:#ead9ca}
+    .glow{box-shadow:0 0 28px rgba(135,52,72,.15),0 0 70px rgba(91,32,46,.12)}
+    .filter.active,.filter:hover{border-color:#873448}
+    .quiz-box:before{background:conic-gradient(from var(--ang,0deg),#5b202e,#b45b6a,#ead9ca,#873448,#5b202e)}
+    .quiz-step-label{color:#d5a0a4}
+    .quiz-progress-bar{background:linear-gradient(90deg,#5b202e,#b45b6a)}
+    .pkg-toggle{border-color:rgba(180,91,106,.42);background:rgba(135,52,72,.14)}
+    .pkg-toggle:hover{background:rgba(135,52,72,.25);border-color:#b45b6a}
+    .pkg-card.featured{border-color:#b45b6a;box-shadow:0 0 38px rgba(135,52,72,.18)}
+    .pkg-price{color:#d5a0a4}
+    .pkg-badge{box-shadow:none}
+    .portfolio-welcome .pw-period,.pw-subtitle b{color:#b45b6a}
+    .pw-type-cursor{background:#b45b6a}
+    .wire-run{filter:drop-shadow(0 0 8px rgba(135,52,72,.16))}
+    .wire-svg{filter:drop-shadow(0 0 3px rgba(180,91,106,.25))}
+    .wire-guide-arrow{stroke:#b45b6a}
+    @media(max-width:700px){.hero:before{opacity:.2}}
+
   </style>
 </head>
 <body>
