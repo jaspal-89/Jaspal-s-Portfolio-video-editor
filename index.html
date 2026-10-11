@@ -515,35 +515,80 @@
       .welcome-screen,.switch-rocker,.switch-plate,.switch-label{transition:none}
     }
 
+
+    /* Wire-connect intro: drag the loose live wire into the copper contact. */
+    .wire-intro{overflow:hidden;isolation:isolate;background:#060608;touch-action:pan-y}
+    .wire-intro:before{opacity:.045;background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse at center,#000 10%,transparent 78%)}
+    .wire-grid{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,rgba(239,35,60,.12),transparent 40%),linear-gradient(180deg,transparent 49.9%,rgba(255,255,255,.035) 50%,transparent 50.1%)}
+    .wire-topline{position:absolute;top:8vh;left:7vw;right:7vw;display:flex;justify-content:space-between;color:rgba(255,255,255,.36);font:600 10px/1.4 'Space Grotesk',sans-serif;letter-spacing:.2em}
+    .wire-center-copy{position:absolute;top:50%;left:50%;width:min(90vw,720px);transform:translate(-50%,-72%);text-align:center;z-index:2;pointer-events:none;transition:opacity .25s ease,transform .3s ease}
+    .wire-kicker{font:700 10px/1.5 'Space Grotesk',sans-serif;letter-spacing:.32em;color:#ff6472;margin-bottom:18px}
+    .wire-center-copy h2{font:800 clamp(42px,8vw,100px)/.94 'Sora',sans-serif;letter-spacing:-.075em;color:#f8f5f5}
+    .wire-center-copy h2 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px #ff4358;text-shadow:0 0 30px rgba(239,35,60,.2)}
+    .wire-instruction{margin-top:23px;font:700 10px/1.5 'Space Grotesk',sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.48);animation:wirePulse 1.8s ease-in-out infinite}
+    @keyframes wirePulse{0%,100%{opacity:.45}50%{opacity:1}}
+    .wire-run{position:absolute;top:50%;height:12px;transform:translateY(-50%);z-index:4;filter:drop-shadow(0 0 12px rgba(239,35,60,.2))}
+    .wire-left{left:0;width:43.5vw}
+    .wire-right{left:56.5vw;width:43.5vw;cursor:grab;touch-action:none;outline:none;user-select:none;-webkit-user-select:none}
+    .wire-right:active{cursor:grabbing}
+    .wire-core{position:absolute;left:0;right:0;top:4px;height:4px;border-radius:4px;background:linear-gradient(90deg,#151518,#4b171e 45%,#f04456 100%);box-shadow:0 0 7px rgba(239,35,60,.4)}
+    .wire-left .wire-core{background:linear-gradient(90deg,#111114,#29292d 65%,#c52c3f)}
+    .wire-core:after{content:"";position:absolute;inset:1px 0;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent);border-radius:4px}
+    .wire-copper{position:absolute;right:-4px;top:0;width:9px;height:12px;border-radius:2px;background:linear-gradient(90deg,#713a23,#f0b16c 35%,#7c4327 70%,#e8a568);box-shadow:0 0 12px rgba(255,157,83,.3)}
+    .wire-right .wire-copper{right:auto;left:-4px}
+    .wire-tip-grip{position:absolute;left:-22px;top:-7px;width:28px;height:26px;display:flex;align-items:center;justify-content:center;gap:3px;border:1px solid rgba(255,112,122,.55);border-radius:7px;background:rgba(14,10,12,.95);box-shadow:0 0 18px rgba(239,35,60,.25)}
+    .wire-tip-grip i{width:2px;height:10px;border-radius:2px;background:#ff6573;opacity:.85}
+    .wire-footer{position:absolute;bottom:8vh;left:7vw;right:7vw;display:flex;justify-content:space-between;color:rgba(255,255,255,.24);font:600 9px/1 'Space Grotesk',sans-serif;letter-spacing:.2em}
+    .wire-blast{position:absolute;left:50%;top:50%;width:20px;height:20px;transform:translate(-50%,-50%) scale(.1);opacity:0;pointer-events:none;z-index:8}
+    .blast-core{position:absolute;inset:-20px;border-radius:50%;background:#fff;box-shadow:0 0 24px 12px #ffb7a0,0 0 70px 34px #ef233c}
+    .blast-ring{position:absolute;inset:-20px;border:2px solid #ff6675;border-radius:50%;animation:blastRing .65s ease-out forwards}
+    .blast-ring-two{animation-delay:.08s;border-color:#fff}
+    .blast-rays{position:absolute;inset:-130px;background:repeating-conic-gradient(from 0deg,rgba(255,90,105,.95) 0deg 1.3deg,transparent 1.3deg 15deg);mask-image:radial-gradient(circle,transparent 0 18%,#000 24% 40%,transparent 68%);animation:blastSpin .6s ease-out forwards}
+    .blast-sparks{position:absolute;inset:-100px;background:radial-gradient(circle at 50% 4%,#fff 0 2px,transparent 3px),radial-gradient(circle at 83% 21%,#ff5969 0 2px,transparent 3px),radial-gradient(circle at 91% 66%,#fff 0 2px,transparent 3px),radial-gradient(circle at 22% 82%,#ff5969 0 2px,transparent 3px),radial-gradient(circle at 12% 34%,#fff 0 2px,transparent 3px);animation:blastSparks .7s ease-out forwards}
+    .wire-intro.is-connected .wire-center-copy{opacity:0;transform:translate(-50%,-78%) scale(.94);filter:blur(6px)}
+    .wire-intro.is-connected .wire-instruction{animation:none}
+    .wire-intro.is-blasting .wire-blast{opacity:1;animation:blastFlash .75s ease-out forwards}
+    .wire-intro.is-blasting .wire-grid{animation:blastBackground .8s ease-out forwards}
+    .wire-intro.is-blasting .wire-run{filter:drop-shadow(0 0 18px #ff5365)}
+    .wire-intro.is-leaving{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.035);transition:opacity .55s ease,visibility .55s ease,transform .7s ease}
+    @keyframes blastRing{0%{transform:scale(.1);opacity:1}100%{transform:scale(15);opacity:0}}
+    @keyframes blastSpin{0%{transform:scale(.15) rotate(0deg);opacity:1}100%{transform:scale(1.4) rotate(24deg);opacity:0}}
+    @keyframes blastSparks{0%{transform:scale(.2) rotate(0);opacity:1}100%{transform:scale(1.6) rotate(-18deg);opacity:0}}
+    @keyframes blastFlash{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}15%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.2);opacity:0}}
+    @keyframes blastBackground{0%{background-color:transparent}15%{background-color:rgba(255,255,255,.85)}100%{background-color:transparent}}
+    @media(max-width:600px){
+      .wire-topline{top:28px;left:22px;right:22px;font-size:8px;letter-spacing:.12em}
+      .wire-footer{bottom:30px;left:22px;right:22px;font-size:7px;letter-spacing:.12em}
+      .wire-center-copy{width:92vw;transform:translate(-50%,-95%)}
+      .wire-center-copy h2{font-size:clamp(38px,10vw,58px)}
+      .wire-instruction{font-size:8px;letter-spacing:.13em;margin-top:18px}
+      .wire-left{width:40vw}.wire-right{left:60vw;width:40vw}
+      .wire-intro.is-connected .wire-center-copy{transform:translate(-50%,-102%) scale(.94)}
+    }
+    @media(prefers-reduced-motion:reduce){.wire-instruction{animation:none}.wire-blast,.blast-ring,.blast-rays,.blast-sparks{animation-duration:.01ms!important}}
+
   </style>
 </head>
 <body>
 
-  <div class="welcome-screen" id="welcomeScreen" role="dialog" aria-modal="true" aria-label="स्वागत है">
-    <div class="cinema-backdrop" aria-hidden="true">
-      <div class="cinema-halo"></div>
-      <div class="cinema-frame cinema-frame-left"></div>
-      <div class="cinema-frame cinema-frame-right"></div>
-      <div class="cinema-index">J / 01</div>
-      <div class="cinema-bottomline"><span>VIDEO EDITING</span><span>CREATIVE PORTFOLIO</span></div>
+  <div class="welcome-screen wire-intro" id="welcomeScreen" role="dialog" aria-modal="true" aria-label="Jaspal portfolio intro">
+    <div class="wire-grid" aria-hidden="true"></div>
+    <div class="wire-topline"><span>JASPAL / CREATIVE EDITOR</span><span>POWER ON YOUR CREATIVITY</span></div>
+    <div class="wire-center-copy" aria-hidden="true">
+      <p class="wire-kicker">EVERY FRAME HAS ENERGY</p>
+      <h2>MAKE THE<br><em>CONNECTION.</em></h2>
+      <p class="wire-instruction" id="wireInstruction">DRAG THE LOOSE WIRE TO CONNECT</p>
     </div>
-    <div class="welcome-content">
-      <div class="welcome-copy">
-        <p class="welcome-kicker">JASPAL <span class="kicker-dot"></span> VIDEO EDITOR</p>
-        <h2 class="welcome-title" aria-label="हर फ़्रेम की अपनी कहानी है।">
-          <span class="title-line"><span>हर फ़्रेम की</span></span>
-          <span class="title-line"><span><em>अपनी कहानी</em></span></span>
-          <span class="title-line"><span>है।</span></span>
-        </h2>
-        <p class="welcome-direction">कुछ ऐसा देखने के लिए तैयार हैं, जिसे लोग रोककर देखें?</p>
-      </div>
-      <button class="switch-control" id="welcomeEnter" type="button" aria-label="चलिए आरंभ करते हैं">
-        <span class="switch-plate" aria-hidden="true">
-          <span class="switch-rocker"></span>
-        </span>
-        <span class="switch-label">चलिए आरंभ करते हैं <span class="switch-arrow" aria-hidden="true">↗</span></span>
-      </button>
+    <div class="wire-run wire-left" aria-hidden="true"><span class="wire-core"></span><span class="wire-copper"></span></div>
+    <div class="wire-run wire-right" id="wireRight" role="button" tabindex="0" aria-label="Connect the loose wire to open the portfolio">
+      <span class="wire-core"></span><span class="wire-copper"></span>
+      <span class="wire-tip-grip" aria-hidden="true"><i></i><i></i><i></i></span>
     </div>
+    <div class="wire-blast" id="wireBlast" aria-hidden="true">
+      <span class="blast-core"></span><span class="blast-ring"></span><span class="blast-ring blast-ring-two"></span>
+      <span class="blast-rays"></span><span class="blast-sparks"></span>
+    </div>
+    <div class="wire-footer" aria-hidden="true"><span>01 — CONNECT</span><span>02 — IGNITE</span><span>03 — EXPLORE</span></div>
   </div>
 
   <div class="noise"></div>
@@ -1381,53 +1426,105 @@
     }, { threshold: 0 });
     animatedEls.forEach(el => animIO.observe(el));
   
-    // Switch click + cinematic entry soundscape, then reveal the portfolio.
+    // Drag the loose wire into the contact: spark burst, electric blast, then reveal the portfolio.
     const welcomeScreen = document.getElementById('welcomeScreen');
-    const welcomeEnter = document.getElementById('welcomeEnter');
-    if (welcomeScreen && welcomeEnter) {
+    const wireRight = document.getElementById('wireRight');
+    const wireInstruction = document.getElementById('wireInstruction');
+    let wireDragging = false;
+    let wireConnected = false;
+    let wireStartX = 0;
+    let wireOffset = 0;
+    if (welcomeScreen && wireRight) {
       document.body.classList.add('welcome-open');
-      // Quiet tactile switch click with a soft, short confirmation chime.
-      function playEntrySoundscape() {
+      const setWireOffset = value => {
+        wireOffset = Math.min(0, Math.max(-window.innerWidth * .24, value));
+        wireRight.style.transform = `translate(${wireOffset}px,-50%)`;
+      };
+      function playElectricBlast() {
         try {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (!AudioContextClass) return;
-          const audio = new AudioContextClass();
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          const audio = new AC();
           const now = audio.currentTime;
-          const click = audio.createOscillator();
-          const clickGain = audio.createGain();
-          click.type = 'triangle';
-          click.frequency.setValueAtTime(680, now);
-          click.frequency.exponentialRampToValueAtTime(320, now + 0.028);
-          clickGain.gain.setValueAtTime(0.0001, now);
-          clickGain.gain.exponentialRampToValueAtTime(0.026, now + 0.003);
-          clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
-          click.connect(clickGain); clickGain.connect(audio.destination);
-          click.start(now); click.stop(now + 0.06);
-          [587.33, 783.99].forEach((frequency, index) => {
-            const start = now + 0.12 + index * 0.11;
-            const tone = audio.createOscillator();
-            const gain = audio.createGain();
-            tone.type = 'sine';
-            tone.frequency.setValueAtTime(frequency, start);
-            gain.gain.setValueAtTime(0.0001, start);
-            gain.gain.exponentialRampToValueAtTime(0.012, start + 0.025);
-            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.42);
-            tone.connect(gain); gain.connect(audio.destination);
-            tone.start(start); tone.stop(start + 0.44);
-          });
-          window.setTimeout(() => audio.close().catch(() => {}), 900);
+          const osc = audio.createOscillator();
+          const gain = audio.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(115, now);
+          osc.frequency.exponentialRampToValueAtTime(34, now + .42);
+          gain.gain.setValueAtTime(.0001, now);
+          gain.gain.exponentialRampToValueAtTime(.16, now + .018);
+          gain.gain.exponentialRampToValueAtTime(.0001, now + .48);
+          osc.connect(gain); gain.connect(audio.destination);
+          osc.start(now); osc.stop(now + .5);
+          const crack = audio.createOscillator();
+          const crackGain = audio.createGain();
+          crack.type = 'square';
+          crack.frequency.setValueAtTime(920, now);
+          crack.frequency.exponentialRampToValueAtTime(110, now + .11);
+          crackGain.gain.setValueAtTime(.0001, now);
+          crackGain.gain.exponentialRampToValueAtTime(.035, now + .006);
+          crackGain.gain.exponentialRampToValueAtTime(.0001, now + .16);
+          crack.connect(crackGain); crackGain.connect(audio.destination);
+          crack.start(now); crack.stop(now + .17);
+          window.setTimeout(() => audio.close().catch(() => {}), 800);
         } catch (_) {}
       }
-      welcomeEnter.addEventListener('click', () => {
-        welcomeEnter.classList.add('is-on');
-        welcomeScreen.classList.add('switch-entering');
-        playEntrySoundscape();
+      function connectWires() {
+        if (wireConnected) return;
+        wireConnected = true;
+        wireDragging = false;
+        setWireOffset(-window.innerWidth * .135);
+        wireRight.classList.add('wire-joined');
+        wireRight.style.cursor = 'default';
+        welcomeScreen.classList.add('is-connected');
+        if (wireInstruction) wireInstruction.textContent = 'CONNECTION ESTABLISHED';
+        playElectricBlast();
+        window.setTimeout(() => {
+          welcomeScreen.classList.add('is-blasting');
+          if (wireInstruction) wireInstruction.textContent = 'IGNITION';
+        }, 100);
         window.setTimeout(() => {
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
-          window.setTimeout(() => welcomeScreen.remove(), 850);
-        }, 1250);
-      }, { once:true });
+          window.setTimeout(() => welcomeScreen.remove(), 650);
+        }, 820);
+      }
+      wireRight.addEventListener('pointerdown', event => {
+        if (wireConnected) return;
+        wireDragging = true;
+        wireStartX = event.clientX - wireOffset;
+        wireRight.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+      wireRight.addEventListener('pointermove', event => {
+        if (!wireDragging || wireConnected) return;
+        const delta = event.clientX - wireStartX;
+        setWireOffset(delta);
+        if (event.clientX < window.innerWidth * .49) connectWires();
+      });
+      wireRight.addEventListener('pointerup', event => {
+        if (!wireDragging || wireConnected) return;
+        wireDragging = false;
+        if (event.clientX < window.innerWidth * .49) connectWires();
+        else {
+          wireRight.style.transition = 'transform .28s cubic-bezier(.2,.8,.2,1)';
+          setWireOffset(0);
+          window.setTimeout(() => { wireRight.style.transition = ''; }, 300);
+        }
+      });
+      wireRight.addEventListener('pointercancel', () => {
+        if (!wireDragging || wireConnected) return;
+        wireDragging = false;
+        wireRight.style.transition = 'transform .28s ease';
+        setWireOffset(0);
+        window.setTimeout(() => { wireRight.style.transition = ''; }, 300);
+      });
+      wireRight.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          connectWires();
+        }
+      });
     }
   </script>
 </body>
