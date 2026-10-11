@@ -1830,44 +1830,64 @@
     window.addEventListener('resize', onScrollEffects);
     onScrollEffects();
 
-    // Keep the scroll voice in this shared scope so the scroll handlers can access it.
-    const portfolioScrollVoice = new Audio('./portfolio-scroll-voice.mp3');
-    portfolioScrollVoice.preload = 'auto';
-    portfolioScrollVoice.volume = 1;
-
-    // Play the second voiceover once, on the first actual scroll after the welcome screen closes.
-    let portfolioScrollVoicePlayed = false;
-    let portfolioScrollVoicePending = false;
-    function playPortfolioScrollVoice() {
-      if (portfolioScrollVoicePlayed || portfolioScrollVoicePending) return;
-      if (document.getElementById('portfolioWelcome')?.classList.contains('is-active')) return;
-      portfolioScrollVoicePending = true;
-      portfolioScrollVoice.currentTime = 0;
-      const playback = portfolioScrollVoice.play();
-      if (playback && typeof playback.then === 'function') {
-        playback.then(() => { portfolioScrollVoicePlayed = true; portfolioScrollVoicePending = false; })
-          .catch(err => {
-            console.warn('Scroll voice playback failed:', err);
-            portfolioScrollVoicePending = false;
-          });
-      } else {
-        portfolioScrollVoicePlayed = true;
-        portfolioScrollVoicePending = false;
-      }
+    // Soft tactile UI sounds: a light scraping glide while scrolling and a tiny tick on every button.
+    // The old second voiceover is intentionally no longer used.
+    let uiSoundContext = null;
+    let scrollSoundLastAt = 0;
+    function getUiSoundContext() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!uiSoundContext || uiSoundContext.state === 'closed') uiSoundContext = new AudioCtx();
+        if (uiSoundContext.state === 'suspended') uiSoundContext.resume().catch(() => {});
+        return uiSoundContext;
+      } catch (_) { return null; }
     }
-    // Use actual scroll position change, not wheel/touch start, so it only plays once the portfolio is open and scrolling begins.
-    let previousScrollY = window.scrollY;
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > previousScrollY && currentScrollY > 5) playPortfolioScrollVoice();
-      previousScrollY = currentScrollY;
-    }, { passive: true });
-    window.addEventListener('wheel', () => {
-      if (window.scrollY > 5) playPortfolioScrollVoice();
-    }, { passive: true });
-    window.addEventListener('touchmove', () => {
-      if (window.scrollY > 5) playPortfolioScrollVoice();
-    }, { passive: true });
+    function playUiScrape(isButton = false) {
+      const ctx = getUiSoundContext();
+      if (!ctx || ctx.state !== 'running') return;
+      try {
+        const now = ctx.currentTime;
+        const duration = isButton ? 0.045 : 0.105;
+        const length = Math.max(1, Math.floor(ctx.sampleRate * duration));
+        const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < length; i++) {
+          const fade = 1 - i / length;
+          data[i] = (Math.random() * 2 - 1) * fade;
+        }
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = isButton ? 'highpass' : 'bandpass';
+        filter.frequency.setValueAtTime(isButton ? 1800 : 950, now);
+        filter.Q.value = isButton ? 0.7 : 0.55;
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(isButton ? 0.055 : 0.035, now + 0.008);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        source.start(now);
+        source.stop(now + duration);
+      } catch (_) {}
+    }
+    // Unlock audio on a real interaction so it also works on mobile browsers.
+    document.addEventListener('pointerdown', getUiSoundContext, { passive: true });
+    document.addEventListener('touchstart', getUiSoundContext, { passive: true });
+    document.addEventListener('click', event => {
+      const button = event.target.closest('button, [role="button"], input[type="button"], input[type="submit"]');
+      if (button) playUiScrape(true);
+    }, true);
+    function playScrollScrape() {
+      if (document.getElementById('portfolioWelcome')?.classList.contains('is-active')) return;
+      const now = performance.now();
+      if (now - scrollSoundLastAt < 115) return;
+      scrollSoundLastAt = now;
+      playUiScrape(false);
+    }
+    window.addEventListener('scroll', playScrollScrape, { passive: true });
 
     // Floating buddy avatar — appears after a few scrolls, cycles fun messages
     const floatBuddy = document.getElementById('floatBuddy');
