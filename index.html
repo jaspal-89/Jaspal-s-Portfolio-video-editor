@@ -747,9 +747,9 @@
 
 
     .jaspal-hanging-photo{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(15,20,28,.18));}
-    .spidey-drop{width:clamp(95px,10vw,140px)!important;top:-220px!important;}
+    .spidey-drop{width:clamp(95px,10vw,140px)!important;top:-220px;animation:spideyArrive 1.8s cubic-bezier(.2,.75,.25,1) .35s forwards!important;}
     .wire-intro.is-blasting .spidey-drop{animation:spideyFall .95s cubic-bezier(.3,.05,.6,1) forwards!important;}
-    @media(max-width:700px){.spidey-drop{width:86px!important}.jaspal-hanging-photo{width:100%}}
+    @media(max-width:700px){.spidey-drop{width:86px!important;top:-220px}.jaspal-hanging-photo{width:100%}}
 
   </style>
 </head>
