@@ -1074,6 +1074,23 @@
     .hero-stats{background:rgba(15,8,34,.58);border-color:rgba(193,138,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 16px 45px rgba(0,0,0,.3)}
     .feature-card,.video-card,.project-card,.service-card,.skill-card,.tool-card{border-radius:20px}
     @media(max-width:700px){.hero:before{opacity:.22}}
+
+    /* Final purple glass theme pass: remove legacy red accents that survived earlier styles. */
+    .navlinks a:hover,.navlinks a[href="#home"]{color:#c18aff!important}
+    .hire:hover,.btn-primary:hover{background:linear-gradient(115deg,#7629e8,#b779ff)!important;border-color:#c18aff!important}
+    .spark{background:#c18aff!important;box-shadow:0 0 14px rgba(193,138,255,.75)!important}
+    .underline{background:linear-gradient(90deg,transparent,#7629e8,#c18aff,transparent)!important;box-shadow:0 0 18px rgba(155,77,255,.28)!important}
+    .eyebrow{color:#c18aff!important}
+    .heading span,.text-glow{color:#b779ff!important;text-shadow:0 0 24px rgba(155,77,255,.22)!important}
+    .quiz-box:before{background:conic-gradient(from var(--ang,0deg),#5e17c9,#c18aff,#e9d7ff,#9b4dff,#5e17c9)!important}
+    .quiz-step-label{color:#d8b5ff!important}
+    .quiz-progress-bar{background:linear-gradient(90deg,#5e17c9,#c18aff)!important}
+    .pw-subtitle b,.pw-type-cursor{color:#c18aff!important;background:#c18aff!important}
+    .dots i{--c:#9b4dff!important}
+    .wire-run{filter:drop-shadow(0 0 8px rgba(155,77,255,.2))!important}
+    .wire-svg{filter:drop-shadow(0 0 3px rgba(193,138,255,.3))!important}
+    .wire-guide-arrow{stroke:#c18aff!important}
+    img[src="profile-hero.jpg"],img[src="himachal-map.jpg"]{display:block;max-width:100%;height:auto}
 </style>
 </head>
 <body>
@@ -1184,7 +1201,7 @@
         </div>
         <div class="visual">
           <div class="phone" id="phoneShape">
-            <img src="profile-hero.png" alt="Jaspal video editor portrait">
+            <img src="profile-hero.jpg" alt="Jaspal video editor portrait">
           </div>
         </div>
       </div>
@@ -1413,7 +1430,7 @@
         <h2 class="heading">Rooted in the hills of <span>Bilaspur.</span></h2>
         <p class="muted" style="max-width:560px;margin:14px auto 0">Originally from Bilaspur, Himachal Pradesh — available for remote projects and opportunities across the Chandigarh–Mohali region.</p>
         <div class="hp-map-wrap glass">
-          <img src="himachal-map.png" alt="Map of Himachal Pradesh with Bilaspur district highlighted" class="hp-map-img">
+          <img src="himachal-map.jpg" alt="Map of Himachal Pradesh with Bilaspur district highlighted" class="hp-map-img">
         </div>
       </div>
     </section>
@@ -1555,7 +1572,7 @@
 
   <div class="float-buddy" id="floatBuddy">
     <a class="float-avatar" href="https://wa.me/919317621164?text=Hi%20Jaspal%21%20I%20was%20browsing%20your%20portfolio%20and%20wanted%20to%20chat." target="_blank" rel="noreferrer" aria-label="Chat with Jaspal on WhatsApp">
-      <img src="profile-hero.png" alt="Jaspal">
+      <img src="profile-hero.jpg" alt="Jaspal">
     </a>
     <div class="float-msg" id="floatMsg">Still with me? 👀</div>
   </div>
