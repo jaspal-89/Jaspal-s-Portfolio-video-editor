@@ -6,7 +6,7 @@
   <title>JASPAL - Video Editor Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&family=Unbounded:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&family=Unbounded:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -421,6 +421,35 @@
     }
     @media(prefers-reduced-motion:reduce){.room-door,.room-door-light,.welcome-screen.is-leaving,.welcome-content{transition:none;animation:none}}
 
+    /* Classical Devanagari typography and staged text entrance */
+    .welcome-kicker,.welcome-title,.welcome-direction,.switch-label{font-family:"Tiro Devanagari Hindi","Noto Serif Devanagari",serif}
+    .welcome-kicker{font-size:14px;letter-spacing:.06em;opacity:0;animation:welcomeTextRise .7s .22s cubic-bezier(.2,.8,.2,1) forwards}
+    .welcome-title{font-size:clamp(30px,4vw,49px);line-height:1.48;letter-spacing:0;opacity:0;animation:welcomeTextRise .95s .48s cubic-bezier(.2,.8,.2,1) forwards;text-shadow:0 4px 30px rgba(0,0,0,.28)}
+    .welcome-title .title-line{display:block;overflow:hidden;padding-bottom:.05em}
+    .welcome-title .title-line span{display:inline-block;transform:translateY(115%);opacity:0;animation:devanagariLineReveal .9s cubic-bezier(.18,.75,.22,1) forwards}
+    .welcome-title .title-line:nth-child(1) span{animation-delay:.55s}
+    .welcome-title .title-line:nth-child(2) span{animation-delay:.82s}
+    .welcome-title .title-line:nth-child(3) span{animation-delay:1.08s}
+    .welcome-title em{font-style:normal;color:#ff7a84;text-shadow:0 0 25px rgba(239,35,60,.28)}
+    .welcome-direction{font-size:clamp(16px,1.65vw,19px);line-height:1.8;opacity:0;animation:welcomeTextRise .8s 1.28s ease forwards}
+    .switch-control{opacity:0;animation:welcomeSwitchArrive .85s 1.15s cubic-bezier(.2,.8,.2,1) forwards}
+    .switch-label{font-size:clamp(18px,2.1vw,22px)}
+    .welcome-kicker:before{animation:kickerRule 1s .45s ease both}
+    @keyframes welcomeTextRise{from{opacity:0;transform:translateY(18px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+    @keyframes devanagariLineReveal{0%{transform:translateY(115%);opacity:0;filter:blur(4px)}100%{transform:translateY(0);opacity:1;filter:blur(0)}}
+    @keyframes welcomeSwitchArrive{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes kickerRule{0%{transform:scaleX(0);transform-origin:left}100%{transform:scaleX(1);transform-origin:left}}
+    .welcome-screen.room-entering .welcome-copy{opacity:0;transform:translateY(-10px);filter:blur(4px);transition:opacity .3s ease,transform .4s ease,filter .3s ease}
+    @media(max-width:680px){
+      .welcome-title{font-size:clamp(27px,7.1vw,37px);line-height:1.55}
+      .welcome-kicker{font-size:13px}
+      .welcome-direction{font-size:16px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .welcome-kicker,.welcome-title,.welcome-title .title-line span,.welcome-direction,.switch-control{opacity:1;animation:none;transform:none;filter:none}
+    }
+
+
   </style>
 </head>
 <body>
@@ -434,8 +463,12 @@
     <div class="welcome-content">
       <div class="welcome-copy">
         <p class="welcome-kicker">एक नई शुरुआत</p>
-        <h2 class="welcome-title">आइए, हमारे हुनर की <em>दुनिया</em> में पधारिए।</h2>
-        <p class="welcome-direction">कृपया स्विच दबाइए और कक्ष में प्रवेश कीजिए।</p>
+        <h2 class="welcome-title" aria-label="पधारिए, हमारी रचनात्मक दुनिया में आपका स्वागत है।">
+          <span class="title-line"><span>पधारिए, हमारी</span></span>
+          <span class="title-line"><span><em>रचनात्मक दुनिया</em> में</span></span>
+          <span class="title-line"><span>आपका स्वागत है।</span></span>
+        </h2>
+        <p class="welcome-direction">स्विच दबाइए और इस कक्ष में प्रवेश कीजिए।</p>
       </div>
       <button class="switch-control" id="welcomeEnter" type="button" aria-label="चलिए आरंभ करते हैं">
         <span class="switch-plate" aria-hidden="true">
@@ -1282,36 +1315,68 @@
     }, { threshold: 0 });
     animatedEls.forEach(el => animIO.observe(el));
   
-    // Switch click: soft mechanical sound, door opens into warm light, then the portfolio is revealed.
+    // Switch click + cinematic entry soundscape, then reveal the portfolio.
     const welcomeScreen = document.getElementById('welcomeScreen');
     const welcomeEnter = document.getElementById('welcomeEnter');
     if (welcomeScreen && welcomeEnter) {
       document.body.classList.add('welcome-open');
+      // A restrained synthesized soundscape: tactile switch, low door movement, and a warm three-note chime.
+      function playEntrySoundscape() {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          const audio = new AudioContextClass();
+          const now = audio.currentTime;
+          // Mechanical switch click
+          const click = audio.createOscillator();
+          const clickGain = audio.createGain();
+          click.type = 'triangle';
+          click.frequency.setValueAtTime(740, now);
+          click.frequency.exponentialRampToValueAtTime(360, now + 0.035);
+          clickGain.gain.setValueAtTime(0.0001, now);
+          clickGain.gain.exponentialRampToValueAtTime(0.045, now + 0.004);
+          clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+          click.connect(clickGain); clickGain.connect(audio.destination);
+          click.start(now); click.stop(now + 0.075);
+          // Deep, quiet door-opening movement
+          const door = audio.createOscillator();
+          const doorGain = audio.createGain();
+          const filter = audio.createBiquadFilter();
+          door.type = 'sawtooth';
+          door.frequency.setValueAtTime(105, now + 0.12);
+          door.frequency.exponentialRampToValueAtTime(48, now + 0.85);
+          filter.type = 'lowpass'; filter.frequency.setValueAtTime(180, now + 0.12);
+          filter.frequency.exponentialRampToValueAtTime(85, now + 0.85);
+          doorGain.gain.setValueAtTime(0.0001, now + 0.12);
+          doorGain.gain.exponentialRampToValueAtTime(0.018, now + 0.22);
+          doorGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.92);
+          door.connect(filter); filter.connect(doorGain); doorGain.connect(audio.destination);
+          door.start(now + 0.12); door.stop(now + 0.95);
+          // Soft, warm chime as the doorway opens
+          [523.25, 659.25, 783.99].forEach((frequency, index) => {
+            const start = now + 0.62 + index * 0.16;
+            const tone = audio.createOscillator();
+            const toneGain = audio.createGain();
+            tone.type = 'sine';
+            tone.frequency.setValueAtTime(frequency, start);
+            toneGain.gain.setValueAtTime(0.0001, start);
+            toneGain.gain.exponentialRampToValueAtTime(0.022, start + 0.035);
+            toneGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.72);
+            tone.connect(toneGain); toneGain.connect(audio.destination);
+            tone.start(start); tone.stop(start + 0.74);
+          });
+          window.setTimeout(() => audio.close().catch(() => {}), 1900);
+        } catch (_) {}
+      }
       welcomeEnter.addEventListener('click', () => {
         welcomeEnter.classList.add('is-on');
         welcomeScreen.classList.add('room-entering');
-        try {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (AudioContextClass) {
-            const audio = new AudioContextClass();
-            const oscillator = audio.createOscillator();
-            const gain = audio.createGain();
-            oscillator.type = 'triangle';
-            oscillator.frequency.setValueAtTime(740, audio.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(360, audio.currentTime + 0.035);
-            gain.gain.setValueAtTime(0.0001, audio.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.045, audio.currentTime + 0.004);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.065);
-            oscillator.connect(gain); gain.connect(audio.destination);
-            oscillator.start(); oscillator.stop(audio.currentTime + 0.07);
-            oscillator.addEventListener('ended', () => audio.close(), { once:true });
-          }
-        } catch (_) {}
+        playEntrySoundscape();
         window.setTimeout(() => {
           welcomeScreen.classList.add('is-leaving');
           document.body.classList.remove('welcome-open');
           window.setTimeout(() => welcomeScreen.remove(), 850);
-        }, 1050);
+        }, 1250);
       }, { once:true });
     }
   </script>
