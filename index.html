@@ -1802,8 +1802,8 @@
         portfolioScrollVoicePlayed = false;
       });
     }
-    window.addEventListener('wheel', playPortfolioScrollVoice, { passive: true, once: true });
-    window.addEventListener('touchstart', playPortfolioScrollVoice, { passive: true, once: true });
+    window.addEventListener('wheel', playPortfolioScrollVoice, { passive: true });
+    window.addEventListener('touchstart', playPortfolioScrollVoice, { passive: true });
     window.addEventListener('keydown', event => {
       if (['ArrowDown','PageDown','Space'].includes(event.code) && !portfolioScrollVoicePlayed) playPortfolioScrollVoice();
     });
