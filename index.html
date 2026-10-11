@@ -2043,10 +2043,10 @@
                   node.textContent = fullTexts[index].slice(0, Math.max(0, Math.min(fullTexts[index].length, charsToShow - prior)));
                   prior += fullTexts[index].length;
                 });
-                if (progress < 1) requestAnimationFrame(typeFrame);
+                if (progress < 1) typewriterTimer = requestAnimationFrame(typeFrame);
                 else { typewriterFinished = true; finishWelcome(); }
               }
-              requestAnimationFrame(typeFrame);
+              typewriterTimer = requestAnimationFrame(typeFrame);
             };
             welcomeAudio.pause();
             welcomeAudio.currentTime = 0;
