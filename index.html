@@ -1907,9 +1907,12 @@
           welcomeScreen.classList.add('is-blasting');
           const fallingCharacter = welcomeScreen.querySelector('.spidey-drop');
           if (fallingCharacter) {
+            /* Restart the exact transform-based fall animation; avoid the older top-based keyframes. */
             fallingCharacter.style.setProperty('animation','none','important');
-            fallingCharacter.offsetHeight;
-            fallingCharacter.style.setProperty('animation','jaspalFall .95s cubic-bezier(.28,.04,.62,1) forwards','important');
+            fallingCharacter.style.setProperty('top','11vh','important');
+            fallingCharacter.style.setProperty('transform','translateX(-50%) translateY(0) rotate(0)','important');
+            void fallingCharacter.offsetWidth;
+            fallingCharacter.style.setProperty('animation','characterFallStable 2.1s cubic-bezier(.28,.04,.62,1) forwards','important');
           }
         },100);
         window.setTimeout(()=>{
