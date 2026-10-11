@@ -688,6 +688,30 @@
       .spidey-drop{width:74px}
     }
 
+
+    /* Minimal dark/off intro: the wires are the only thing that should feel powered */
+    .wire-center-copy{top:18%!important;width:min(92vw,440px)!important;z-index:3;text-align:center}
+    .wire-center-copy .wire-kicker{display:none!important}
+    .wire-center-copy h2{font-family:Inter,system-ui,sans-serif!important;font-size:clamp(16px,2.2vw,24px)!important;font-weight:750!important;line-height:1.2!important;letter-spacing:.01em!important;color:#25262b!important;text-shadow:none!important}
+    .wire-center-copy h2 em{font-style:normal!important;color:#777b84!important;-webkit-text-stroke:0!important;text-shadow:none!important}
+    .wire-instruction{display:none!important}
+    .wire-topline,.wire-footer{display:none!important}
+    .wire-grid{opacity:.22}
+    .wire-person{width:clamp(80px,10vw,122px)!important}
+    .wire-person.left-person{left:20%!important;top:61%!important}
+    .wire-person.right-person{right:18%!important;top:61%!important}
+    .spidey-drop{width:clamp(80px,10vw,118px)!important;z-index:5}
+    .spidey-drop svg{overflow:visible}
+    .wire-intro.is-connected .wire-center-copy{opacity:0;transition:opacity .18s ease}
+    .wire-intro.is-blasting .wire-person{filter:drop-shadow(0 0 14px rgba(255,88,32,.8))}
+    @media(max-width:700px){
+      .wire-center-copy{top:16%!important;width:94vw!important}
+      .wire-center-copy h2{font-size:18px!important}
+      .wire-person.left-person{left:17%!important;top:62%!important;width:78px!important}
+      .wire-person.right-person{right:15%!important;top:62%!important;width:78px!important}
+      .spidey-drop{width:74px!important}
+    }
+
   </style>
 </head>
 <body>
@@ -697,7 +721,7 @@
     <div class="wire-topline"><span>JASPAL / CREATIVE EDITOR</span><span>POWER ON YOUR CREATIVITY</span></div>
     <div class="wire-center-copy" aria-hidden="true">
       <p class="wire-kicker">PORTFOLIO ACCESS</p>
-      <h2>CONNECT WIRES<br><em>TO OPEN PORTFOLIO.</em></h2>
+      <h2>CONNECT WIRES <em>TO OPEN PORTFOLIO</em></h2>
       <p class="wire-instruction" id="wireInstruction">CONNECT THE WIRES TO OPEN PORTFOLIO</p>
     </div>
     <div class="wire-run wire-left" aria-hidden="true">
@@ -731,14 +755,21 @@
     </div>
     <div class="spidey-drop" aria-hidden="true">
       <span class="spidey-web"></span>
-      <svg viewBox="0 0 100 120" width="100%" aria-hidden="true">
-        <path d="M50 0 L50 15" stroke="#aeb4bd" stroke-width="2"/>
-        <path d="M31 25 Q30 10 50 8 Q70 10 69 25 L63 44 L37 44Z" fill="#d92335" stroke="#8d1221" stroke-width="2"/>
-        <path d="M38 26 L47 24 L42 30Z M62 26 L53 24 L58 30Z" fill="#fff" stroke="#c6d7e8" stroke-width="1.5"/>
-        <path d="M38 44 L62 44 L69 75 L57 88 L43 88 L31 75Z" fill="#1766c2" stroke="#10448b" stroke-width="2"/>
-        <path d="M38 47 L25 56 L14 73 L21 78 L39 64 M62 47 L75 56 L86 73 L79 78 L61 64" fill="none" stroke="#d92335" stroke-width="10" stroke-linecap="round"/>
-        <path d="M43 86 L40 106 L31 115 M57 86 L60 106 L69 115" fill="none" stroke="#1766c2" stroke-width="11" stroke-linecap="round"/>
-        <path d="M43 48 L57 48 M39 57 L61 57 M39 67 L61 67 M40 77 L60 77" stroke="#9fc5ff" stroke-width="1" opacity=".6"/>
+      <svg viewBox="0 0 120 170" width="100%" aria-hidden="true">
+        <defs>
+          <linearGradient id="spideyRed" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fa3948"/><stop offset=".55" stop-color="#b70f25"/><stop offset="1" stop-color="#670c1a"/></linearGradient>
+          <linearGradient id="spideyBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3194f6"/><stop offset=".55" stop-color="#0752a6"/><stop offset="1" stop-color="#062a62"/></linearGradient>
+        </defs>
+        <path d="M60 0v15" stroke="#9ba1aa" stroke-width="2"/>
+        <path d="M39 22 Q37 6 60 5 Q83 6 81 22 L76 45 Q60 57 44 45Z" fill="url(#spideyRed)" stroke="#67101d" stroke-width="2"/>
+        <path d="M42 22 Q60 15 78 22 M43 29 Q60 24 77 29 M46 37 Q60 33 74 37 M50 12 L60 24 L70 12 M43 18 L54 31 L44 40 M77 18 L66 31 L76 40" fill="none" stroke="#ff9ca4" stroke-width=".8" opacity=".8"/>
+        <path d="M45 27 L55 25 L49 33Z M75 27 L65 25 L71 33Z" fill="#fff" stroke="#d8e8f8" stroke-width="1.5"/>
+        <path d="M45 47 Q60 53 75 47 L83 82 L72 101 L48 101 L37 82Z" fill="url(#spideyBlue)" stroke="#082d61" stroke-width="2"/>
+        <path d="M43 51 L30 58 L15 78 L24 85 L45 69 M77 51 L90 58 L105 78 L96 85 L75 69" fill="none" stroke="url(#spideyRed)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M44 98 L42 127 L31 151 M76 98 L78 127 L89 151" fill="none" stroke="url(#spideyBlue)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M47 52 L73 52 M43 62 L77 62 M41 72 L79 72 M42 82 L78 82 M47 92 L73 92 M47 54 L60 64 L73 54 M42 72 L60 84 L78 72 M48 91 L60 99 L72 91" fill="none" stroke="#8bc8ff" stroke-width=".9" opacity=".65"/>
+        <path d="M29 151 Q25 158 34 160 L48 160 L49 154 M91 151 Q95 158 86 160 L72 160 L71 154" fill="#151a23" stroke="#05070a" stroke-width="2"/>
+        <path d="M20 78 L27 81 M100 78 L93 81" stroke="#ff9ca4" stroke-width="1.2"/>
       </svg>
     </div>
     <div class="wire-blast" id="wireBlast" aria-hidden="true">
