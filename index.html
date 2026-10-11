@@ -1884,14 +1884,7 @@
       const button = event.target.closest('button, [role="button"], input[type="button"], input[type="submit"]');
       if (button) playUiScrape(true);
     }, true);
-    function playScrollScrape() {
-      if (document.getElementById('portfolioWelcome')?.classList.contains('is-active')) return;
-      const now = performance.now();
-      if (now - scrollSoundLastAt < 230) return;
-      scrollSoundLastAt = now;
-      playUiScrape(false);
-    }
-    window.addEventListener('scroll', playScrollScrape, { passive: true });
+    // Scroll is silent; button click sounds remain enabled.
 
     // Floating buddy avatar — appears after a few scrolls, cycles fun messages
     const floatBuddy = document.getElementById('floatBuddy');
