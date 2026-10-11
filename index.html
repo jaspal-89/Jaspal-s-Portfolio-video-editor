@@ -919,8 +919,10 @@
     .pw-overline{font:600 10px/1.4 'Space Grotesk',sans-serif;letter-spacing:.38em;color:#ff6a78;opacity:0;transform:translateY(14px);text-transform:uppercase}
     .pw-title{margin:22px 0 18px;display:flex;flex-direction:column;gap:12px}
     .pw-title span{font:600 clamp(12px,1.5vw,17px)/1 'Space Grotesk',sans-serif;letter-spacing:.42em;color:rgba(255,255,255,.72);opacity:0;transform:translateY(20px);clip-path:inset(0 100% 0 0)}
-    .pw-title strong{font:800 clamp(48px,10vw,118px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em;text-transform:uppercase;opacity:0;transform:translateY(35px) scale(.96);filter:blur(8px)}
-    .pw-title strong i{font-style:normal;color:#ff344b;text-shadow:0 0 34px rgba(255,52,75,.25)}
+    .pw-title strong{font:800 clamp(64px,13vw,150px)/.9 'Space Grotesk',sans-serif;letter-spacing:-.075em;text-transform:uppercase;opacity:0;transform:translateY(35px) scale(.96);filter:blur(8px)}
+    .pw-title strong .pw-period{display:inline;color:#ff344b;text-shadow:0 0 34px rgba(255,52,75,.5);animation:pwDotPulse 1s ease-in-out 1.15s 2}
+    .pw-subtitle b{color:#fff;text-shadow:0 0 18px rgba(255,52,75,.35)}
+    @keyframes pwDotPulse{50%{text-shadow:0 0 28px rgba(255,52,75,.9)}}
     .pw-rule{width:min(220px,45vw);height:2px;background:rgba(255,255,255,.14);overflow:hidden}
     .pw-rule span{display:block;width:100%;height:100%;background:#ff344b;transform:scaleX(0);transform-origin:left}
     .pw-subtitle{margin-top:17px;font:600 9px/1.5 'Space Grotesk',sans-serif;letter-spacing:.28em;color:rgba(255,255,255,.56);opacity:0;transform:translateY(10px)}
@@ -994,10 +996,10 @@
   </div>
 
   <div class="portfolio-welcome" id="portfolioWelcome" aria-live="polite" aria-hidden="true">
-    <div class="pw-overline">CREATIVE • STORY • MOTION</div>
-    <div class="pw-title"><span>WELCOME TO</span><strong>JASPAL'S<br><i>PORTFOLIO.</i></strong></div>
+    <div class="pw-overline">VIDEO EDITOR <b>•</b> VISUAL STORYTELLER</div>
+    <div class="pw-title"><span>HEY, I'M</span><strong>JASPAL<span class="pw-period">.</span></strong></div>
     <div class="pw-rule"><span></span></div>
-    <div class="pw-subtitle">VIDEO EDITOR <b>·</b> CREATIVE PRODUCER</div>
+    <div class="pw-subtitle">LET'S CREATE <b>SOMETHING GREAT.</b></div>
   </div>
 
   <div class="noise"></div>
@@ -1979,14 +1981,17 @@
             try{
               if('speechSynthesis' in window){
                 window.speechSynthesis.cancel();
-                const line=new SpeechSynthesisUtterance("Welcome to Jaspal's portfolio.");
-                line.lang='en-IN';
-                line.rate=0.92;
-                line.pitch=0.88;
+                const line=new SpeechSynthesisUtterance("Hey, I'm Jaspal. Let's create something great.");
+                line.lang='en-GB';
+                line.rate=0.94;
+                line.pitch=0.92;
                 line.volume=1;
                 const voices=window.speechSynthesis.getVoices();
-                const voice=voices.find(v=>/en-IN/i.test(v.lang))||voices.find(v=>/en-GB|en-US/i.test(v.lang));
-                if(voice)line.voice=voice;
+                const voice=voices.find(v=>/Google UK English Female|Microsoft.*(Aria|Jenny|Guy)|Daniel|Samantha/i.test(v.name)&&/en-GB|en-US/i.test(v.lang))
+                  ||voices.find(v=>/en-GB/i.test(v.lang))
+                  ||voices.find(v=>/en-US/i.test(v.lang))
+                  ||voices.find(v=>/en-IN/i.test(v.lang));
+                if(voice){line.voice=voice;line.lang=voice.lang;}
                 window.speechSynthesis.speak(line);
               }
             }catch(_){}
