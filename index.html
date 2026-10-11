@@ -1788,6 +1788,18 @@
     window.addEventListener('resize', onScrollEffects);
     onScrollEffects();
 
+    // Play the supplied ElevenLabs scroll voiceover on the visitor's first scroll.
+    let portfolioScrollVoicePlayed = false;
+    const portfolioScrollVoice = new Audio('./portfolio-scroll-voice.mp3');
+    portfolioScrollVoice.preload = 'auto';
+    portfolioScrollVoice.volume = 1;
+    window.addEventListener('scroll', () => {
+      if (portfolioScrollVoicePlayed || window.scrollY < 40) return;
+      portfolioScrollVoicePlayed = true;
+      portfolioScrollVoice.currentTime = 0;
+      portfolioScrollVoice.play().catch(() => {});
+    }, { passive: true });
+
     // Floating buddy avatar — appears after a few scrolls, cycles fun messages
     const floatBuddy = document.getElementById('floatBuddy');
     const floatMsg = document.getElementById('floatMsg');
@@ -1979,21 +1991,10 @@
             welcomeCard.setAttribute('aria-hidden','false');
             welcomeCard.classList.add('is-active');
             try{
-              if('speechSynthesis' in window){
-                window.speechSynthesis.cancel();
-                const line=new SpeechSynthesisUtterance("Hey, I'm Jaspal. Let's create something great.");
-                line.lang='en-GB';
-                line.rate=0.94;
-                line.pitch=0.92;
-                line.volume=1;
-                const voices=window.speechSynthesis.getVoices();
-                const voice=voices.find(v=>/Google UK English Female|Microsoft.*(Aria|Jenny|Guy)|Daniel|Samantha/i.test(v.name)&&/en-GB|en-US/i.test(v.lang))
-                  ||voices.find(v=>/en-GB/i.test(v.lang))
-                  ||voices.find(v=>/en-US/i.test(v.lang))
-                  ||voices.find(v=>/en-IN/i.test(v.lang));
-                if(voice){line.voice=voice;line.lang=voice.lang;}
-                window.speechSynthesis.speak(line);
-              }
+              const welcomeAudio=new Audio('./welcome-voice.mp3');
+              welcomeAudio.preload='auto';
+              welcomeAudio.volume=1;
+              welcomeAudio.play().catch(()=>{});
             }catch(_){}
             window.setTimeout(()=>{
               welcomeCard.classList.add('is-done');
