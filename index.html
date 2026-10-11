@@ -808,6 +808,26 @@
       @keyframes jaspalFall{0%{top:10vh;transform:translateX(-50%) rotate(0)}22%{top:20vh;transform:translateX(-50%) rotate(30deg)}55%{top:47vh;transform:translateX(-50%) rotate(125deg)}80%{top:63vh;transform:translateX(-50%) rotate(220deg)}100%{top:70vh;transform:translateX(-50%) rotate(260deg);opacity:.96}}
     }
 
+
+    /* Emergency visibility fix: show uploaded portrait at a reliable size */
+    .wire-intro .spidey-drop{
+      top:11vh!important;left:50%!important;width:clamp(150px,16vw,210px)!important;
+      height:auto!important;min-height:0!important;display:block!important;
+      visibility:visible!important;opacity:1!important;z-index:100!important;
+      overflow:visible!important;transform:translateX(-50%)!important;
+      animation:jaspalEnter 1.65s cubic-bezier(.2,.72,.25,1) .25s forwards!important;
+    }
+    .wire-intro .jaspal-hanging-photo{
+      display:block!important;visibility:visible!important;opacity:1!important;
+      width:100%!important;height:auto!important;min-height:0!important;
+      max-height:42vh!important;object-fit:contain!important;
+    }
+    .wire-intro.is-blasting .spidey-drop{animation:jaspalFall .95s cubic-bezier(.28,.04,.62,1) forwards!important}
+    @media(max-width:700px){
+      .wire-intro .spidey-drop{top:10vh!important;width:clamp(120px,31vw,155px)!important}
+      .wire-intro .jaspal-hanging-photo{max-height:34vh!important}
+    }
+
   </style>
 </head>
 <body>
@@ -851,7 +871,7 @@
     </div>
     <div class="spidey-drop" aria-hidden="true">
       <span class="spidey-web"></span>
-      <img class="jaspal-hanging-photo" alt="" src="./jaspal-small.webp">
+      <img class="jaspal-hanging-photo" alt="" src="./jaspal-small.webp?v=2">
     </div>
     <div class="wire-blast" id="wireBlast" aria-hidden="true">
       <span class="blast-core"></span><span class="blast-ring"></span><span class="blast-ring blast-ring-two"></span>
