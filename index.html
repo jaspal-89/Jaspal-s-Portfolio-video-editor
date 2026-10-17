@@ -1240,6 +1240,10 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
     .tool-point img{width:27px;height:27px;object-fit:contain;flex:0 0 27px;background:rgba(255,255,255,.04);padding:2px;border-radius:5px}
     .official-tool-logo{width:38px;height:38px;object-fit:contain;display:block;margin:0 auto 12px;border-radius:9px;background:rgba(255,255,255,.06);padding:3px}
 
+
+    .cv-longform-feature{position:relative}
+    .cv-longform-mute-btn{position:absolute;right:14px;top:14px;z-index:4}
+
 </style>
 </head>
 <body>
@@ -1356,7 +1360,7 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
           </div>
           <div class="cv-longform-feature">
             <div><p class="eyebrow">— Crawl Vision Long-Form Introduction</p><h3>One team. <span>Complete solutions.</span></h3><p class="muted">Add the full-length Crawl Vision introduction video here.</p></div>
-            <video src="00.mp4" class="cv-longform-video" controls playsinline preload="metadata"></video>
+            <video src="00.mp4" class="cv-longform-video" muted autoplay loop playsinline preload="metadata"></video><button class="cv-mute-btn cv-longform-mute-btn" type="button" aria-label="Unmute video" aria-pressed="false">🔇</button>
           </div>
           <div class="cv-video-showcase">
             <div class="section-top"><div><p class="eyebrow">— Crawl Vision Samples</p><h3 class="heading">Ideas into <span>impact.</span></h3></div><p class="muted">A preview of video formats we can create for your brand.</p></div>
@@ -1685,10 +1689,18 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
       });
     });
 
-    // Every video has autoplay+muted set directly in HTML, which every modern browser honours
-    // reliably on its own. We only step in to pause videos once they scroll off-screen (so they
-    // don't keep decoding in the background) and resume them when they come back into view.
-    const io = new IntersectionObserver(entries => {
+    // All portfolio videos autoplay muted. One speaker button at a time may enable sound.
+    const allPortfolioVideos = Array.from(document.querySelectorAll('.work-video, .cv-autoplay-video, .cv-longform-video'));
+    const allSpeakerButtons = Array.from(document.querySelectorAll('.mute-btn, .cv-mute-btn'));
+    allPortfolioVideos.forEach(video => {
+      video.muted = true;
+      video.autoplay = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.play().catch(() => {});
+    });
+
+    const videoIO = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         const video = entry.target;
         if (entry.isIntersecting) {
@@ -1697,36 +1709,45 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
           video.pause();
         }
       });
-    }, { threshold: 0.25 });
-    workVideos.forEach(video => io.observe(video));
+    }, { threshold: 0.15 });
+    allPortfolioVideos.forEach(video => videoIO.observe(video));
 
-    // Pause everything while the tab is in the background
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        workVideos.forEach(v => v.pause());
+        allPortfolioVideos.forEach(video => video.pause());
       } else {
-        workVideos.forEach(v => {
-          const rect = v.getBoundingClientRect();
-          if (rect.top < window.innerHeight && rect.bottom > 0) v.play().catch(() => {});
+        allPortfolioVideos.forEach(video => {
+          const rect = video.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) video.play().catch(() => {});
         });
       }
     });
 
-    // Tap the speaker icon to unmute a preview; unmuting one mutes the rest
-    muteBtns.forEach(btn => {
-      btn.addEventListener('click', event => {
+    function syncSpeakerButtons(activeButton) {
+      allSpeakerButtons.forEach(button => {
+        const isActive = button === activeButton;
+        button.textContent = isActive ? '🔊' : '🔇';
+        button.setAttribute('aria-pressed', String(isActive));
+        button.setAttribute('aria-label', isActive ? 'Mute video' : 'Unmute video');
+      });
+    }
+
+    allSpeakerButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
         event.stopPropagation();
-        const video = btn.closest('.work-card').querySelector('.work-video');
-        if (video.muted) {
-          workVideos.forEach(v => { v.muted = true; });
-          muteBtns.forEach(b => { b.textContent = '🔇'; });
+        const container = button.closest('.work-card, .cv-video-card, .cv-longform-feature');
+        const video = container && container.querySelector('video');
+        if (!video) return;
+        const wasMuted = video.muted;
+        allPortfolioVideos.forEach(item => { item.muted = true; });
+        if (wasMuted) {
           video.muted = false;
-          btn.textContent = '🔊';
-          if (video.paused) video.play().catch(() => {});
+          syncSpeakerButtons(button);
         } else {
-          video.muted = true;
-          btn.textContent = '🔇';
+          syncSpeakerButtons(null);
         }
+        video.play().catch(() => {});
       });
     });
 
@@ -2152,26 +2173,6 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
     }, { once: true });
 
   </script>
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  document.querySelectorAll('.cv-video-card').forEach(function(card){
-    const video=card.querySelector('video.cv-autoplay-video');
-    const button=card.querySelector('.cv-mute-btn');
-    if(!video||!button) return;
-    video.muted=true;
-    const attempt=()=>video.play().catch(()=>{});
-    attempt();
-    button.addEventListener('click',function(){
-      video.muted=!video.muted;
-      button.textContent=video.muted?'🔇':'🔊';
-      button.setAttribute('aria-pressed',String(!video.muted));
-      button.setAttribute('aria-label',video.muted?'Unmute video':'Mute video');
-      if(!video.paused) return;
-      attempt();
-    });
-    video.addEventListener('play',()=>{ if(video.muted){button.textContent='🔇';} });
-  });
-});
-</script>
+
 </body>
 </html>
