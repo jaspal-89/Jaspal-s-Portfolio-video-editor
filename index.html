@@ -1190,6 +1190,20 @@
     @keyframes heroNameReveal{from{opacity:0;transform:translateY(26px) scale(.97);filter:blur(10px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
     @keyframes heroVisualReveal{from{opacity:0;transform:translateY(18px) scale(.96);filter:blur(9px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
     @media(prefers-reduced-motion:reduce){body.portfolio-ready .nav,body.portfolio-ready .hero-grid>div:first-child>*,body.portfolio-ready .hero-grid>div:last-child,body.portfolio-ready .hero-name{animation:none!important;filter:none!important;transform:none!important}}
+
+    .cv-showcase{display:grid;grid-template-columns:1fr 1.1fr;gap:0;border-radius:28px;overflow:hidden;border-color:rgba(193,138,255,.28);background:linear-gradient(130deg,rgba(24,14,38,.92),rgba(9,9,14,.94))}
+    .cv-brand-panel{padding:clamp(24px,4vw,54px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;border-right:1px solid rgba(193,138,255,.24);background:radial-gradient(ellipse at 40% 40%,rgba(155,77,255,.16),transparent 68%)}
+    .cv-logo-art{width:100%;max-width:560px;color:#f6edff;filter:drop-shadow(0 0 24px rgba(173,106,255,.18))}
+    .cv-logo-art svg{width:100%;height:auto;overflow:visible}
+    .cv-tagline{margin:20px 0 24px;color:rgba(255,255,255,.72);letter-spacing:.16em;text-transform:uppercase;font-size:11px;font-weight:800}
+    .cv-about-panel{padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;justify-content:center}
+    .cv-about-panel .heading{margin-bottom:18px}
+    .cv-founder-card{display:grid;grid-template-columns:112px 1fr;gap:20px;align-items:center;margin-top:28px;padding:20px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.035)}
+    .cv-founder-photo{width:112px;height:132px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2c1b42,#111116);border:1px solid rgba(193,138,255,.32);color:#e4caff;font:800 32px Sora,sans-serif}
+    .cv-founder-card h3{font:800 23px Sora,sans-serif;margin:3px 0 8px}
+    .cv-founder-card .muted{font-size:13px;line-height:1.65}
+    @media(max-width:800px){.cv-showcase{grid-template-columns:1fr}.cv-brand-panel{border-right:0;border-bottom:1px solid rgba(193,138,255,.24)}.cv-founder-card{grid-template-columns:88px 1fr;padding:14px;gap:14px}.cv-founder-photo{width:88px;height:112px}}
+    @media(max-width:520px){.navlinks a[href="#crawl-vision"]{display:none}.cv-founder-card{grid-template-columns:1fr}.cv-founder-photo{width:100%;height:100px}}
 </style>
 </head>
 <body>
@@ -1198,17 +1212,18 @@
 
   <header>
     <nav class="nav">
-      <a class="brand" href="#home">JASPAL <span style="font-size:11px;letter-spacing:.12em;color:#fff;display:block;font-family:Inter,sans-serif">× CRAWL VISION</span></a>
+      <a class="brand" href="#home">JAS<span>PAL</span></a>
       <div class="navlinks">
         <a href="#about">About</a>
         <a href="#services">Services</a>
         <a href="#work">Work</a>
         <a href="#brands">Brands</a>
+        <a href="#crawl-vision">Crawl Vision</a>
         <a href="#quiz">Creative Quiz</a>
         <a href="#skills">Skills</a>
         <a href="#contact">Contact</a>
       </div>
-      <a class="hire" href="https://wa.me/916280144510?text=Hi%20Crawl%20Vision%2C%20I%20found%20your%20service%20from%20Jaspal%27s%20portfolio.%20I%27d%20like%20to%20discuss%20a%20video%20production%20project." target="_blank" rel="noreferrer">Contact Crawl Vision ↗</a>
+      <div style="display:flex;align-items:center;gap:8px"><a class="btn btn-ghost" style="padding:10px 14px;font-size:12px" href="https://www.linkedin.com/in/jaspal-videoeditor/" target="_blank" rel="noreferrer">Contact Jaspal ↗</a><a class="hire" href="https://wa.me/916280144510?text=Hi%20Crawl%20Vision%2C%20I%20found%20your%20service%20from%20Jaspal%27s%20portfolio.%20I%27d%20like%20to%20discuss%20a%20business%20project." target="_blank" rel="noreferrer">Discuss a Business Project ↗</a></div>
     </nav>
   </header>
 
@@ -1220,15 +1235,14 @@
           <h1 class="hero-name" aria-label="Jaspal">Jaspal</h1>
           <div class="underline"></div>
           <p class="role">Video Editor & Creative Producer</p>
-          <p class="tagline">I help Crawl Vision build a stronger digital presence through strategic video production and creative marketing. From short-form content and AI UGC to talking-head videos and brand campaigns, our focus is content that earns attention and supports business growth.</p>
-          <div style="display:inline-flex;align-items:center;gap:10px;margin:0 0 22px;padding:10px 14px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.05)"><span style="display:grid;place-items:center;width:34px;height:34px;background:#fff;color:#17111e;border-radius:9px;font-weight:900">CV</span><span style="font-weight:800;letter-spacing:.08em">CRAWL VISION<small style="display:block;font-weight:500;letter-spacing:.02em;color:var(--muted)">Digital Growth Agency</small></span><a href="https://www.crawlvision.com/" target="_blank" rel="noreferrer">↗</a></div>
+          <p class="tagline">I create engaging, story-driven videos for brands, creators and businesses—combining strong hooks, thoughtful pacing and a cinematic finish. For professionally managed business projects, I collaborate with Crawl Vision's team.</p>
           <div class="actions">
-            <a class="btn btn-primary" href="https://wa.me/916280144510?text=Hi%20Crawl%20Vision%2C%20I%20found%20your%20service%20from%20Jaspal%27s%20portfolio.%20I%27m%20looking%20for%20video%20production%20services.%20Could%20we%20discuss%20my%20project%3F" target="_blank" rel="noreferrer">Discuss a Project ↗</a>
+            <a class="btn btn-primary" href="https://wa.me/916280144510?text=Hi%20Crawl%20Vision%2C%20I%20found%20your%20service%20from%20Jaspal%27s%20portfolio.%20I%27d%20like%20to%20discuss%20a%20business%20project." target="_blank" rel="noreferrer">Discuss a Business Project ↗</a>
             <a class="btn btn-ghost" href="#work">▶ View My Work</a>
           </div>
           <div class="trust">
             <div class="dots"><i style="--c:#ef233c"></i><i style="--c:#b91c1c"></i><i style="--c:#ff4d5a"></i><i style="--c:#991b1b"></i></div>
-            <div><b style="color:#ffe1e4">CREATIVE PRODUCTION × CRAWL VISION</b> <span>Professionally managed content for brands and businesses</span></div>
+            <div><b style="color:#ffe1e4">CREATIVE PARTNER</b> <span>Video Editor & Creative Producer</span></div>
           </div>
         </div>
         <div class="visual">
@@ -1397,17 +1411,39 @@
     </section>
 
     <style>@media(max-width:760px){.leadership-grid{grid-template-columns:1fr!important}}</style>
-    <section class="section" id="leadership">
-      <div class="container leadership-grid" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:34px;align-items:center">
-        <div class="glass" style="padding:30px;border-radius:26px;text-align:center">
-          <div style="width:108px;height:108px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#fff,#ff4d5a);color:#101014;font-family:Sora,sans-serif;font-size:36px;font-weight:800;box-shadow:0 0 45px rgba(255,77,90,.22)">SR</div>
-          <p class="eyebrow">Founder & Lead Strategist</p><h3 style="font-size:26px;font-family:Sora,sans-serif">Sagar Rauthan</h3>
-          <a class="btn btn-ghost" style="margin-top:18px" href="https://www.crawlvision.com/" target="_blank" rel="noreferrer">Meet Crawl Vision ↗</a>
-          <p class="muted" style="font-size:12px;margin-top:12px">Visit the official company website for the founder's portrait.</p>
-        </div>
-        <div><p class="eyebrow">— The Vision Behind Crawl Vision</p><h2 class="heading" style="font-size:clamp(36px,5vw,64px)">Visibility for the <span>next era.</span></h2>
-          <p class="muted" style="margin-top:20px">Crawl Vision builds visibility across search, social and AI ecosystems so brands can be discovered, trusted and selected. Led by Sagar Rauthan, the team combines over 7 years of SEO and marketing expertise with 300+ client partnerships to deliver next-generation marketing solutions across industries.</p>
-          <p class="muted" style="margin-top:12px">Explore the company at <a href="https://www.crawlvision.com/" target="_blank" rel="noreferrer" style="color:var(--purple3);font-weight:700">crawlvision.com ↗</a></p>
+    <section class="section" id="crawl-vision">
+      <div class="container">
+        <div class="cv-showcase glass">
+          <div class="cv-brand-panel">
+            <p class="eyebrow">— A Creative & Growth Partner</p>
+            <div class="cv-logo-art" aria-label="Crawl Vision logo">
+              <svg viewBox="0 0 620 160" role="img" aria-label="Crawl Vision">
+                <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M42 104V62Q42 48 58 48H98Q113 48 113 63V104M42 82H113"/>
+                  <path d="M133 104L133 57L168 104L203 57L203 104"/>
+                  <circle cx="231" cy="38" r="11" fill="currentColor" stroke="none"/>
+                  <path d="M220 104L244 58L267 104M228 87H260"/>
+                  <path d="M283 104V57H318Q342 57 342 79Q342 104 318 104H283"/>
+                  <path d="M365 57V104H405"/>
+                  <path d="M422 104V57H461Q480 57 480 75Q480 91 461 91H422M458 91L484 104"/>
+                  <path d="M508 104V57H554Q571 57 571 75Q571 91 554 91H508M548 91L575 104"/>
+                  <path d="M521 42L580 18L565 45M580 18L568 60"/>
+                </g>
+                <text x="310" y="146" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="800" letter-spacing="8" fill="currentColor">DIGITAL GROWTH AGENCY</text>
+              </svg>
+            </div>
+            <p class="cv-tagline">Be discovered. Be trusted. Be selected.</p>
+            <a class="btn btn-primary" href="https://www.crawlvision.com/" target="_blank" rel="noreferrer">Visit Crawl Vision ↗</a>
+          </div>
+          <div class="cv-about-panel">
+            <p class="eyebrow">— About Crawl Vision</p>
+            <h2 class="heading">Visibility for the <span>next era.</span></h2>
+            <p class="muted">We build visibility across search, social and AI ecosystems so your brand is discovered, trusted and selected. Through SEO, AI search visibility, digital marketing, web development and creative video production, Crawl Vision helps businesses strengthen their digital presence and reach the right audience.</p>
+            <div class="cv-founder-card">
+              <div class="cv-founder-photo" role="img" aria-label="Sagar Rauthan portrait placeholder">SR</div>
+              <div><p class="eyebrow">Founder & CEO</p><h3>Sagar Rauthan</h3><p class="muted">With 7+ years of SEO and marketing expertise and 300+ successful client partnerships, Sagar leads next-generation marketing solutions across industries.</p></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
