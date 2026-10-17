@@ -1172,77 +1172,27 @@
     .work-card .wide-card-text .row1{background:linear-gradient(135deg,#fff 0%,#fff 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important}
     .work-card .wide-card-text .row2{-webkit-text-stroke-color:#fff!important;text-stroke-color:#fff!important}
     .work-card .wide-card-eyebrow{border-color:rgba(193,138,255,.5)!important;background:rgba(155,77,255,.14)!important}
+
+    /* Direct cinematic entrance — replaces the old wire-connection intro */
+    body.portfolio-ready{overflow-x:hidden}
+    body.portfolio-ready .nav{animation:navReveal .8s cubic-bezier(.2,.8,.2,1) both}
+    body.portfolio-ready .hero-grid>div:first-child>*{animation:heroRise .85s cubic-bezier(.2,.8,.2,1) both}
+    body.portfolio-ready .hero-grid>div:first-child>*:nth-child(1){animation-delay:.08s}
+    body.portfolio-ready .hero-grid>div:first-child>*:nth-child(2){animation-delay:.16s}
+    body.portfolio-ready .hero-grid>div:first-child>*:nth-child(3){animation-delay:.22s}
+    body.portfolio-ready .hero-grid>div:first-child>*:nth-child(4){animation-delay:.3s}
+    body.portfolio-ready .hero-grid>div:first-child>*:nth-child(5){animation-delay:.38s}
+    body.portfolio-ready .hero-grid>div:first-child>*:nth-child(6){animation-delay:.46s}
+    body.portfolio-ready .hero-grid>div:last-child{animation:heroVisualReveal 1.15s cubic-bezier(.2,.8,.2,1) .22s both}
+    body.portfolio-ready .hero-name{animation:heroNameReveal 1s cubic-bezier(.16,1,.3,1) .15s both}
+    @keyframes navReveal{from{opacity:0;transform:translateY(-18px);filter:blur(8px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+    @keyframes heroRise{from{opacity:0;transform:translateY(24px);filter:blur(7px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+    @keyframes heroNameReveal{from{opacity:0;transform:translateY(26px) scale(.97);filter:blur(10px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+    @keyframes heroVisualReveal{from{opacity:0;transform:translateY(18px) scale(.96);filter:blur(9px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+    @media(prefers-reduced-motion:reduce){body.portfolio-ready .nav,body.portfolio-ready .hero-grid>div:first-child>*,body.portfolio-ready .hero-grid>div:last-child,body.portfolio-ready .hero-name{animation:none!important;filter:none!important;transform:none!important}}
 </style>
 </head>
 <body>
-
-  <div class="welcome-screen wire-intro" id="welcomeScreen" role="dialog" aria-modal="true" aria-label="Jaspal portfolio intro">
-    <div class="wire-grid" aria-hidden="true"></div>
-    <div class="wire-topline"><span>JASPAL / CREATIVE EDITOR</span><span>POWER ON YOUR CREATIVITY</span></div>
-    <div class="wire-center-copy" aria-hidden="true">
-      <p class="wire-kicker">PORTFOLIO ACCESS</p>
-      <h2>CONNECT WIRES <em>TO OPEN PORTFOLIO</em></h2>
-      <p class="wire-instruction" id="wireInstruction">CONNECT THE WIRES TO OPEN PORTFOLIO</p>
-    </div>
-    <div class="wire-run wire-left" aria-hidden="true">
-      <svg class="wire-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path class="wire-body" id="wireLeftPath"/><path class="wire-highlight" id="wireLeftHighlight"/><path class="wire-live" id="wireLeftLive"/></svg>
-      <span class="wire-copper" id="wireLeftTip"></span>
-    </div>
-    <div class="wire-run wire-right" id="wireRight" role="button" tabindex="0" aria-label="Drag the right wire to the left contact to open portfolio">
-      <svg class="wire-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path class="wire-body" id="wireRightPath"/><path class="wire-highlight" id="wireRightHighlight"/><path class="wire-live" id="wireRightLive"/></svg>
-      <span class="wire-copper" id="wireRightTip"></span>
-      <span class="wire-spark" id="wireSpark"></span>
-      <span class="wire-tip-grip" id="wireGrip" aria-hidden="true"><i></i><i></i><i></i></span>
-    </div>
-
-    <div class="wire-people" aria-hidden="true">
-      <svg class="wire-person left-person" viewBox="0 0 160 180">
-        <ellipse class="shadow" cx="80" cy="166" rx="47" ry="8"/>
-        <circle class="body" cx="65" cy="28" r="20"/>
-        <path class="body" d="M51 49 Q40 65 48 89 L60 117 L42 145 Q38 155 49 158 L68 158 L83 126 L93 100 L100 126 L118 147 Q127 155 137 148 Q143 141 135 134 L114 106 L107 75 Q105 56 84 50Z"/>
-        <path class="body" d="M52 58 Q34 69 39 88 L55 104 L75 89 L66 78 L59 75Z"/>
-        <path class="blue-part connector" d="M20 83 Q18 71 30 67 L49 60 Q58 58 63 68 L72 84 Q77 95 66 101 L49 108 Q40 111 34 101Z"/>
-        <rect class="metal" x="44" y="73" width="18" height="12" rx="3" transform="rotate(-25 53 79)"/>
-      </svg>
-      <svg class="wire-person right-person" viewBox="0 0 160 180">
-        <ellipse class="shadow" cx="80" cy="166" rx="47" ry="8"/>
-        <circle class="body" cx="94" cy="28" r="20"/>
-        <path class="body" d="M107 49 Q121 65 111 89 L100 117 L119 145 Q124 155 113 158 L94 158 L78 126 L68 100 L61 126 L40 147 Q31 155 21 148 Q15 141 23 134 L44 106 L51 75 Q53 56 74 50Z"/>
-        <path class="body" d="M108 58 Q126 69 121 88 L105 104 L85 89 L94 78 L101 75Z"/>
-        <path class="red-part connector" d="M140 83 Q142 71 130 67 L111 60 Q102 58 97 68 L88 84 Q83 95 94 101 L111 108 Q120 111 126 101Z"/>
-        <rect class="metal" x="98" y="73" width="18" height="12" rx="3" transform="rotate(25 107 79)"/>
-      </svg>
-    </div>
-    <div class="spidey-drop" aria-hidden="true">
-      <span class="spidey-web"></span>
-      <img class="jaspal-hanging-photo" alt="" src="./jaspal-small.webp?v=2">
-    </div>
-    <div class="wire-blast" id="wireBlast" aria-hidden="true">
-      <span class="blast-core"></span><span class="blast-ring"></span><span class="blast-ring blast-ring-two"></span>
-      <span class="blast-rays"></span><span class="blast-sparks"></span>
-    </div>
-    <div class="wire-guide" aria-hidden="true">
-      <svg class="wire-guide-svg" viewBox="0 0 320 90" preserveAspectRatio="none">
-        <path class="wire-guide-path" d="M8 10 C80 10 72 78 160 78 S240 10 312 10" />
-        <path class="wire-guide-arrow" d="M302 3 L312 10 L302 17" />
-      </svg>
-      <span class="wire-guide-label">DRAG THE WIRE TIP TO CONNECT</span>
-    </div>
-    <div class="wire-footer" aria-hidden="true"><span>01 — CONNECT</span><span>02 — IGNITE</span><span>03 — EXPLORE</span></div>
-  </div>
-
-  <div class="portfolio-welcome" id="portfolioWelcome" aria-live="polite" aria-hidden="true">
-    <div class="pw-orbit pw-orbit-one" aria-hidden="true"></div>
-    <div class="pw-orbit pw-orbit-two" aria-hidden="true"></div>
-    <div class="pw-overline"><span class="pw-live-dot"></span> THE WORLD, THROUGH MY LENS</div>
-    <div class="pw-title">
-      <span class="pw-eyebrow" data-typewriter="HEY THERE, I'M"></span>
-      <strong><span data-typewriter="JASPAL"></span><span class="pw-period">.</span></strong>
-    </div>
-    <div class="pw-rule"><span></span></div>
-    <div class="pw-subtitle"><span data-typewriter="I TURN IDEAS INTO VISUAL STORIES."></span></div>
-    <div class="pw-signature">VIDEO EDITOR <span>✳</span> VISUAL STORYTELLER <span>✳</span> CREATIVE MIND</div>
-  </div>
 
   <div class="noise"></div>
 
@@ -2114,275 +2064,12 @@
     }, { threshold: 0 });
     animatedEls.forEach(el => animIO.observe(el));
   
-    // Flexible hanging SVG cables: anchored at opposite upper corners, free ends follow pointer with spring physics.
-    const welcomeScreen = document.getElementById('welcomeScreen');
-    const wireRight = document.getElementById('wireRight');
-    const wireGrip = document.getElementById('wireGrip');
-    const wireInstruction = document.getElementById('wireInstruction');
-    if (welcomeScreen && wireRight && wireGrip) {
-      document.body.classList.add('welcome-open');
-      const leftPath = document.getElementById('wireLeftPath');
-      const rightPath = document.getElementById('wireRightPath');
-      const leftTip = document.getElementById('wireLeftTip');
-      const rightTip = document.getElementById('wireRightTip');
-      const spark = document.getElementById('wireSpark');
-      const paths = [
-        [leftPath, document.getElementById('wireLeftHighlight'), document.getElementById('wireLeftLive')],
-        [rightPath, document.getElementById('wireRightHighlight'), document.getElementById('wireRightLive')]
-      ];
-      let connected = false, dragging = false, draggingSide = 'right', lastTime = 0, motion = 0;
-      let tip = {x:0,y:0}, velocity={x:0,y:0}, target={x:0,y:0}, left={x:0,y:0};
-      const pos = (el,x,y) => {
-        const parent = el.offsetParent || el.parentElement;
-        const rect = parent.getBoundingClientRect();
-        el.style.left=(x-rect.left)+'px';
-        el.style.top=(y-rect.top)+'px';
-      };
-      const localPoint = (svg,x,y) => {
-        const r=svg.getBoundingClientRect();
-        return {x:x-r.left,y:y-r.top,w:r.width,h:r.height};
-      };
-      function layout(reset) {
-        const w=welcomeScreen.clientWidth,h=welcomeScreen.clientHeight;
-        left={x:w*(w<700?.29:.31),y:h*(w<700?.76:.71)};
-        if(reset){tip={x:w*(w<700?.77:.76),y:h*(w<700?.77:.70)};target={...tip};velocity={x:0,y:0};}
-        pos(leftTip,left.x,left.y);
-      }
-      layout(true);
-      const curve=(sx,sy,ex,ey,side,sway)=>{
-        const dx=ex-sx,dy=ey-sy;
-        return `M ${sx} ${sy} C ${sx+side*95+sway} ${sy+dy*.28}, ${ex-side*135+sway*.5} ${ey-dy*.45}, ${ex} ${ey}`;
-      };
-      function render(time){
-        const dt=Math.min(2.2,(time-(lastTime||time))/16.67);lastTime=time;
-        const w=welcomeScreen.clientWidth,h=welcomeScreen.clientHeight;
-        const sway=Math.sin(time*.0013)*12;
-        if(!dragging&&!connected){
-          target.x=w*(w<700?.77:.76)+Math.sin(time*.0011)*14;
-          target.y=h*(w<700?.76:.70)+Math.sin(time*.0017)*12;
-        }
-        const spring=dragging?.18:.035;
-        velocity.x=(velocity.x+(target.x-tip.x)*spring*dt)*Math.pow(dragging?.72:.91,dt);
-        velocity.y=(velocity.y+(target.y-tip.y)*spring*dt)*Math.pow(dragging?.72:.91,dt);
-        tip.x+=velocity.x*dt;tip.y+=velocity.y*dt;
-        const leftSvg=paths[0][0].ownerSVGElement, rightSvg=paths[1][0].ownerSVGElement;
-        const lp=localPoint(leftSvg,left.x,left.y), rp=localPoint(rightSvg,tip.x,tip.y);
-        leftSvg.setAttribute('viewBox',`0 0 ${lp.w} ${lp.h}`);
-        rightSvg.setAttribute('viewBox',`0 0 ${rp.w} ${rp.h}`);
-        const leftStart={x:lp.w*.02,y:-8},rightStart={x:rp.w*.98,y:-8};
-        const leftD=curve(leftStart.x,leftStart.y,lp.x,lp.y,1,sway);
-        const rightD=curve(rightStart.x,rightStart.y,rp.x,rp.y,-1,-sway);
-        paths[0].forEach(p=>p.setAttribute('d',leftD));
-        paths[1].forEach(p=>p.setAttribute('d',rightD));
-        pos(leftTip,left.x,left.y);pos(rightTip,tip.x,tip.y);pos(wireGrip,tip.x,tip.y);pos(spark,tip.x,tip.y);
-        if(!connected && Math.hypot(tip.x-left.x,tip.y-left.y)<45) connectWires();
-        if(welcomeScreen.isConnected&&!connected)requestAnimationFrame(render);
-        else if(welcomeScreen.isConnected&&connected&&motion++<30)requestAnimationFrame(render);
-      }
-      let blastAudioContext = null;
-      function unlockBlastAudio() {
-        try {
-          const AC = window.AudioContext || window.webkitAudioContext;
-          if (!AC) return;
-          if (!blastAudioContext || blastAudioContext.state === 'closed') blastAudioContext = new AC();
-          if (blastAudioContext.state === 'suspended') {
-            const resumeResult = blastAudioContext.resume();
-            if (resumeResult && typeof resumeResult.catch === 'function') resumeResult.catch(err => console.warn('Blast audio resume failed:', err));
-          }
-        } catch (err) { console.warn('Blast audio unlock failed:', err); }
-      }
-      function playElectricBlast() {
-        try {
-          unlockBlastAudio();
-          const audio = blastAudioContext;
-          if (!audio) return;
-          const play = () => {
-            const now = audio.currentTime;
-            const osc = audio.createOscillator();
-            const gain = audio.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(115, now);
-            osc.frequency.exponentialRampToValueAtTime(34, now + .42);
-            gain.gain.setValueAtTime(.0001, now);
-            gain.gain.exponentialRampToValueAtTime(.95, now + .018);
-            gain.gain.exponentialRampToValueAtTime(.0001, now + .48);
-            osc.connect(gain); gain.connect(audio.destination);
-            osc.start(now); osc.stop(now + .5);
-            const crack = audio.createOscillator();
-            const crackGain = audio.createGain();
-            crack.type = 'square';
-            crack.frequency.setValueAtTime(920, now);
-            crack.frequency.exponentialRampToValueAtTime(110, now + .11);
-            crackGain.gain.setValueAtTime(.0001, now);
-            crackGain.gain.exponentialRampToValueAtTime(.42, now + .006);
-            crackGain.gain.exponentialRampToValueAtTime(.0001, now + .16);
-            crack.connect(crackGain); crackGain.connect(audio.destination);
-            crack.start(now); crack.stop(now + .17);
-          };
-          if (audio.state === 'running') play();
-          else audio.resume().then(() => { if (audio.state === 'running') play(); }).catch(err => console.warn('Blast audio playback failed:', err));
-        } catch (err) { console.warn('Blast audio playback failed:', err); }
-      }
+    // Direct portfolio reveal: no interaction gate, just a polished cinematic entrance.
+    document.body.classList.add('portfolio-ready');
+    window.addEventListener('load', () => {
+      document.body.classList.add('portfolio-loaded');
+    }, { once: true });
 
-      const welcomeAudio = new Audio('./welcome-voice.mp3');
-      welcomeAudio.preload = 'auto';
-      welcomeAudio.volume = 1;
-
-      function connectWires(){
-        if(connected)return;
-        connected=true;dragging=false;target={...left};tip={...left};
-        // Unlock audio from the wire gesture; actual playback starts with the welcome card.
-        welcomeAudio.pause();
-        welcomeAudio.currentTime = 0;
-        welcomeScreen.classList.add('is-connected');
-        wireRight.classList.add('wire-joined');
-        wireGrip.style.cursor='default';
-        if(wireInstruction)wireInstruction.textContent='WIRES CONNECTED';
-        const blast=document.getElementById('wireBlast');
-        pos(blast,left.x,left.y);
-        playElectricBlast();
-        window.setTimeout(()=>{
-          welcomeScreen.classList.add('is-blasting');
-          const fallingCharacter = welcomeScreen.querySelector('.spidey-drop');
-          if (fallingCharacter) {
-            /*
-              Animate with requestAnimationFrame instead of CSS keyframes.
-              Several legacy !important transform rules were overriding keyframe transforms.
-            */
-            fallingCharacter.style.setProperty('animation','none','important');
-            fallingCharacter.style.setProperty('transition','none','important');
-            const start=performance.now();
-            const duration=1500;
-            const startTop=11;
-            const endTop=68;
-            function fallFrame(now){
-              const raw=Math.min(1,(now-start)/duration);
-              const eased=1-Math.pow(1-raw,2.15);
-              const top=startTop+(endTop-startTop)*eased;
-              const rotate=265*eased;
-              fallingCharacter.style.setProperty('top',top+'vh','important');
-              fallingCharacter.style.setProperty('transform','translateX(-50%) rotate('+rotate+'deg)','important');
-              fallingCharacter.style.setProperty('opacity',String(1-.04*raw),'important');
-              if(raw<1 && fallingCharacter.isConnected) requestAnimationFrame(fallFrame);
-            }
-            requestAnimationFrame(fallFrame);
-          }
-        },100);
-        window.setTimeout(()=>{
-          /* Reveal the actual portfolio immediately after the blast, then play the branded welcome. */
-          welcomeScreen.classList.add('is-leaving');
-          document.body.classList.remove('welcome-open');
-          window.setTimeout(()=>welcomeScreen.remove(),180);
-          const welcomeCard=document.getElementById('portfolioWelcome');
-          if(welcomeCard){
-            welcomeCard.setAttribute('aria-hidden','false');
-            welcomeCard.classList.add('is-active');
-            const typewriterNodes = [...welcomeCard.querySelectorAll('[data-typewriter]')];
-            const fullTexts = typewriterNodes.map(node => node.dataset.typewriter);
-            typewriterNodes.forEach(node => { node.textContent = ''; });
-            let voiceDuration = 0;
-            let typewriterFinished = false;
-            let voiceFinished = false;
-            let exitStarted = false;
-            let typewriterTimer = 0;
-            let fallbackTimer = 0;
-            const finishWelcome = () => {
-              if (exitStarted || !typewriterFinished || !voiceFinished) return;
-              exitStarted = true;
-              document.body.classList.add('portfolio-revealing');
-              welcomeCard.classList.add('is-done');
-              welcomeCard.setAttribute('aria-hidden','true');
-              window.setTimeout(() => {
-                welcomeCard.classList.remove('is-active','is-done');
-                document.body.classList.remove('portfolio-revealing');
-              }, 750);
-            };
-            const startTypewriter = durationMs => {
-              const totalChars = fullTexts.reduce((sum, value) => sum + value.length, 0);
-              const typeDuration = Math.max(1800, durationMs || 3500);
-              const startAt = performance.now();
-              function typeFrame(now) {
-                const progress = Math.min(1, (now - startAt) / typeDuration);
-                const charsToShow = Math.floor(progress * totalChars);
-                let prior = 0;
-                typewriterNodes.forEach((node, index) => {
-                  node.textContent = fullTexts[index].slice(0, Math.max(0, Math.min(fullTexts[index].length, charsToShow - prior)));
-                  prior += fullTexts[index].length;
-                });
-                if (progress < 1) typewriterTimer = requestAnimationFrame(typeFrame);
-                else { typewriterFinished = true; finishWelcome(); }
-              }
-              typewriterTimer = requestAnimationFrame(typeFrame);
-            };
-            welcomeAudio.pause();
-            welcomeAudio.currentTime = 0;
-            welcomeAudio.onended = () => {
-              voiceFinished = true;
-              window.clearTimeout(fallbackTimer);
-              finishWelcome();
-            };
-            welcomeAudio.onloadedmetadata = () => {
-              if (Number.isFinite(welcomeAudio.duration)) voiceDuration = welcomeAudio.duration * 1000;
-            };
-            startTypewriter(voiceDuration || 4000);
-            const startVoice = welcomeAudio.play();
-            if(startVoice && typeof startVoice.then === 'function') {
-              startVoice.then(() => {
-                if (Number.isFinite(welcomeAudio.duration)) voiceDuration = welcomeAudio.duration * 1000;
-                // Re-time typing to the actual voice length when metadata becomes available.
-                typewriterNodes.forEach(node => { node.textContent = ''; });
-                typewriterFinished = false;
-                window.cancelAnimationFrame(typewriterTimer);
-                startTypewriter(voiceDuration || 4000);
-                fallbackTimer = window.setTimeout(() => {
-                  voiceFinished = true;
-                  finishWelcome();
-                }, Math.max(voiceDuration || 4500, 4500) + 1200);
-              }).catch(err => {
-                console.warn('Welcome voice playback failed:', err);
-                voiceFinished = true;
-                finishWelcome();
-              });
-            } else {
-              voiceFinished = true;
-              finishWelcome();
-            }
-          }
-        },650);
-      }
-      function beginWireDrag(side, event, handle){
-        if(connected)return;
-        // Create/resume Web Audio synchronously inside the user's touch/click gesture (important on iOS Safari).
-        unlockBlastAudio();
-        dragging=true;draggingSide=side;
-        try{handle.setPointerCapture(event.pointerId)}catch(_){}
-        event.preventDefault();
-      }
-      function moveWireDrag(event){
-        if(!dragging||connected)return;
-        const rect=welcomeScreen.getBoundingClientRect();
-        const point={x:Math.max(20,Math.min(rect.width-20,event.clientX-rect.left)),y:Math.max(20,Math.min(rect.height-20,event.clientY-rect.top))};
-        if(draggingSide==='left'){left=point;pos(leftTip,left.x,left.y)}
-        else target=point;
-      }
-      function endWireDrag(){dragging=false;}
-      wireGrip.addEventListener('pointerdown',event=>beginWireDrag('right',event,wireGrip));
-      wireGrip.addEventListener('pointermove',moveWireDrag);
-      wireGrip.addEventListener('pointerup',endWireDrag);
-      wireGrip.addEventListener('pointercancel',endWireDrag);
-      leftTip.style.pointerEvents='auto';
-      leftTip.style.cursor='grab';
-      leftTip.style.touchAction='none';
-      leftTip.addEventListener('pointerdown',event=>beginWireDrag('left',event,leftTip));
-      leftTip.addEventListener('pointermove',moveWireDrag);
-      leftTip.addEventListener('pointerup',endWireDrag);
-      leftTip.addEventListener('pointercancel',endWireDrag);
-      wireRight.addEventListener('keydown',event=>{
-        if(event.key==='Enter'||event.key===' '){event.preventDefault();connectWires();}
-      });
-      window.addEventListener('resize',()=>layout(false));
-      requestAnimationFrame(render);
-    }
   </script>
 </body>
 </html>
