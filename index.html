@@ -1689,18 +1689,32 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
       });
     });
 
-    // Lazy-load video files only as their cards approach the viewport.
-    // This keeps the first page render fast and prevents many large videos downloading at once.
+    // Lazy-load videos, wait for readiness, and retry autoplay when the browser is ready.
+    // Only videos near the viewport are fetched; off-screen videos pause to preserve smooth playback.
     const allPortfolioVideos = Array.from(document.querySelectorAll('.work-video, .cv-autoplay-video, .cv-longform-video'));
     const allSpeakerButtons = Array.from(document.querySelectorAll('.mute-btn, .cv-mute-btn'));
     allPortfolioVideos.forEach(video => {
       video.muted = true;
+      video.defaultMuted = true;
       video.loop = true;
       video.playsInline = true;
-      video.preload = 'none';
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('autoplay', '');
+      video.preload = 'metadata';
+      video.addEventListener('canplay', () => {
+        if (video.dataset.shouldAutoplay === 'true' && !document.hidden) {
+          video.play().catch(() => {});
+        }
+      });
+      video.addEventListener('error', () => {
+        // Retry transient network/media errors when the card becomes visible again.
+        video.dataset.needsRetry = 'true';
+      });
     });
 
     function loadAndPlayVideo(video) {
+      video.dataset.shouldAutoplay = 'true';
       if (!video.getAttribute('src')) {
         const source = video.dataset.src;
         if (source) {
@@ -1708,7 +1722,19 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
           video.load();
         }
       }
-      video.play().catch(() => {});
+      if (video.readyState >= 2) {
+        video.play().catch(() => {
+          video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
+        });
+      } else {
+        video.addEventListener('canplay', () => {
+          if (video.dataset.shouldAutoplay === 'true' && !document.hidden) video.play().catch(() => {});
+        }, { once: true });
+        if (video.dataset.needsRetry === 'true') {
+          video.dataset.needsRetry = 'false';
+          video.load();
+        }
+      }
     }
 
     const videoIO = new IntersectionObserver(entries => {
@@ -1717,19 +1743,23 @@ body.portfolio-loaded .cv-video-card:nth-child(5){animation-delay:.24s}
         if (entry.isIntersecting) {
           loadAndPlayVideo(video);
         } else {
+          video.dataset.shouldAutoplay = 'false';
           video.pause();
         }
       });
-    }, { rootMargin: '250px 0px', threshold: 0.01 });
+    }, { rootMargin: '120px 0px', threshold: 0.08 });
     allPortfolioVideos.forEach(video => videoIO.observe(video));
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        allPortfolioVideos.forEach(video => video.pause());
+        allPortfolioVideos.forEach(video => {
+          video.dataset.shouldAutoplay = 'false';
+          video.pause();
+        });
       } else {
         allPortfolioVideos.forEach(video => {
           const rect = video.getBoundingClientRect();
-          if (rect.top < window.innerHeight + 250 && rect.bottom > -250) loadAndPlayVideo(video);
+          if (rect.top < window.innerHeight + 120 && rect.bottom > -120) loadAndPlayVideo(video);
         });
       }
     });
